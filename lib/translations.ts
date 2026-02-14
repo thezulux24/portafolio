@@ -13,6 +13,12 @@ export const translations = {
             cta: "Ver Proyectos",
             cv: "Descargar CV",
         },
+        cvLoading: {
+            status: "Cargando...",
+            title: "Estoy trabajando en mi CV",
+            description: "Estoy preparando una version completa y actualizada de mi CV. Pronto estara disponible.",
+            back: "Volver al inicio",
+        },
         about: {
             title: "Perfil Profesional",
             description: "Ingeniero de Sistemas y Ciencias de la Computación con formación complementaria en Administración de Empresas. Especializado en la construcción de productos técnicos con un enfoque riguroso en arquitectura, rendimiento y ejecución real.",
@@ -62,6 +68,12 @@ export const translations = {
             description: "Specialized in building robust, scalable, and high-performance technical products.",
             cta: "View Projects",
             cv: "Download CV",
+        },
+        cvLoading: {
+            status: "Loading...",
+            title: "I'm working on my CV",
+            description: "I am preparing a complete and updated version of my CV. It will be available soon.",
+            back: "Back to home",
         },
         about: {
             title: "Professional Profile",

@@ -51,7 +51,7 @@ export function Hero() {
                             </a>
                         </Button>
                         <Button size="lg" variant="outline" className="group" asChild>
-                            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                            <a href="/cv">
                                 {t.hero.cv}
                                 <Download className="ml-2 h-4 w-4 transition-transform group-hover:-translate-y-1" />
                             </a>

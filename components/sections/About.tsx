@@ -17,17 +17,17 @@ export function About() {
                     transition={{ duration: 0.6 }}
                     className="grid md:grid-cols-2 gap-12 items-center"
                 >
-                    {/* Image/Visual - Using a placeholder or the provided image path */}
+                    { }
                     <div className="relative group">
                         <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
                         <div className="relative aspect-square overflow-hidden rounded-2xl bg-zinc-900 border border-zinc-800">
-                            {/* Assuming the user said the image is at public/images/fotoperfil.jpg */}
-                            {/* We need to verify if the file exists or if we should use a placeholder. User said it IS there. */}
+
+                            { }
                             <Image
                                 src="/images/fotoperfil.jpg"
                                 alt="Brayan Zuluaga"
-                                width={500}
-                                height={500}
+                                width={1000}
+                                height={1000}
                                 className="object-cover w-full h-full md:grayscale hover:grayscale-0 transition-all duration-500"
                             />
                         </div>
