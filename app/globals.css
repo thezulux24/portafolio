@@ -75,8 +75,6 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  cursor: none;
-  /* Hide default cursor */
 }
 
 h1,
@@ -86,4 +84,79 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
+}
+
+@keyframes techMarqueeLeft {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes techMarqueeRight {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.tech-marquee-mask {
+  max-width: 100%;
+  contain: layout paint;
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+.tech-marquee-track {
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.tech-marquee-left {
+  animation: techMarqueeLeft 34s linear infinite;
+}
+
+.tech-marquee-right {
+  animation: techMarqueeRight 38s linear infinite;
+}
+
+.tech-marquee-paused:hover .tech-marquee-left,
+.tech-marquee-paused:hover .tech-marquee-right {
+  animation-play-state: paused;
+}
+
+.tech-card-3d {
+  transform: perspective(900px) rotateX(5deg) rotateY(-8deg);
+  transform-style: preserve-3d;
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+}
+
+.tech-card-3d:hover,
+.tech-card-3d:focus-visible {
+  transform: perspective(900px) rotateX(0deg) rotateY(0deg) translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-marquee-left,
+  .tech-marquee-right {
+    animation: none;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .tech-card-3d,
+  .tech-card-3d:hover,
+  .tech-card-3d:focus-visible {
+    transform: none;
+    transition: none;
+  }
 }

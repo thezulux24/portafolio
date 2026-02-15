@@ -3,7 +3,7 @@
 import { useLanguageStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { ContactScene } from "@/components/3d/ContactScene";
-import { Github, Mail, Linkedin, Twitter } from "lucide-react";
+import { Github, Mail } from "lucide-react";
 
 export function Footer() {
     const { t } = useLanguageStore();
@@ -13,13 +13,13 @@ export function Footer() {
             <ContactScene />
 
             <div className="container relative z-10 px-6 mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-                    <div className="text-center md:text-left">
+                <div className="flex flex-col items-center justify-center gap-6 text-center">
+                    <div className="text-center">
                         <h2 className="text-2xl font-bold font-heading mb-2">Brayan Zuluaga</h2>
                         <p className="text-muted-foreground">{t.contact.title}</p>
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="flex items-center justify-center gap-4">
                         <Button size="icon" variant="ghost" className="hover:text-primary hover:bg-white/5" asChild>
                             <a href="mailto:thezulux24@gmail.com">
                                 <Mail className="h-5 w-5" />

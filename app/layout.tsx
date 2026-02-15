@@ -3,7 +3,6 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/layout/Navbar";
-import { CustomCursor } from "@/components/ui/Cursor";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({
@@ -31,7 +30,6 @@ export default function RootLayout({
         )}
       >
         <Navbar />
-        <CustomCursor />
         {children}
       </body>
     </html>

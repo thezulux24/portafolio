@@ -1,7 +1,7 @@
 export const translations = {
     es: {
         nav: {
-            about: "Sobre mí",
+            about: "Sobre mi",
             experience: "Experiencia",
             projects: "Proyectos",
             contact: "Contacto",
@@ -9,7 +9,7 @@ export const translations = {
         hero: {
             status: "Disponible para contratar",
             role: "Ingeniero de Sistemas & Arquitecto de Software",
-            description: "Especializado en construir productos técnicos robustos, escalables y de alto rendimiento.",
+            description: "Especializado en construir productos tecnicos robustos, escalables y de alto rendimiento.",
             cta: "Ver Proyectos",
             cv: "Descargar CV",
         },
@@ -21,38 +21,47 @@ export const translations = {
         },
         about: {
             title: "Perfil Profesional",
-            description: "Ingeniero de Sistemas y Ciencias de la Computación con formación complementaria en Administración de Empresas. Especializado en la construcción de productos técnicos con un enfoque riguroso en arquitectura, rendimiento y ejecución real.",
-            education: "Formación Académica",
+            description: "Ingeniero de Sistemas y Ciencias de la Computacion con formacion complementaria en Administracion de Empresas. Especializado en la construccion de productos tecnicos con un enfoque riguroso en arquitectura, rendimiento y ejecucion real.",
+            education: "Formacion Academica",
             university: "Pontificia Universidad Javeriana Cali",
-            degree: "Ingeniería de Sistemas y Ciencias de la Computación | Administración de Empresas",
+            degree: "Ingenieria de Sistemas y Ciencias de la Computacion | Administracion de Empresas",
         },
         skills: {
-            title: "Stack Tecnológico",
+            title: "Stack Tecnologico",
+            marqueeTitle: "Tecnologias con las que construyo",
+            marqueeSubtitle: "Herramientas principales para productos robustos y de alto rendimiento",
             strengths: "Fortalezas",
-            bullet1: "Ejecución técnica rigurosa",
-            bullet2: "Coordinación y liderazgo de equipos",
+            bullet1: "Ejecucion tecnica rigurosa",
+            bullet2: "Coordinacion y liderazgo de equipos",
             bullet3: "Mentalidad de arquitectura primero (SOLID)",
-            bullet4: "Optimización algorítmica",
-            backend: "Backend de Producción",
+            bullet4: "Optimizacion algoritmica",
+            backend: "Backend de Produccion",
             frontend: "Frontend Orientado a Performance",
             data: "Data y Servicios Inteligentes",
             languages: "Lenguajes",
-            frameworks: "Frameworks & Herramientas",
+            frameworks: "Herramientas",
         },
         projects: {
             title: "Proyectos Destacados",
             viewProject: "Ver Proyecto",
-            viewCode: "Ver Código",
+            viewCode: "Ver Codigo",
             featured: "Proyecto Destacado",
+            gallery: {
+                open: "Abrir galeria",
+                close: "Cerrar galeria",
+                next: "Siguiente imagen",
+                previous: "Imagen anterior",
+                counter: "{current} de {total}",
+            },
             pyp: {
                 title: "PyP Camiones",
-                description: "Plataforma integral para gestión comercial y operativa de vehículos de carga. Permite al cliente presentar servicios en línea y administrar la operación diaria centralizada.",
+                description: "Plataforma integral para gestion comercial y operativa de vehiculos de carga. Permite al cliente presentar servicios en linea y administrar la operacion diaria centralizada.",
             }
         },
         contact: {
             title: "Contacto",
-            email: "Envíame un correo",
-            github: "Sígueme en GitHub",
+            email: "Enviame un correo",
+            github: "Sigueme en GitHub",
         },
     },
     en: {
@@ -84,6 +93,8 @@ export const translations = {
         },
         skills: {
             title: "Tech Stack",
+            marqueeTitle: "Technologies I build with",
+            marqueeSubtitle: "Core tools behind robust, production-ready delivery",
             strengths: "Strengths",
             bullet1: "Rigorous technical execution",
             bullet2: "Team coordination & leadership",
@@ -100,6 +111,13 @@ export const translations = {
             viewProject: "View Project",
             viewCode: "View Code",
             featured: "Featured Project",
+            gallery: {
+                open: "Open gallery",
+                close: "Close gallery",
+                next: "Next image",
+                previous: "Previous image",
+                counter: "{current} of {total}",
+            },
             pyp: {
                 title: "PyP Camiones",
                 description: "Integral platform for commercial and operational management of cargo vehicles. Allows the client to present services online and manage the centralized daily operation.",
