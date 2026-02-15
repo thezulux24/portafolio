@@ -23,6 +23,7 @@ import {
     siTypescript,
 } from "simple-icons";
 import { TechMarquee3D, type TechItem } from "@/components/ui/TechMarquee3D";
+import { StackPulseScene } from "@/components/3d/StackPulseScene";
 
 const TECH_MARQUEE_ITEMS: TechItem[] = [
     { id: "typescript", name: "TypeScript", icon: siTypescript.path, brandColor: `#${siTypescript.hex}` },
@@ -72,7 +73,6 @@ export function EducationAndStack() {
             items: ["Git", "GitHub", "Docker", "Algorithms (Competitive Programming)"],
         },
     ];
-
     return (
         <section id="experience" className="w-full overflow-x-clip bg-background py-24">
             <div className="container mx-auto w-full px-6">
@@ -82,9 +82,9 @@ export function EducationAndStack() {
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="space-y-8 lg:col-span-2"
+                        className="space-y-8 lg:col-span-2 lg:flex lg:h-full lg:flex-col lg:space-y-0"
                     >
-                        <div>
+                        <div className="lg:mb-8">
                             <h2 className="mb-6 flex items-center gap-3 font-heading text-3xl font-bold">
                                 <GraduationCap className="text-primary" />
                                 {t.about.education}
@@ -98,7 +98,7 @@ export function EducationAndStack() {
                             </div>
                         </div>
 
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 lg:flex-1 lg:rounded-3xl lg:p-7">
                             <h3 className="mb-4 font-bold text-primary">{t.skills.strengths}</h3>
                             <ul className="space-y-2 text-sm text-muted-foreground">
                                 <li>- {t.skills.bullet1}</li>
@@ -106,6 +106,13 @@ export function EducationAndStack() {
                                 <li>- {t.skills.bullet3}</li>
                                 <li>- {t.skills.bullet4}</li>
                             </ul>
+
+                            <div className="mt-8 hidden border-t border-white/10 pt-4 lg:block">
+                                <div className="relative h-56 overflow-hidden rounded-2xl border border-white/20 bg-[linear-gradient(160deg,_rgba(255,255,255,0.08),_rgba(255,255,255,0.02)_46%,_rgba(0,0,0,0.32))] shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_18px_40px_-24px_rgba(0,0,0,0.9)]">
+                                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,_rgba(198,228,255,0.32),_transparent_44%),radial-gradient(circle_at_84%_82%,_rgba(255,255,255,0.16),_transparent_48%)]" />
+                                    <StackPulseScene />
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
 

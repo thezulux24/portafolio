@@ -175,7 +175,7 @@ function GalleryDialogContent({ onClose, images, initialIndex, projectTitle }: G
                     src={image.src}
                     alt={image.alt}
                     fill
-                    quality={95}
+                    quality={75}
                     sizes="128px"
                     className="object-cover"
                   />

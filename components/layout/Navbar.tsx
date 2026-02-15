@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { useLanguageStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -9,6 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 export function Navbar() {
     const { t, language, setLanguage } = useLanguageStore();
+    const pathname = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -20,11 +22,15 @@ export function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const getSectionHref = (sectionId: string) => {
+        return pathname === "/" ? `#${sectionId}` : `/#${sectionId}`;
+    };
+
     const navLinks = [
-        { label: t.nav.about, href: "#about" },
-        { label: t.nav.experience, href: "#experience" },
-        { label: t.nav.projects, href: "#projects" },
-        { label: t.nav.contact, href: "#contact" },
+        { label: t.nav.about, href: getSectionHref("about") },
+        { label: t.nav.experience, href: getSectionHref("experience") },
+        { label: t.nav.projects, href: getSectionHref("projects") },
+        { label: t.nav.contact, href: getSectionHref("contact") },
     ];
 
     const toggleLanguage = () => {
@@ -41,7 +47,7 @@ export function Navbar() {
             )}
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
-                <a href="#" className="text-xl font-bold font-heading tracking-tight">
+                <a href={pathname === "/" ? "#" : "/"} className="text-xl font-bold font-heading tracking-tight">
                     BZ<span className="text-primary">.</span>
                 </a>
 
