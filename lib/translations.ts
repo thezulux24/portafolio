@@ -45,7 +45,7 @@ export const translations = {
             title: "Proyectos Destacados",
             viewProject: "Ver Proyecto",
             viewCode: "Ver Codigo",
-            featured: "Proyecto Destacado",
+            featured: "Proyecto",
             gallery: {
                 open: "Abrir galeria",
                 close: "Cerrar galeria",
@@ -56,6 +56,10 @@ export const translations = {
             pyp: {
                 title: "PyP Camiones",
                 description: "Plataforma integral para gestion comercial y operativa de vehiculos de carga. Permite al cliente presentar servicios en linea y administrar la operacion diaria centralizada.",
+            },
+            smartrack: {
+                title: "Smartrack - Implameq",
+                description: "Prototipo de aplicacion para la gestion operativa de una empresa de implementacion quirurgica. Esta aplicación fue desarrollada para ser Mobile first",
             }
         },
         contact: {
@@ -110,7 +114,7 @@ export const translations = {
             title: "Featured Projects",
             viewProject: "View Project",
             viewCode: "View Code",
-            featured: "Featured Project",
+            featured: "Project",
             gallery: {
                 open: "Open gallery",
                 close: "Close gallery",
@@ -121,6 +125,10 @@ export const translations = {
             pyp: {
                 title: "PyP Camiones",
                 description: "Integral platform for commercial and operational management of cargo vehicles. Allows the client to present services online and manage the centralized daily operation.",
+            },
+            smartrack: {
+                title: "Smartrack - Implameq",
+                description: "Prototype application for operational management in a surgical implementation company. This application was developed to be Mobile first",
             }
         },
         contact: {

@@ -23,6 +23,15 @@ const PYP_GALLERY_IMAGES: GalleryImage[] = [
     { src: "/images/pyp/image10.png", alt: "PyP Camiones screenshot 10", width: 1232, height: 853 },
 ];
 
+const SMARTRACK_GALLERY_IMAGES: GalleryImage[] = [
+    { src: "/images/smartrack/01.jpg", alt: "Smartrack - Implameq screenshot 1", width: 4000, height: 6000 },
+    { src: "/images/smartrack/02.jpg", alt: "Smartrack - Implameq screenshot 2", width: 4000, height: 6000 },
+    { src: "/images/smartrack/03.jpg", alt: "Smartrack - Implameq screenshot 3", width: 4000, height: 6000 },
+    { src: "/images/smartrack/04.jpg", alt: "Smartrack - Implameq screenshot 4", width: 2624, height: 3936 },
+    { src: "/images/smartrack/05.jpg", alt: "Smartrack - Implameq screenshot 5", width: 4000, height: 6000 },
+    { src: "/images/smartrack/06.jpg", alt: "Smartrack - Implameq screenshot 6", width: 4000, height: 6000 },
+];
+
 const MOSAIC_LAYOUT = [
     "md:col-span-2 md:row-span-2",
     "md:col-span-1 md:row-span-1",
@@ -55,6 +64,18 @@ export function Projects() {
             featured: true,
             isPrivate: true,
             galleryImages: PYP_GALLERY_IMAGES,
+        },
+        {
+            title: t.projects.smartrack.title,
+            description: t.projects.smartrack.description,
+            tags: ["Angular", "Supabase", "Tailwind CSS"],
+            links: {
+                repo: "https://github.com/thezulux24/SmartTrack",
+                app: "https://thezulux24.github.io/SmartTrack/",
+            },
+            featured: true,
+            isPrivate: false,
+            galleryImages: SMARTRACK_GALLERY_IMAGES,
         },
     ];
 
@@ -125,12 +146,14 @@ export function Projects() {
                                         </div>
 
                                         <div className="flex flex-wrap gap-4 pt-4">
-                                            <Button asChild>
-                                                <a href={project.links.demo} target="_blank" rel="noopener noreferrer">
-                                                    <ExternalLink className="mr-2 h-4 w-4" />
-                                                    Landing Page
-                                                </a>
-                                            </Button>
+                                            {project.links.demo ? (
+                                                <Button asChild>
+                                                    <a href={project.links.demo} target="_blank" rel="noopener noreferrer">
+                                                        <ExternalLink className="mr-2 h-4 w-4" />
+                                                        Landing Page
+                                                    </a>
+                                                </Button>
+                                            ) : null}
 
                                             <Button variant="secondary" onClick={project.isPrivate ? handlePrivateLink : undefined} asChild={!project.isPrivate}>
                                                 {project.isPrivate ? (
