@@ -1,26 +1,89 @@
 "use client";
 
-import { useState } from "react";
+import { type CSSProperties, useState } from "react";
 import Image from "next/image";
 import { useLanguageStore } from "@/lib/store";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink, Github, Layers, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PrivateProjectModal } from "@/components/ui/PrivateProjectModal";
 import { ProjectGalleryModal, type GalleryImage } from "@/components/ui/ProjectGalleryModal";
 import { cn } from "@/lib/utils";
+import {
+    siAngular,
+    siNestjs,
+    siPostgresql,
+    siPrisma,
+    siReact,
+    siSupabase,
+    siTailwindcss,
+    siVite,
+} from "simple-icons";
+
+type TechIcon = { name: string; path: string; color: string };
+
+const ICONS = {
+    nestjs:     { name: "NestJS",       path: siNestjs.path,     color: `#${siNestjs.hex}` },
+    react:      { name: "React",        path: siReact.path,      color: `#${siReact.hex}` },
+    vite:       { name: "Vite",         path: siVite.path,       color: `#${siVite.hex}` },
+    postgresql: { name: "PostgreSQL",   path: siPostgresql.path, color: `#${siPostgresql.hex}` },
+    prisma:     { name: "Prisma",       path: siPrisma.path,     color: `#${siPrisma.hex}` },
+    tailwind:   { name: "Tailwind CSS", path: siTailwindcss.path,color: `#${siTailwindcss.hex}` },
+    angular:    { name: "Angular",      path: siAngular.path,    color: `#${siAngular.hex}` },
+    supabase:   { name: "Supabase",     path: siSupabase.path,   color: `#${siSupabase.hex}` },
+} satisfies Record<string, TechIcon>;
+
+function TechIconPill({ icon, index }: { icon: TechIcon; index: number }) {
+    const [active, setActive] = useState(false);
+    const style = { "--ic": icon.color } as CSSProperties;
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.07, duration: 0.35, ease: "easeOut" }}
+            style={style}
+            onHoverStart={() => setActive(true)}
+            onHoverEnd={() => setActive(false)}
+            onClick={() => setActive(v => !v)}
+            role="img"
+            aria-label={icon.name}
+            className="group flex h-9 cursor-default items-center rounded-lg border border-white/10 bg-white/5 px-2.5 transition-[border-color,box-shadow] duration-300 hover:border-[color:var(--ic)] hover:shadow-[0_0_14px_-2px_color-mix(in_srgb,var(--ic)_60%,transparent)]"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden
+                className="h-[18px] w-[18px] shrink-0 text-white/40 transition-colors duration-300 group-hover:text-[color:var(--ic)]"
+            >
+                <path fill="currentColor" d={icon.path} />
+            </svg>
+            <AnimatePresence>
+                {active && (
+                    <motion.span
+                        key="label"
+                        initial={{ width: 0, opacity: 0 }}
+                        animate={{ width: "auto", opacity: 1 }}
+                        exit={{ width: 0, opacity: 0 }}
+                        transition={{ duration: 0.18, ease: "easeOut" }}
+                        className="ml-1.5 overflow-hidden whitespace-nowrap text-[11px] font-medium text-white/70"
+                    >
+                        {icon.name}
+                    </motion.span>
+                )}
+            </AnimatePresence>
+        </motion.div>
+    );
+}
 
 const PYP_GALLERY_IMAGES: GalleryImage[] = [
-    { src: "/images/pyp/image1.png", alt: "PyP Camiones screenshot 1", width: 1715, height: 792 },
-    { src: "/images/pyp/image2.png", alt: "PyP Camiones screenshot 2", width: 1602, height: 827 },
-    { src: "/images/pyp/image3.png", alt: "PyP Camiones screenshot 3", width: 902, height: 855 },
-    { src: "/images/pyp/image4.png", alt: "PyP Camiones screenshot 4", width: 1065, height: 907 },
-    { src: "/images/pyp/image5.png", alt: "PyP Camiones screenshot 5", width: 877, height: 800 },
-    { src: "/images/pyp/image6.png", alt: "PyP Camiones screenshot 6", width: 487, height: 746 },
-    { src: "/images/pyp/image7.png", alt: "PyP Camiones screenshot 7", width: 1052, height: 862 },
-    { src: "/images/pyp/image8.png", alt: "PyP Camiones screenshot 8", width: 1237, height: 737 },
-    { src: "/images/pyp/image9.png", alt: "PyP Camiones screenshot 9", width: 1417, height: 828 },
-    { src: "/images/pyp/image10.png", alt: "PyP Camiones screenshot 10", width: 1232, height: 853 },
+    { src: "/images/pyp/image1.webp", alt: "PyP Camiones screenshot 1", width: 1715, height: 792 },
+    { src: "/images/pyp/image2.webp", alt: "PyP Camiones screenshot 2", width: 1602, height: 827 },
+    { src: "/images/pyp/image3.webp", alt: "PyP Camiones screenshot 3", width: 902, height: 855 },
+    { src: "/images/pyp/image4.webp", alt: "PyP Camiones screenshot 4", width: 1065, height: 907 },
+    { src: "/images/pyp/image5.webp", alt: "PyP Camiones screenshot 5", width: 877, height: 800 },
+    { src: "/images/pyp/image6.webp", alt: "PyP Camiones screenshot 6", width: 487, height: 746 },
+    { src: "/images/pyp/image7.webp", alt: "PyP Camiones screenshot 7", width: 1052, height: 862 },
+    { src: "/images/pyp/image8.webp", alt: "PyP Camiones screenshot 8", width: 1237, height: 737 },
 ];
 
 const SMARTRACK_GALLERY_IMAGES: GalleryImage[] = [
@@ -55,7 +118,7 @@ export function Projects() {
         {
             title: t.projects.pyp.title,
             description: t.projects.pyp.description,
-            tags: ["NestJS", "React + Vite", "PostgreSQL", "Prisma ORM", "Tailwind CSS"],
+            tags: [ICONS.nestjs, ICONS.react, ICONS.vite, ICONS.postgresql, ICONS.prisma, ICONS.tailwind],
             links: {
                 demo: "https://pypcamiones.cloud",
                 repo: "https://github.com/thezulux24/pyp",
@@ -68,7 +131,7 @@ export function Projects() {
         {
             title: t.projects.smartrack.title,
             description: t.projects.smartrack.description,
-            tags: ["Angular", "Supabase", "Tailwind CSS"],
+            tags: [ICONS.angular, ICONS.supabase, ICONS.tailwind],
             links: {
                 repo: "https://github.com/thezulux24/SmartTrack",
                 app: "https://thezulux24.github.io/SmartTrack/",
@@ -138,10 +201,8 @@ export function Projects() {
                                         </p>
 
                                         <div className="flex flex-wrap gap-2">
-                                            {project.tags.map((tag) => (
-                                                <span key={tag} className="rounded-full border border-white/5 bg-white/10 px-3 py-1 text-xs font-medium text-white/80">
-                                                    {tag}
-                                                </span>
+                                            {project.tags.map((icon, i) => (
+                                                <TechIconPill key={icon.name} icon={icon} index={i} />
                                             ))}
                                         </div>
 
