@@ -1,9 +1,9 @@
 "use client";
 
-import { type CSSProperties, useState } from "react";
+import { type CSSProperties, useRef, useState } from "react";
 import Image from "next/image";
 import { useLanguageStore } from "@/lib/store";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ExternalLink, Github, Layers, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PrivateProjectModal } from "@/components/ui/PrivateProjectModal";
@@ -72,6 +72,29 @@ function TechIconPill({ icon, index }: { icon: TechIcon; index: number }) {
                 )}
             </AnimatePresence>
         </motion.div>
+    );
+}
+
+function ScrollRevealCard({ children }: { children: React.ReactNode }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start end", "start 38%"],
+    });
+    const rawRotateX = useTransform(scrollYProgress, [0, 1], [14, 0]);
+    const rotateX    = useSpring(rawRotateX, { stiffness: 58, damping: 22 });
+    const y          = useTransform(scrollYProgress, [0, 1], [90, 0]);
+    const opacity    = useTransform(scrollYProgress, [0, 0.55], [0, 1]);
+
+    return (
+        <div ref={ref} style={{ perspective: "1300px" }}>
+            <motion.div
+                className="will-change-transform"
+                style={{ rotateX, y, opacity, transformOrigin: "center top" }}
+            >
+                {children}
+            </motion.div>
+        </div>
     );
 }
 
@@ -171,18 +194,12 @@ export function Projects() {
                 </motion.div>
 
                 <div className="grid gap-12">
-                    {projects.map((project, index) => {
+                    {projects.map((project) => {
                         const previewImages = project.galleryImages.slice(0, 8);
 
                         return (
-                            <motion.div
-                                key={project.title}
-                                initial={{ opacity: 0, y: 40 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 }}
-                                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 transition-colors hover:bg-white/[0.07]"
-                            >
+                            <ScrollRevealCard key={project.title}>
+                                <div className={`group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 transition-colors hover:bg-white/[0.07]`}>
                                 <div className="grid items-center gap-8 p-8 md:grid-cols-2 md:p-12">
                                     <div className="order-2 space-y-6 md:order-1">
                                         <div className="flex items-center gap-3">
@@ -296,7 +313,8 @@ export function Projects() {
                                         </div>
                                     </div>
                                 </div>
-                            </motion.div>
+                                </div>
+                            </ScrollRevealCard>
                         );
                     })}
                 </div>

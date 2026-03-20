@@ -1,8 +1,8 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { useLanguageStore } from "@/lib/store";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { GraduationCap, Code2, Cpu, Database, Layers } from "lucide-react";
 import {
     siAngular,
@@ -46,6 +46,24 @@ const TECH_MARQUEE_ITEMS: TechItem[] = [
 
 export function EducationAndStack() {
     const { t } = useLanguageStore();
+    const sectionRef = useRef<HTMLElement>(null);
+
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "center center"],
+    });
+
+    // Left col — rotates in from the left side in 3D space
+    const rawLeftRotateY = useTransform(scrollYProgress, [0, 1], [-14, 0]);
+    const leftRotateY    = useSpring(rawLeftRotateY, { stiffness: 55, damping: 20 });
+    const leftX          = useTransform(scrollYProgress, [0, 1], [-44, 0]);
+    const leftOpacity    = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+
+    // Right col — tilts forward from 3D depth, slightly delayed start
+    const rawRightRotateX = useTransform(scrollYProgress, [0.12, 1], [12, 0]);
+    const rightRotateX    = useSpring(rawRightRotateX, { stiffness: 55, damping: 20 });
+    const rightY          = useTransform(scrollYProgress, [0.12, 1], [50, 0]);
+    const rightOpacity    = useTransform(scrollYProgress, [0.12, 0.62], [0, 1]);
 
     const stackSections = [
         {
@@ -73,16 +91,21 @@ export function EducationAndStack() {
             items: ["Git", "GitHub", "Docker", "Algorithms (Competitive Programming)"],
         },
     ];
+
     return (
-        <section id="experience" className="w-full overflow-x-clip bg-background py-24">
-            <div className="container mx-auto w-full px-6">
+        <section id="experience" ref={sectionRef} className="w-full overflow-x-clip bg-background py-24">
+            <div className="container mx-auto w-full px-6" style={{ perspective: "1400px" }}>
                 <div className="grid min-w-0 gap-12 lg:grid-cols-5">
 
+                    {/* Left col — rotates in from left in 3D space */}
                     <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="space-y-8 lg:col-span-2 lg:flex lg:h-full lg:flex-col lg:space-y-0"
+                        className="space-y-8 will-change-transform lg:col-span-2 lg:flex lg:h-full lg:flex-col lg:space-y-0"
+                        style={{
+                            rotateY: leftRotateY,
+                            x: leftX,
+                            opacity: leftOpacity,
+                            transformOrigin: "left center",
+                        }}
                     >
                         <div className="lg:mb-8">
                             <h2 className="mb-6 flex items-center gap-3 font-heading text-3xl font-bold">
@@ -116,11 +139,15 @@ export function EducationAndStack() {
                         </div>
                     </motion.div>
 
+                    {/* Right col — tilts forward from depth */}
                     <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="min-w-0 space-y-8 lg:col-span-3"
+                        className="min-w-0 space-y-8 will-change-transform lg:col-span-3"
+                        style={{
+                            rotateX: rightRotateX,
+                            y: rightY,
+                            opacity: rightOpacity,
+                            transformOrigin: "center top",
+                        }}
                     >
                         <div className="space-y-2">
                             <h2 className="font-heading text-3xl font-bold">
@@ -154,6 +181,7 @@ export function EducationAndStack() {
                             ))}
                         </div>
                     </motion.div>
+
                 </div>
             </div>
         </section>

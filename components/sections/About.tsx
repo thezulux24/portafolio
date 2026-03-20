@@ -1,28 +1,47 @@
 "use client";
 
+import { useRef } from "react";
 import { useLanguageStore } from "@/lib/store";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 
 export function About() {
     const { t } = useLanguageStore();
+    const sectionRef = useRef<HTMLElement>(null);
+
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "start 30%"],
+    });
+
+    // Image col: tilts from above into flat (3D rotateX on Y-axis for depth)
+    const rawImageRotateX = useTransform(scrollYProgress, [0, 1], [18, 0]);
+    const imageRotateX    = useSpring(rawImageRotateX, { stiffness: 60, damping: 22 });
+    const imageY          = useTransform(scrollYProgress, [0, 1], [70, 0]);
+    const imageOpacity    = useTransform(scrollYProgress, [0, 0.55], [0, 1]);
+
+    // Text col: emerges from right, slightly delayed start
+    const rawTextX   = useTransform(scrollYProgress, [0.08, 1], [60, 0]);
+    const textX      = useSpring(rawTextX, { stiffness: 65, damping: 24 });
+    const textOpacity = useTransform(scrollYProgress, [0.08, 0.6], [0, 1]);
 
     return (
-        <section id="about" className="py-24 bg-secondary/5">
-            <div className="container px-6 mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="grid md:grid-cols-2 gap-12 items-center"
-                >
-                    { }
-                    <div className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-                        <div className="relative aspect-square overflow-hidden rounded-2xl bg-zinc-900 border border-zinc-800">
+        <section id="about" ref={sectionRef} className="py-24 bg-secondary/5">
+            <div className="container px-6 mx-auto" style={{ perspective: "1400px" }}>
+                <div className="grid md:grid-cols-2 gap-12 items-center">
 
-                            { }
+                    {/* Image col — 3D tilt entrance from top-forward */}
+                    <motion.div
+                        className="relative group will-change-transform"
+                        style={{
+                            rotateX: imageRotateX,
+                            y: imageY,
+                            opacity: imageOpacity,
+                            transformOrigin: "center top",
+                        }}
+                    >
+                        <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200" />
+                        <div className="relative aspect-square overflow-hidden rounded-2xl bg-zinc-900 border border-zinc-800">
                             <Image
                                 src="/images/fotoperfil.jpg"
                                 alt="Brayan Zuluaga"
@@ -31,9 +50,13 @@ export function About() {
                                 className="object-cover w-full h-full md:grayscale hover:grayscale-0 transition-all duration-500"
                             />
                         </div>
-                    </div>
+                    </motion.div>
 
-                    <div className="space-y-6">
+                    {/* Text col — slides in from the right */}
+                    <motion.div
+                        className="space-y-6 will-change-transform"
+                        style={{ x: textX, opacity: textOpacity }}
+                    >
                         <h2 className="text-3xl md:text-4xl font-bold font-heading">
                             {t.about.title}
                         </h2>
@@ -66,8 +89,9 @@ export function About() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </motion.div>
+                    </motion.div>
+
+                </div>
             </div>
         </section>
     );
