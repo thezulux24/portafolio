@@ -158,7 +158,19 @@ export const translations = {
                 description: "Plataforma SaaS B2B de inteligencia de datos que convierte la web pública en activos estructurados: extracción masiva en la nube con actores de Apify y stealth routing, ETL integrado, IA con sentiment scoring, redes semánticas de N-gramas, chat en lenguaje natural con los datasets y reportes PDF vectoriales en un clic. Arquitectura multi-tenant estricta, i18n nativo en 12 idiomas y facturación con PayPal.",
                 role: "Lead Full-Stack · Arquitectura SaaS",
                 year: "2026",
+                features: [
+                    { title: "Extracción en la nube", description: "Actores de Apify en ejecución paralela con stealth routing e ingesta automática vía webhooks. Catálogo multi-vertical: X (Twitter), YouTube, Indeed, El Empleo, Finca Raíz, Metrocuadrado, Google News y retail." },
+                    { title: "Terminal en vivo", description: "Configuración de runs con consola en tiempo real: logs filtrados por severidad, registros detectados y estado actualizado cada 3 segundos." },
+                    { title: "IA & PLN integrada", description: "Sentiment scoring continuo de 0.00 a 1.00, redes semánticas de N-gramas a pantalla completa y chat en lenguaje natural con tus datasets, impulsado por DeepSeek." },
+                    { title: "ETL + Chart Builder", description: "Curaduría sin salir de la plataforma: deduplicación, normalización de campos, historial de deshacer y gráficos interactivos con Recharts." },
+                    { title: "Reportes & seguridad enterprise", description: "PDF vectoriales ultraligeros (~40 KB) con texto seleccionable en un clic. Multi-tenancy estricta por tenantId, Argon2, JWT HttpOnly y defensas anti timing-attacks." },
+                ],
             },
+        },
+        private: {
+            title: "Proyecto Privado",
+            body: "{project} está protegido por un Acuerdo de Confidencialidad (NDA). El código fuente y el acceso a la aplicación están restringidos a personal autorizado.",
+            button: "Entendido",
         },
         contact: {
             index: "05",
@@ -339,7 +351,19 @@ export const translations = {
                 description: "B2B SaaS data intelligence platform that turns the public web into structured assets: massive cloud extraction with Apify actors and stealth routing, built-in ETL, AI with sentiment scoring, semantic N-gram networks, natural-language chat with datasets and one-click vector PDF reports. Strict multi-tenant architecture, native i18n in 12 languages and PayPal billing.",
                 role: "Lead Full-Stack · SaaS Architecture",
                 year: "2026",
+                features: [
+                    { title: "Cloud extraction", description: "Apify actors running in parallel with stealth routing and automatic webhook ingestion. Multi-vertical catalog: X (Twitter), YouTube, Indeed, El Empleo, Finca Raíz, Metrocuadrado, Google News and retail." },
+                    { title: "Live terminal", description: "Run configuration with a real-time console: severity-filtered logs, detected records and status refreshed every 3 seconds." },
+                    { title: "Built-in AI & NLP", description: "Continuous sentiment scoring from 0.00 to 1.00, fullscreen semantic N-gram networks and natural-language chat with your datasets, powered by DeepSeek." },
+                    { title: "ETL + Chart Builder", description: "Data curation without leaving the platform: deduplication, field normalization, undo history and interactive Recharts visualizations." },
+                    { title: "Reports & enterprise security", description: "Ultra-light vector PDFs (~40 KB) with selectable text in one click. Strict tenantId multi-tenancy, Argon2, JWT HttpOnly and anti timing-attack defenses." },
+                ],
             },
+        },
+        private: {
+            title: "Private Project",
+            body: "{project} is protected by a Non-Disclosure Agreement (NDA). The source code and application access are restricted to authorized personnel only.",
+            button: "Understood",
         },
         contact: {
             index: "05",

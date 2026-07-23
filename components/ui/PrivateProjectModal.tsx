@@ -3,93 +3,67 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Lock } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Text, Float, MeshDistortMaterial } from "@react-three/drei";
 import { useRef } from "react";
 import * as THREE from "three";
+import { useLanguageStore } from "@/lib/store";
 
-function SecurityLock() {
+/** Acid wireframe padlock with an orbital bone ring — matches the site 3D language. */
+function WirePadlock() {
     const groupRef = useRef<THREE.Group>(null);
+    const ringRef = useRef<THREE.Mesh>(null);
 
-    useFrame((state) => {
-        const time = state.clock.getElapsedTime();
+    useFrame((state, delta) => {
+        const t = state.clock.elapsedTime;
         if (groupRef.current) {
-            // Floating animation
-            groupRef.current.position.y = Math.sin(time / 1.5) * 0.2;
-            groupRef.current.rotation.y = Math.sin(time / 2) * 0.2;
+            groupRef.current.rotation.y += delta * 0.55;
+            groupRef.current.position.y = Math.sin(t * 1.2) * 0.12;
+        }
+        if (ringRef.current) {
+            ringRef.current.rotation.z += delta * 0.35;
         }
     });
 
     return (
         <group ref={groupRef}>
-            <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-                {/* Padlock Body */}
-                <mesh position={[0, -0.5, 0]}>
-                    <boxGeometry args={[1.8, 1.5, 0.8, 10, 10, 10]} />
-                    <MeshDistortMaterial
-                        color="#ff3333"
-                        speed={2}
-                        distort={0.4}
-                        metalness={0.8}
-                        roughness={0.2}
-                    />
-                </mesh>
+            {/* Body */}
+            <mesh position={[0, -0.35, 0]}>
+                <boxGeometry args={[1.5, 1.15, 0.7]} />
+                <meshBasicMaterial wireframe color="#c8f31d" transparent opacity={0.85} />
+            </mesh>
 
-                {/* Shackle */}
-                <mesh position={[0, 0.8, 0]} rotation={[0, 0, 0]}>
-                    <torusGeometry args={[0.6, 0.2, 16, 32, Math.PI]} />
-                    <meshStandardMaterial color="#aaaaaa" metalness={1} roughness={0.1} />
-                </mesh>
+            {/* Shackle */}
+            <mesh position={[0, 0.42, 0]}>
+                <torusGeometry args={[0.48, 0.09, 12, 40, Math.PI]} />
+                <meshBasicMaterial wireframe color="#c8f31d" transparent opacity={0.85} />
+            </mesh>
 
-                {/* Shackle Legs (to connect torus to body) */}
-                <mesh position={[-0.6, 0.5, 0]}>
-                    <cylinderGeometry args={[0.2, 0.2, 0.6, 16]} />
-                    <meshStandardMaterial color="#aaaaaa" metalness={1} roughness={0.1} />
-                </mesh>
-                <mesh position={[0.6, 0.5, 0]}>
-                    <cylinderGeometry args={[0.2, 0.2, 0.6, 16]} />
-                    <meshStandardMaterial color="#aaaaaa" metalness={1} roughness={0.1} />
-                </mesh>
+            {/* Keyhole */}
+            <mesh position={[0, -0.28, 0.36]} rotation={[Math.PI / 2, 0, 0]}>
+                <cylinderGeometry args={[0.09, 0.09, 0.05, 16]} />
+                <meshBasicMaterial color="#ece9e1" />
+            </mesh>
+            <mesh position={[0, -0.46, 0.36]}>
+                <boxGeometry args={[0.07, 0.22, 0.05]} />
+                <meshBasicMaterial color="#ece9e1" />
+            </mesh>
 
-                {/* Keyhole */}
-                <group position={[0, -0.5, 0.41]}>
-                    <mesh>
-                        <circleGeometry args={[0.2, 32]} />
-                        <meshBasicMaterial color="#000" />
-                    </mesh>
-                    <mesh position={[0, -0.2, 0]}>
-                        <planeGeometry args={[0.15, 0.3]} />
-                        <meshBasicMaterial color="#000" />
-                    </mesh>
-                </group>
-
-                {/* 3D Text Warning */}
-                <Text
-                    position={[0, -2, 0]}
-                    fontSize={0.4}
-                    color="#ff3333"
-                    anchorX="center"
-                    anchorY="middle"
-                >
-                    ACCESS DENIED
-                </Text>
-            </Float>
+            {/* Orbital ring */}
+            <mesh ref={ringRef} rotation={[Math.PI / 2.4, 0, 0]}>
+                <torusGeometry args={[1.55, 0.012, 8, 90]} />
+                <meshBasicMaterial color="#ece9e1" transparent opacity={0.22} />
+            </mesh>
         </group>
     );
 }
 
-function SecurityScene() {
+function PadlockScene() {
     return (
         <Canvas
-            camera={{ position: [0, 0, 5], fov: 50 }}
-            dpr={[1, 2]}
-            performance={{ min: 0.5 }}
+            camera={{ position: [0, 0, 4.2], fov: 45 }}
+            dpr={[1, 1.5]}
             gl={{ antialias: true, alpha: true }}
         >
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
-            <spotLight position={[-10, 0, 10]} angle={0.3} penumbra={1} intensity={2} color="#ff0000" />
-
-            <SecurityLock />
+            <WirePadlock />
         </Canvas>
     );
 }
@@ -101,6 +75,9 @@ interface PrivateProjectModalProps {
 }
 
 export function PrivateProjectModal({ isOpen, onClose, projectTitle = "This project" }: PrivateProjectModalProps) {
+    const { t } = useLanguageStore();
+    const body = t.private.body.replace("{project}", projectTitle);
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -111,55 +88,55 @@ export function PrivateProjectModal({ isOpen, onClose, projectTitle = "This proj
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-black/80 backdrop-blur-sm cursor-pointer"
+                        className="absolute inset-0 cursor-pointer bg-ink/85 backdrop-blur-md"
                     />
 
-                    {/* Modal Content */}
+                    {/* Modal content */}
                     <motion.div
-                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                        initial={{ scale: 0.92, opacity: 0, y: 24 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="relative w-full max-w-lg bg-[#0a0a0a] border border-red-900/50 rounded-2xl overflow-hidden shadow-2xl shadow-red-900/20"
+                        exit={{ scale: 0.95, opacity: 0, y: 16 }}
+                        transition={{ type: "spring", damping: 26, stiffness: 320 }}
+                        className="relative w-full max-w-md overflow-hidden rounded-2xl border border-acid/25 bg-ink shadow-2xl shadow-acid/10"
                     >
-                        {/* Close Button */}
+                        {/* Close button */}
                         <button
                             onClick={onClose}
-                            className="absolute top-4 right-4 z-20 text-muted-foreground hover:text-white transition-colors"
+                            aria-label="Close"
+                            className="absolute right-4 top-4 z-20 rounded-lg border border-bone/15 p-1.5 text-bone/50 transition-colors hover:border-acid/50 hover:text-acid"
                         >
-                            <X size={24} />
+                            <X size={18} />
                         </button>
 
-                        <div className="h-64 w-full bg-gradient-to-b from-red-950/20 to-transparent relative">
-                            {/* 3D Scene */}
-                            <div className="absolute inset-0 z-10">
-                                <SecurityScene />
+                        {/* 3D scene */}
+                        <div className="relative h-56 w-full">
+                            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_60%,rgba(200,243,29,0.10),transparent_60%)]" />
+                            <div className="absolute inset-0">
+                                <PadlockScene />
                             </div>
-
-                            {/* Background Grid Patterns */}
-                            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
+                            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-acid/40 to-transparent" />
                         </div>
 
-                        <div className="p-8 text-center space-y-4 relative z-20 bg-[#0a0a0a]">
-                            <div className="inline-flex items-center justify-center p-3 rounded-full bg-red-500/10 text-red-500 mb-2">
-                                <Lock size={24} />
+                        <div className="space-y-4 p-8 pt-6 text-center">
+                            <div className="inline-flex items-center justify-center rounded-full border border-acid/30 bg-acid/10 p-3 text-acid">
+                                <Lock size={20} />
                             </div>
 
-                            <h3 className="text-2xl font-bold text-white font-heading">
-                                Private Project
+                            <h3 className="font-display text-2xl font-extrabold tracking-tight text-bone">
+                                {t.private.title}
                             </h3>
 
-                            <p className="text-muted-foreground leading-relaxed">
-                                <span className="text-white font-medium">{projectTitle}</span> is protected by a Non-Disclosure Agreement (NDA).
-                                The source code and application access are restricted to authorized personnel only.
+                            <p className="text-sm leading-relaxed text-bone/60">
+                                <span className="font-medium text-acid">{projectTitle}</span>
+                                {body.startsWith(projectTitle) ? body.slice(projectTitle.length) : ` — ${body}`}
                             </p>
 
-                            <div className="pt-4">
+                            <div className="pt-3">
                                 <button
                                     onClick={onClose}
-                                    className="px-6 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white border border-white/10 transition-colors text-sm font-medium"
+                                    className="rounded-full bg-acid px-7 py-2.5 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-ink transition-transform duration-300 hover:scale-[1.04]"
                                 >
-                                    Understood
+                                    {t.private.button}
                                 </button>
                             </div>
                         </div>
