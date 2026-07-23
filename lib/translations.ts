@@ -68,7 +68,7 @@ export const translations = {
                 {
                     company: "PROESA — ICESI",
                     role: "Data Engineer · Market Intelligence",
-                    period: "Jul 2025 — Presente",
+                    period: "Jul 2026 — Presente",
                     location: "Cali",
                     current: true,
                     description: "Construcción de la \"Suite Data Universal\": arquitectura de scraping HTTP-only con Scrapling y evasión de antibots para inteligencia de mercado en LATAM. Limpieza de datos con IA (Gemini API), alertas con Resend y documentación para la transferencia Banco Mundial → PROESA.",
@@ -238,7 +238,7 @@ export const translations = {
                 {
                     company: "PROESA — ICESI",
                     role: "Data Engineer · Market Intelligence",
-                    period: "Jul 2025 — Present",
+                    period: "Jul 2026 — Present",
                     location: "Cali",
                     current: true,
                     description: "Building the \"Suite Data Universal\": an HTTP-only scraping architecture with Scrapling and anti-bot evasion for market intelligence across LATAM. AI-assisted data cleaning (Gemini API), Resend alerting and documentation for the World Bank → PROESA knowledge transfer.",

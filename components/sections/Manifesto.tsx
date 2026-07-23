@@ -1,8 +1,7 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import { useLanguageStore } from "@/lib/store";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
@@ -18,47 +17,10 @@ const HIGHLIGHTS = new Set([
     "results",
 ]);
 
-function RevealWord({
-    progress,
-    range,
-    highlighted,
-    children,
-}: {
-    progress: MotionValue<number>;
-    range: [number, number];
-    highlighted: boolean;
-    children: string;
-}) {
-    const opacity = useTransform(progress, range, [0.08, 1]);
-    const y = useTransform(progress, range, [12, 0]);
-    const filter = useTransform(progress, range, ["blur(5px)", "blur(0px)"]);
-    return (
-        <motion.span
-            style={{ opacity, y, filter }}
-            className={cn("inline-block will-change-transform", highlighted && "text-acid")}
-        >
-            {children}&nbsp;
-        </motion.span>
-    );
-}
+const REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function Manifesto() {
     const { t } = useLanguageStore();
-    const statementRef = useRef<HTMLParagraphElement>(null);
-    const imageRef = useRef<HTMLDivElement>(null);
-
-    const { scrollYProgress: statementProgress } = useScroll({
-        target: statementRef,
-        offset: ["start 0.85", "start 0.35"],
-    });
-
-    const { scrollYProgress: imageProgress } = useScroll({
-        target: imageRef,
-        offset: ["start end", "end start"],
-    });
-
-    const imageY = useTransform(imageProgress, [0, 1], ["-9%", "9%"]);
-
     const words = t.manifesto.statement.split(" ");
 
     return (
@@ -66,58 +28,76 @@ export function Manifesto() {
             <SectionHeading index={t.manifesto.index} label={t.manifesto.label} />
 
             <div className="mt-14 grid gap-14 lg:grid-cols-12 lg:gap-10">
-                {/* Portrait with parallax */}
+                {/* Portrait — static, full quality */}
                 <div className="lg:col-span-5">
-                    <div
-                        ref={imageRef}
+                    <motion.div
+                        initial={{ opacity: 0, y: 32 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-80px" }}
+                        transition={{ duration: 0.8, ease: REVEAL_EASE }}
                         data-cursor
                         className="group relative aspect-[3/4] overflow-hidden rounded-2xl border border-bone/10"
                     >
-                        <motion.div
-                            className="absolute inset-x-0 -inset-y-[10%] will-change-transform"
-                            style={{ y: imageY }}
-                        >
-                            <Image
-                                src="/images/fotoperfil.jpg"
-                                alt="Brayan Zuluaga"
-                                fill
-                                sizes="(max-width: 1024px) 100vw, 40vw"
-                                className="object-cover grayscale transition-all duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
-                            />
-                        </motion.div>
+                        <Image
+                            src="/images/fotoperfil.jpg"
+                            alt="Brayan Zuluaga"
+                            fill
+                            priority
+                            quality={100}
+                            sizes="(max-width: 1024px) 100vw, 42vw"
+                            className="object-cover object-top grayscale transition-all duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
+                        />
                         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-ink/90 to-transparent px-5 pb-4 pt-16 font-mono text-[10px] uppercase tracking-[0.26em] text-bone/70">
                             <span>Brayan Zuluaga</span>
                             <span className="text-acid">EST. 2024</span>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
 
                 {/* Statement + meta */}
                 <div className="flex flex-col gap-12 lg:col-span-7 lg:pl-6">
-                    <p
-                        ref={statementRef}
+                    <motion.p
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-18%" }}
+                        variants={{
+                            hidden: {},
+                            visible: {
+                                transition: { staggerChildren: 0.038, delayChildren: 0.12 },
+                            },
+                        }}
                         className="font-display text-3xl font-bold leading-[1.12] tracking-tight md:text-5xl"
                     >
-                        {words.map((word, index) => {
-                            // Overlapping ranges => smooth cascading fill instead of word-by-word steps
-                            const start = (index / words.length) * 0.8;
-                            const end = Math.min(1, start + 2.5 / words.length);
-                            return (
-                                <RevealWord
-                                    key={`${word}-${index}`}
-                                    progress={statementProgress}
-                                    range={[start, end]}
-                                    highlighted={HIGHLIGHTS.has(word.toLowerCase())}
-                                >
-                                    {word}
-                                </RevealWord>
-                            );
-                        })}
-                    </p>
+                        {words.map((word, index) => (
+                            <motion.span
+                                key={`${word}-${index}`}
+                                variants={{
+                                    hidden: { opacity: 0.08, y: 14 },
+                                    visible: {
+                                        opacity: 1,
+                                        y: 0,
+                                        transition: { duration: 0.55, ease: REVEAL_EASE },
+                                    },
+                                }}
+                                className={cn(
+                                    "inline-block will-change-transform",
+                                    HIGHLIGHTS.has(word.toLowerCase()) && "text-acid"
+                                )}
+                            >
+                                {word}&nbsp;
+                            </motion.span>
+                        ))}
+                    </motion.p>
 
-                    <p className="max-w-xl text-base leading-relaxed text-bone/60 md:text-lg">
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2, duration: 0.6, ease: REVEAL_EASE }}
+                        className="max-w-xl text-base leading-relaxed text-bone/60 md:text-lg"
+                    >
                         {t.manifesto.body}
-                    </p>
+                    </motion.p>
 
                     <div className="grid gap-10 border-t border-bone/10 pt-10 md:grid-cols-2">
                         <div>
