@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/layout/Navbar";
 import { Cursor } from "@/components/ui/Cursor";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -43,6 +44,7 @@ export default function RootLayout({
                 <SmoothScroll>
                     <Cursor />
                     <GrainOverlay />
+                    <ScrollProgress />
                     <Navbar />
                     {children}
                 </SmoothScroll>

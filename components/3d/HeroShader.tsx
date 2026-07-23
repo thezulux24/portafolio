@@ -76,6 +76,64 @@ void main() {
 }
 `;
 
+/** Floating wireframe artifact: acid torus knot inside a ghost icosahedron. */
+function Artifact3D({ autoMode }: { autoMode: boolean }) {
+    const groupRef = useRef<THREE.Group>(null);
+    const { viewport } = useThree();
+    const pointer = useRef(new THREE.Vector2(0, 0));
+
+    useEffect(() => {
+        if (autoMode) return;
+        const onMove = (event: MouseEvent) => {
+            pointer.current.set(
+                (event.clientX / window.innerWidth) * 2 - 1,
+                (event.clientY / window.innerHeight) * 2 - 1
+            );
+        };
+        window.addEventListener("mousemove", onMove, { passive: true });
+        return () => window.removeEventListener("mousemove", onMove);
+    }, [autoMode]);
+
+    useFrame((state, delta) => {
+        const group = groupRef.current;
+        if (!group) return;
+        const t = state.clock.elapsedTime;
+
+        group.rotation.y += delta * 0.22;
+        const targetX = autoMode
+            ? Math.sin(t * 0.3) * 0.25
+            : pointer.current.y * 0.35;
+        const targetZ = autoMode
+            ? Math.cos(t * 0.22) * 0.15
+            : pointer.current.x * 0.25;
+        group.rotation.x += (targetX - group.rotation.x) * 0.05;
+        group.rotation.z += (targetZ - group.rotation.z) * 0.05;
+
+        group.position.x = autoMode ? 0 : viewport.width * 0.21;
+        group.position.y = (autoMode ? 0.25 : 0.1) + Math.sin(t * 0.55) * 0.14;
+
+        // Mobile: knot spans ~60% of the screen width so it reads clearly
+        const KNOT_DIAMETER = 2.7;
+        const scale = autoMode
+            ? Math.min(1.15, (0.6 * viewport.width) / KNOT_DIAMETER)
+            : Math.min(1, viewport.width / 10);
+        group.scale.setScalar(scale);
+    });
+
+    return (
+        <group ref={groupRef}>
+            <mesh>
+                <torusKnotGeometry args={[1.05, 0.3, 200, 28]} />
+                <meshBasicMaterial wireframe color="#c8f31d" transparent opacity={0.38} />
+            </mesh>
+            <mesh scale={1.6} rotation={[0.4, 0.2, 0]}>
+                <icosahedronGeometry args={[1, 0]} />
+                <meshBasicMaterial wireframe color="#ece9e1" transparent opacity={0.07} />
+            </mesh>
+        </group>
+    );
+}
+
 function ShaderPlane({ autoMode }: { autoMode: boolean }) {
     const { size, viewport } = useThree();
     const materialRef = useRef<THREE.ShaderMaterial>(null);
@@ -126,13 +184,15 @@ function ShaderPlane({ autoMode }: { autoMode: boolean }) {
     });
 
     return (
-        <mesh frustumCulled={false}>
+        <mesh frustumCulled={false} renderOrder={-1}>
             <planeGeometry args={[2, 2]} />
             <shaderMaterial
                 ref={materialRef}
                 vertexShader={vertexShader}
                 fragmentShader={fragmentShader}
                 uniforms={uniforms}
+                depthTest={false}
+                depthWrite={false}
             />
         </mesh>
     );
@@ -165,6 +225,7 @@ export function HeroShader() {
             style={{ position: "absolute", inset: 0 }}
         >
             <ShaderPlane autoMode={coarsePointer} />
+            <Artifact3D autoMode={coarsePointer} />
         </Canvas>
     );
 }

@@ -108,21 +108,20 @@ export function Hero() {
                     <span>{t.hero.location}</span>
                 </motion.div>
 
-                {/* Mobile centerpiece — auto-animated, fills the empty space */}
+                {/* Mobile: orbital ripple rings framing the 3D artifact (canvas-centered overlay) */}
                 <motion.div
                     {...reveal(1.15)}
-                    className="relative flex flex-1 items-center justify-center py-4 sm:hidden"
+                    className="pointer-events-none absolute inset-0 flex items-center justify-center sm:hidden"
                 >
                     <div className="relative flex items-center justify-center">
                         <span
-                            className="js-hero-pulse absolute h-28 w-28 rounded-full border border-acid/50"
+                            className="js-hero-pulse absolute h-64 w-64 rounded-full border border-acid/50"
                             style={{ opacity: 0 }}
                         />
                         <span
-                            className="js-hero-pulse absolute h-28 w-28 rounded-full border border-acid/30"
+                            className="js-hero-pulse absolute h-64 w-64 rounded-full border border-acid/30"
                             style={{ opacity: 0 }}
                         />
-                        <RotatingBadge text={t.hero.badge} className="h-28 w-28 text-bone/90" />
                     </div>
                 </motion.div>
 

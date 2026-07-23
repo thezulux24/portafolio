@@ -7,6 +7,7 @@ import { ArrowUpRight, Lock } from "lucide-react";
 import { useLanguageStore } from "@/lib/store";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Magnetic } from "@/components/ui/Magnetic";
+import { Tilt } from "@/components/ui/Tilt";
 import { PrivateProjectModal } from "@/components/ui/PrivateProjectModal";
 import { ProjectGalleryModal, type GalleryImage } from "@/components/ui/ProjectGalleryModal";
 import { cn } from "@/lib/utils";
@@ -81,6 +82,7 @@ function ParallaxImage({
             }}
             className="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-xl border border-bone/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-acid/70"
         >
+            <Tilt max={4} className="absolute inset-0">
             <motion.div className="absolute inset-x-0 -inset-y-[8%] will-change-transform" style={{ y }}>
                 <Image
                     src={image.src}
@@ -92,6 +94,7 @@ function ParallaxImage({
                     className="object-cover grayscale-[0.6] transition-all duration-700 group-hover:scale-[1.02] group-hover:grayscale-0"
                 />
             </motion.div>
+            </Tilt>
             <div className="pointer-events-none absolute inset-0 bg-ink/25 transition-opacity duration-500 group-hover:opacity-0" />
             <div className="pointer-events-none absolute bottom-4 left-5 font-mono text-[10px] uppercase tracking-[0.26em] text-bone/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 {openLabel} ↗
