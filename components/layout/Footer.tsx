@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, Asterisk, Github, Mail } from "lucide-react";
+import { ArrowUpRight, Asterisk, Bot, Github, Mail } from "lucide-react";
 import { useLanguageStore } from "@/lib/store";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Magnetic } from "@/components/ui/Magnetic";
@@ -54,6 +54,17 @@ export function Footer() {
                             >
                                 <Github className="h-4 w-4" />
                                 GitHub
+                            </a>
+                        </Magnetic>
+                        <Magnetic strength={0.25}>
+                            <a
+                                href="https://apify.com/knowten"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-3 rounded-full border border-bone/20 px-8 py-4 font-mono text-xs uppercase tracking-[0.22em] text-bone/80 transition-colors duration-300 hover:border-acid hover:text-acid"
+                            >
+                                <Bot className="h-4 w-4" />
+                                Apify Store
                             </a>
                         </Magnetic>
                     </div>

@@ -97,9 +97,10 @@ function SecurityScene() {
 interface PrivateProjectModalProps {
     isOpen: boolean;
     onClose: () => void;
+    projectTitle?: string;
 }
 
-export function PrivateProjectModal({ isOpen, onClose }: PrivateProjectModalProps) {
+export function PrivateProjectModal({ isOpen, onClose, projectTitle = "This project" }: PrivateProjectModalProps) {
     return (
         <AnimatePresence>
             {isOpen && (
@@ -149,7 +150,7 @@ export function PrivateProjectModal({ isOpen, onClose }: PrivateProjectModalProp
                             </h3>
 
                             <p className="text-muted-foreground leading-relaxed">
-                                This project (<span className="text-white font-medium">PyP Camiones</span>) is protected by a Non-Disclosure Agreement (NDA).
+                                <span className="text-white font-medium">{projectTitle}</span> is protected by a Non-Disclosure Agreement (NDA).
                                 The source code and application access are restricted to authorized personnel only.
                             </p>
 

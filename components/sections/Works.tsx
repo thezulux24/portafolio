@@ -12,24 +12,14 @@ import { PrivateProjectModal } from "@/components/ui/PrivateProjectModal";
 import { ProjectGalleryModal, type GalleryImage } from "@/components/ui/ProjectGalleryModal";
 import { cn } from "@/lib/utils";
 
-const PYP_GALLERY_IMAGES: GalleryImage[] = [
-    { src: "/images/pyp/image1.webp", alt: "PyP Camiones screenshot 1", width: 1715, height: 792 },
-    { src: "/images/pyp/image2.webp", alt: "PyP Camiones screenshot 2", width: 1602, height: 827 },
-    { src: "/images/pyp/image3.webp", alt: "PyP Camiones screenshot 3", width: 902, height: 855 },
-    { src: "/images/pyp/image4.webp", alt: "PyP Camiones screenshot 4", width: 1065, height: 907 },
-    { src: "/images/pyp/image5.webp", alt: "PyP Camiones screenshot 5", width: 877, height: 800 },
-    { src: "/images/pyp/image6.webp", alt: "PyP Camiones screenshot 6", width: 487, height: 746 },
-    { src: "/images/pyp/image7.webp", alt: "PyP Camiones screenshot 7", width: 1052, height: 862 },
-    { src: "/images/pyp/image8.webp", alt: "PyP Camiones screenshot 8", width: 1237, height: 737 },
-];
-
-const SMARTRACK_GALLERY_IMAGES: GalleryImage[] = [
-    { src: "/images/smartrack/01.jpg", alt: "Smartrack - Implameq screenshot 1", width: 4000, height: 6000 },
-    { src: "/images/smartrack/02.jpg", alt: "Smartrack - Implameq screenshot 2", width: 4000, height: 6000 },
-    { src: "/images/smartrack/03.jpg", alt: "Smartrack - Implameq screenshot 3", width: 4000, height: 6000 },
-    { src: "/images/smartrack/04.jpg", alt: "Smartrack - Implameq screenshot 4", width: 2624, height: 3936 },
-    { src: "/images/smartrack/05.jpg", alt: "Smartrack - Implameq screenshot 5", width: 4000, height: 6000 },
-    { src: "/images/smartrack/06.jpg", alt: "Smartrack - Implameq screenshot 6", width: 4000, height: 6000 },
+const KNOWTEN_GALLERY_IMAGES: GalleryImage[] = [
+    { src: "/images/Knowten/image1.png", alt: "Knowten Suite — catálogo de actores de extracción", width: 1917, height: 947 },
+    { src: "/images/Knowten/image2.png", alt: "Knowten Suite — ejecución de actor con terminal en vivo", width: 1909, height: 882 },
+    { src: "/images/Knowten/image3.png", alt: "Knowten Suite — plataforma de datos", width: 1908, height: 878 },
+    { src: "/images/Knowten/image4.png", alt: "Knowten Suite — insights IA y chat con el dataset", width: 1919, height: 949 },
+    { src: "/images/Knowten/image5.png", alt: "Knowten Suite — visualización de datos", width: 1918, height: 949 },
+    { src: "/images/Knowten/image6.png", alt: "Knowten Suite — análisis y reportes", width: 1657, height: 935 },
+    { src: "/images/Knowten/image7.png", alt: "Knowten Suite — panel de inteligencia", width: 1918, height: 935 },
 ];
 
 interface ProjectLink {
@@ -236,7 +226,21 @@ export function Works() {
     const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
     const [galleryProjectTitle, setGalleryProjectTitle] = useState("");
 
-    const projects: Project[] = [];
+    const projects: Project[] = [
+        {
+            title: t.projects.knowten.title,
+            description: t.projects.knowten.description,
+            role: t.projects.knowten.role,
+            year: t.projects.knowten.year,
+            stack: ["Next.js 16", "NestJS", "TypeScript", "PostgreSQL", "Prisma", "Apify", "DeepSeek AI", "Recharts"],
+            links: [
+                { label: t.projects.live, href: "https://app.knowten.info" },
+                { label: t.projects.apifyStore, href: "https://apify.com/knowten" },
+                { label: t.projects.code, locked: true },
+            ],
+            galleryImages: KNOWTEN_GALLERY_IMAGES,
+        },
+    ];
 
     const openGallery = (project: Project, startIndex: number) => {
         setGalleryImages(project.galleryImages);
@@ -278,7 +282,7 @@ export function Works() {
                 initialIndex={galleryInitialIndex}
                 projectTitle={galleryProjectTitle}
             />
-            <PrivateProjectModal isOpen={showPrivateModal} onClose={() => setShowPrivateModal(false)} />
+            <PrivateProjectModal isOpen={showPrivateModal} onClose={() => setShowPrivateModal(false)} projectTitle="Knowten Suite" />
         </section>
     );
 }

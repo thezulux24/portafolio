@@ -145,12 +145,19 @@ export const translations = {
             live: "Landing",
             app: "App",
             code: "Código",
+            apifyStore: "Apify Store",
             gallery: {
                 open: "Abrir galeria",
                 close: "Cerrar galeria",
                 next: "Siguiente imagen",
                 previous: "Imagen anterior",
                 counter: "{current} de {total}",
+            },
+            knowten: {
+                title: "Knowten Suite",
+                description: "Plataforma SaaS B2B de inteligencia de datos que convierte la web pública en activos estructurados: extracción masiva en la nube con actores de Apify y stealth routing, ETL integrado, IA con sentiment scoring, redes semánticas de N-gramas, chat en lenguaje natural con los datasets y reportes PDF vectoriales en un clic. Arquitectura multi-tenant estricta, i18n nativo en 12 idiomas y facturación con PayPal.",
+                role: "Lead Full-Stack · Arquitectura SaaS",
+                year: "2026",
             },
         },
         contact: {
@@ -319,12 +326,19 @@ export const translations = {
             live: "Landing",
             app: "App",
             code: "Code",
+            apifyStore: "Apify Store",
             gallery: {
                 open: "Open gallery",
                 close: "Close gallery",
                 next: "Next image",
                 previous: "Previous image",
                 counter: "{current} of {total}",
+            },
+            knowten: {
+                title: "Knowten Suite",
+                description: "B2B SaaS data intelligence platform that turns the public web into structured assets: massive cloud extraction with Apify actors and stealth routing, built-in ETL, AI with sentiment scoring, semantic N-gram networks, natural-language chat with datasets and one-click vector PDF reports. Strict multi-tenant architecture, native i18n in 12 languages and PayPal billing.",
+                role: "Lead Full-Stack · SaaS Architecture",
+                year: "2026",
             },
         },
         contact: {
