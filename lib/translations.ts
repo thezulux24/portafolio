@@ -146,6 +146,8 @@ export const translations = {
             app: "App",
             code: "Código",
             apifyStore: "Apify Store",
+            showMore: "Desplegar detalle",
+            showLess: "Contraer",
             gallery: {
                 open: "Abrir galeria",
                 close: "Cerrar galeria",
@@ -339,6 +341,8 @@ export const translations = {
             app: "App",
             code: "Code",
             apifyStore: "Apify Store",
+            showMore: "Expand details",
+            showLess: "Collapse",
             gallery: {
                 open: "Open gallery",
                 close: "Close gallery",

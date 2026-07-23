@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { ArrowUpRight, Lock } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Lock } from "lucide-react";
 import { useLanguageStore } from "@/lib/store";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Magnetic } from "@/components/ui/Magnetic";
@@ -104,6 +104,7 @@ export function Works() {
     const [showGalleryModal, setShowGalleryModal] = useState(false);
     const [galleryInitialIndex, setGalleryInitialIndex] = useState(0);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
+    const [expanded, setExpanded] = useState(false);
 
     const project = {
         title: t.projects.knowten.title,
@@ -215,17 +216,84 @@ export function Works() {
             <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-16">
                 {/* Features column */}
                 <div>
-                    {features.map((feature, index) => (
-                        <FeatureBlock
-                            key={feature.title}
-                            feature={feature}
-                            index={index}
-                            isActive={activeImageIndex === feature.imageIndex}
-                            onActivate={() => setActiveImageIndex(feature.imageIndex)}
-                            onOpenImage={openGallery}
-                            openLabel={t.projects.gallery.open}
+                    {/* Mobile: cover image (the essentials stay visible) */}
+                    <button
+                        type="button"
+                        aria-label={t.projects.gallery.open}
+                        data-cursor-label={t.projects.gallery.open}
+                        onClick={() => openGallery(0)}
+                        className="group relative block aspect-[16/10] w-full overflow-hidden rounded-xl border border-bone/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-acid/70 lg:hidden"
+                    >
+                        <Image
+                            src={KNOWTEN_GALLERY_IMAGES[0].src}
+                            alt={KNOWTEN_GALLERY_IMAGES[0].alt}
+                            fill
+                            quality={90}
+                            sizes="100vw"
+                            className="object-cover"
                         />
-                    ))}
+                        <div className="pointer-events-none absolute bottom-4 left-5 font-mono text-[10px] uppercase tracking-[0.26em] text-bone/80">
+                            {t.projects.gallery.open} ↗
+                        </div>
+                    </button>
+
+                    {/* Mobile: expand toggle */}
+                    <button
+                        type="button"
+                        onClick={() => setExpanded((value) => !value)}
+                        aria-expanded={expanded}
+                        className="mt-4 flex w-full items-center justify-between border-y border-bone/10 py-4 font-mono text-[11px] uppercase tracking-[0.26em] text-bone transition-colors hover:text-acid lg:hidden"
+                    >
+                        <span>{expanded ? t.projects.showLess : t.projects.showMore}</span>
+                        <motion.span
+                            animate={{ rotate: expanded ? 180 : 0 }}
+                            transition={{ duration: 0.35, ease: SHOWCASE_EASE }}
+                            className="text-acid"
+                        >
+                            <ChevronDown className="h-4 w-4" />
+                        </motion.span>
+                    </button>
+
+                    {/* Desktop: features always visible, drives the sticky viewer */}
+                    <div className="hidden lg:block">
+                        {features.map((feature, index) => (
+                            <FeatureBlock
+                                key={feature.title}
+                                feature={feature}
+                                index={index}
+                                isActive={activeImageIndex === feature.imageIndex}
+                                onActivate={() => setActiveImageIndex(feature.imageIndex)}
+                                onOpenImage={openGallery}
+                                openLabel={t.projects.gallery.open}
+                            />
+                        ))}
+                    </div>
+
+                    {/* Mobile: collapsible features */}
+                    <AnimatePresence initial={false}>
+                        {expanded && (
+                            <motion.div
+                                key="mobile-features"
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.55, ease: SHOWCASE_EASE }}
+                                className="overflow-hidden lg:hidden"
+                            >
+                                {features.map((feature, index) => (
+                                    <FeatureBlock
+                                        key={feature.title}
+                                        feature={feature}
+                                        index={index}
+                                        isActive={activeImageIndex === feature.imageIndex}
+                                        onActivate={() => setActiveImageIndex(feature.imageIndex)}
+                                        onOpenImage={openGallery}
+                                        openLabel={t.projects.gallery.open}
+                                    />
+                                ))}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
 
                 {/* Sticky viewer (desktop) */}
