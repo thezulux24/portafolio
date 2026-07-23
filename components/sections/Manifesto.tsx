@@ -28,7 +28,7 @@ export function Manifesto() {
             <SectionHeading index={t.manifesto.index} label={t.manifesto.label} />
 
             <div className="mt-14 grid gap-14 lg:grid-cols-12 lg:gap-10">
-                {/* Portrait — static, full quality */}
+                {/* Portrait */}
                 <div className="lg:col-span-5">
                     <motion.div
                         initial={{ opacity: 0, y: 32 }}
@@ -36,7 +36,7 @@ export function Manifesto() {
                         viewport={{ once: true, margin: "-80px" }}
                         transition={{ duration: 0.8, ease: REVEAL_EASE }}
                         data-cursor
-                        className="group relative aspect-[3/4] overflow-hidden rounded-2xl border border-bone/10"
+                        className="group relative aspect-square overflow-hidden rounded-2xl border border-bone/10 transition-colors duration-500 hover:border-acid/50"
                     >
                         <Image
                             src="/images/fotoperfil.jpg"
@@ -44,12 +44,12 @@ export function Manifesto() {
                             fill
                             priority
                             quality={100}
-                            sizes="(max-width: 1024px) 100vw, 42vw"
-                            className="object-cover object-top grayscale transition-all duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
+                            sizes="(max-width: 1024px) 100vw, 40vw"
+                            className="object-cover"
                         />
                         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-ink/90 to-transparent px-5 pb-4 pt-16 font-mono text-[10px] uppercase tracking-[0.26em] text-bone/70">
                             <span>Brayan Zuluaga</span>
-                            <span className="text-acid">EST. 2024</span>
+                            <span className="text-acid">EST. 2026</span>
                         </div>
                     </motion.div>
                 </div>

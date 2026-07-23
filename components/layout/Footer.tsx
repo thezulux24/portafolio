@@ -63,12 +63,12 @@ export function Footer() {
             {/* Acid ribbon */}
             <div className="mt-24 -rotate-1 bg-acid py-3 md:mt-32">
                 <Marquee duration={22} className="[mask-image:none] [-webkit-mask-image:none]">
-                    {Array.from({ length: 6 }).map((_, index) => (
+                    {t.contact.marqueeItems.map((phrase) => (
                         <span
-                            key={index}
+                            key={phrase}
                             className="mx-6 flex items-center gap-12 font-display text-sm font-bold uppercase tracking-[0.14em] text-ink"
                         >
-                            {t.contact.marquee}
+                            {phrase}
                             <Asterisk className="h-4 w-4" />
                         </span>
                     ))}
