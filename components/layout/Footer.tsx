@@ -5,6 +5,7 @@ import { useLanguageStore } from "@/lib/store";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { Marquee } from "@/components/ui/Marquee";
+import { IdeaBulb } from "@/components/3d/IdeaBulb";
 
 export function Footer() {
     const { t } = useLanguageStore();
@@ -16,8 +17,11 @@ export function Footer() {
                 <SectionHeading index={t.contact.index} label={t.contact.label} />
 
                 {/* Giant CTA */}
-                <div className="mt-16 flex flex-col items-start gap-10">
-                    <Magnetic strength={0.12} className="block">
+                <div className="relative mt-16 flex flex-col items-start gap-10">
+                    {/* 3D idea bulb — right on desktop, behind the text on mobile */}
+                    <IdeaBulb className="pointer-events-none absolute -right-6 top-1/2 z-0 h-72 w-72 -translate-y-1/2 opacity-30 md:right-10 md:h-[24rem] md:w-[24rem] md:opacity-80" />
+
+                    <Magnetic strength={0.12} className="relative z-10 block">
                         <a
                             href="mailto:thezulux24@gmail.com"
                             data-cursor-label={t.contact.cta}
@@ -34,7 +38,7 @@ export function Footer() {
                         </a>
                     </Magnetic>
 
-                    <div className="flex flex-wrap items-center gap-5">
+                    <div className="relative z-10 flex flex-wrap items-center gap-5">
                         <Magnetic strength={0.25}>
                             <a
                                 href="mailto:thezulux24@gmail.com"
