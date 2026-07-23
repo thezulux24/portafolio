@@ -134,9 +134,9 @@ export function Arsenal() {
                             className="group relative overflow-hidden border-t border-bone/10"
                             data-cursor
                         >
-                            <div className="absolute inset-0 translate-y-full bg-acid transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:translate-y-0" />
-                            <div className="relative z-10 grid items-center gap-3 py-7 transition-colors duration-300 group-hover:text-ink md:grid-cols-12 md:py-9">
-                                <span className="font-mono text-xs text-bone/40 transition-colors duration-300 group-hover:text-ink/60 md:col-span-1">
+                            <div className="absolute inset-0 translate-y-full bg-acid transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:translate-y-0 group-active:translate-y-0" />
+                            <div className="relative z-10 grid items-center gap-3 py-7 transition-colors duration-300 group-hover:text-ink group-active:text-ink md:grid-cols-12 md:py-9">
+                                <span className="font-mono text-xs text-bone/40 transition-colors duration-300 group-hover:text-ink/60 group-active:text-ink/60 md:col-span-1">
                                     0{index + 1}
                                 </span>
                                 <h3 className="font-display text-3xl font-bold uppercase tracking-tight md:col-span-4 md:text-4xl">
@@ -146,13 +146,13 @@ export function Arsenal() {
                                     {capability.items.map((item) => (
                                         <span
                                             key={item}
-                                            className="font-mono text-xs uppercase tracking-[0.18em] text-bone/55 transition-colors duration-300 group-hover:text-ink/75"
+                                            className="font-mono text-xs uppercase tracking-[0.18em] text-bone/55 transition-colors duration-300 group-hover:text-ink/75 group-active:text-ink/75"
                                         >
                                             {item}
                                         </span>
                                     ))}
                                 </div>
-                                <ArrowUpRight className="hidden h-6 w-6 justify-self-end text-bone/30 transition-all duration-300 group-hover:rotate-45 group-hover:text-ink md:col-span-1 md:block" />
+                                <ArrowUpRight className="hidden h-6 w-6 justify-self-end text-bone/30 transition-all duration-300 group-hover:rotate-45 group-hover:text-ink group-active:rotate-45 group-active:text-ink md:col-span-1 md:block" />
                             </div>
                         </motion.div>
                     ))}

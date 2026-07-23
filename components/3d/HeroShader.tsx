@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { useCoarsePointer } from "@/lib/useCoarsePointer";
 
 const vertexShader = /* glsl */ `
 void main() {
@@ -14,6 +15,7 @@ const fragmentShader = /* glsl */ `
 precision highp float;
 
 uniform float uTime;
+uniform float uBoost;
 uniform vec2 uRes;
 uniform vec2 uMouse;
 
@@ -62,11 +64,11 @@ void main() {
     vec3 acid = vec3(0.784, 0.953, 0.114);
 
     vec3 color = mix(ink, smoke, smoothstep(0.28, 0.9, f));
-    color += acid * pow(smoothstep(0.52, 0.95, r), 3.0) * 0.30;
-    color += acid * pow(smoothstep(0.62, 1.0, f), 5.0) * 0.18;
+    color += acid * pow(smoothstep(0.52, 0.95, r), 3.0) * 0.30 * uBoost;
+    color += acid * pow(smoothstep(0.62, 1.0, f), 5.0) * 0.18 * uBoost;
 
     float d = length(uv - mouse);
-    color += acid * exp(-d * 3.5) * 0.05;
+    color += acid * exp(-d * 2.6) * 0.06 * uBoost;
 
     color *= 1.0 - dot(uv * 0.85, uv * 0.85);
 
@@ -74,7 +76,7 @@ void main() {
 }
 `;
 
-function ShaderPlane() {
+function ShaderPlane({ autoMode }: { autoMode: boolean }) {
     const { size, viewport } = useThree();
     const materialRef = useRef<THREE.ShaderMaterial>(null);
     const mouse = useRef(new THREE.Vector2(0, 0));
@@ -83,6 +85,7 @@ function ShaderPlane() {
     const uniforms = useMemo(
         () => ({
             uTime: { value: 0 },
+            uBoost: { value: 1 },
             uRes: { value: new THREE.Vector2(1, 1) },
             uMouse: { value: new THREE.Vector2(0, 0) },
         }),
@@ -90,6 +93,7 @@ function ShaderPlane() {
     );
 
     useEffect(() => {
+        if (autoMode) return;
         const onMove = (event: MouseEvent) => {
             target.current.set(
                 (event.clientX / window.innerWidth) * 2 - 1,
@@ -98,16 +102,25 @@ function ShaderPlane() {
         };
         window.addEventListener("mousemove", onMove, { passive: true });
         return () => window.removeEventListener("mousemove", onMove);
-    }, []);
+    }, [autoMode]);
 
     useFrame((state) => {
         const material = materialRef.current;
         if (!material) return;
-        material.uniforms.uTime.value = state.clock.elapsedTime;
+        const t = state.clock.elapsedTime;
+        material.uniforms.uTime.value = t;
         material.uniforms.uRes.value.set(
             size.width * viewport.dpr,
             size.height * viewport.dpr
         );
+        // On touch devices the light wanders on its own and burns brighter
+        material.uniforms.uBoost.value = autoMode ? 1.9 : 1.0;
+        if (autoMode) {
+            target.current.set(
+                Math.sin(t * 0.3) * 0.75,
+                Math.sin(t * 0.22 + 1.3) * 0.55
+            );
+        }
         mouse.current.lerp(target.current, 0.045);
         material.uniforms.uMouse.value.copy(mouse.current);
     });
@@ -137,6 +150,7 @@ export function HeroShader() {
         () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
         () => false
     );
+    const coarsePointer = useCoarsePointer();
 
     if (reducedMotion) {
         return (
@@ -150,7 +164,7 @@ export function HeroShader() {
             gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
             style={{ position: "absolute", inset: 0 }}
         >
-            <ShaderPlane />
+            <ShaderPlane autoMode={coarsePointer} />
         </Canvas>
     );
 }

@@ -6,6 +6,7 @@ import { animate, stagger } from "animejs";
 import { Asterisk } from "lucide-react";
 import { useLanguageStore } from "@/lib/store";
 import { useIntroStore } from "@/lib/intro";
+import { useCoarsePointer } from "@/lib/useCoarsePointer";
 import { HeroShader } from "@/components/3d/HeroShader";
 import { Marquee } from "@/components/ui/Marquee";
 import { RotatingBadge } from "@/components/ui/RotatingBadge";
@@ -37,6 +38,7 @@ function KineticChars({ text, outline = false }: { text: string; outline?: boole
 export function Hero() {
     const { t } = useLanguageStore();
     const started = useIntroStore((state) => state.started);
+    const isCoarse = useCoarsePointer();
     const sectionRef = useRef<HTMLElement>(null);
 
     const { scrollYProgress } = useScroll({
@@ -60,6 +62,22 @@ export function Hero() {
             animation.cancel();
         };
     }, [started]);
+
+    // Mobile centerpiece: automatic expanding ripple rings (no cursor needed)
+    useEffect(() => {
+        if (!started || !isCoarse) return;
+        const animation = animate(".js-hero-pulse", {
+            scale: [1, 1.8],
+            opacity: [0.65, 0],
+            duration: 2600,
+            ease: "out(2)",
+            loop: true,
+            delay: stagger(1300, { start: 500 }),
+        });
+        return () => {
+            animation.cancel();
+        };
+    }, [started, isCoarse]);
 
     const reveal = (delay: number) => ({
         initial: { opacity: 0, y: 18 },
@@ -87,6 +105,24 @@ export function Hero() {
                     </span>
                     <span className="hidden lg:block">{t.hero.role}</span>
                     <span>{t.hero.location}</span>
+                </motion.div>
+
+                {/* Mobile centerpiece — auto-animated, fills the empty space */}
+                <motion.div
+                    {...reveal(1.15)}
+                    className="relative flex flex-1 items-center justify-center py-10 sm:hidden"
+                >
+                    <div className="relative flex items-center justify-center">
+                        <span
+                            className="js-hero-pulse absolute h-40 w-40 rounded-full border border-acid/50"
+                            style={{ opacity: 0 }}
+                        />
+                        <span
+                            className="js-hero-pulse absolute h-40 w-40 rounded-full border border-acid/30"
+                            style={{ opacity: 0 }}
+                        />
+                        <RotatingBadge text={t.hero.badge} className="h-40 w-40 text-bone/90" />
+                    </div>
                 </motion.div>
 
                 {/* Kinetic title */}
