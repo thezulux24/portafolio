@@ -16,11 +16,13 @@ The design philosophy focuses on minimalism, interactivity, and a premium user e
 
 ## Key Features
 
-- **3D Hero Section**: Interactive 3D models rendered in real-time.
+- **Cinematic Preloader**: Animated counter and curtain reveal powered by Anime.js.
+- **WebGL Hero**: Custom GLSL fluid-noise shader (domain-warped fbm), mouse-reactive, with kinetic typography.
+- **Custom Cursor**: Physics-based trailing cursor with contextual labels (fine pointers only).
+- **Smooth Scrolling**: Buttery scroll experience via Lenis, synced with scroll-driven animations.
+- **Editorial Layout**: Kinetic type, outlined display fonts, acid-on-noir palette, film grain overlay.
 - **Responsive Design**: Flawless experience across desktop, tablet, and mobile devices.
-- **Modern UI/UX**: Clean layout with glassmorphism effects and custom typography.
 - **Optimized Performance**: leveraging Next.js App Router and server-side rendering.
-- **Dynamic Content**: Sections for Projects, Skills, and Education formatted for easy updates.
 - **Dark Mode Architecture**: Built with a dark-themed aesthetic in mind.
 
 ## Tech Stack
@@ -31,7 +33,8 @@ This project is built with a robust selection of modern tools:
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **3D Graphics**: [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) & [Drei](https://github.com/pmndrs/drei)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [Anime.js](https://animejs.com/)
+- **Scrolling**: [Lenis](https://lenis.darkroom.engineering/)
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Linting**: ESLint

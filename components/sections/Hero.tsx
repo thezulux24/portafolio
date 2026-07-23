@@ -1,118 +1,157 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { animate, stagger } from "animejs";
+import { Asterisk } from "lucide-react";
 import { useLanguageStore } from "@/lib/store";
-import { HeroScene } from "@/components/3d/HeroScene";
-import { Button } from "@/components/ui/button";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import { useIntroStore } from "@/lib/intro";
+import { HeroShader } from "@/components/3d/HeroShader";
+import { Marquee } from "@/components/ui/Marquee";
+import { RotatingBadge } from "@/components/ui/RotatingBadge";
+import { cn } from "@/lib/utils";
+
+const FIRST = "BRAYAN";
+const LAST = "ZULUAGA";
+const REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+function KineticChars({ text, outline = false }: { text: string; outline?: boolean }) {
+    return (
+        <>
+            {text.split("").map((char, index) => (
+                <span
+                    key={`${char}-${index}`}
+                    className={cn(
+                        "js-hero-char inline-block will-change-transform",
+                        outline && "text-outline"
+                    )}
+                    style={{ transform: "translateY(115%)" }}
+                >
+                    {char}
+                </span>
+            ))}
+        </>
+    );
+}
 
 export function Hero() {
     const { t } = useLanguageStore();
+    const started = useIntroStore((state) => state.started);
     const sectionRef = useRef<HTMLElement>(null);
 
-    const { scrollY } = useScroll();
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start start", "end start"],
+    });
 
-    // Content drifts up, fades, and scales down as user scrolls away
-    const rawContentY = useTransform(scrollY, [0, 650], [0, -150]);
-    const contentY    = useSpring(rawContentY, { stiffness: 80, damping: 28 });
-    const contentOpacity = useTransform(scrollY, [0, 420], [1, 0]);
-    const contentScale   = useTransform(scrollY, [0, 650], [1, 0.88]);
+    const titleY = useTransform(scrollYProgress, [0, 1], [0, 160]);
+    const shaderY = useTransform(scrollYProgress, [0, 1], [0, 110]);
+    const fadeOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
 
-    // 3D background moves slower than content (parallax depth)
-    const bgY = useTransform(scrollY, [0, 700], [0, 72]);
+    useEffect(() => {
+        if (!started) return;
+        const animation = animate(".js-hero-char", {
+            translateY: ["115%", "0%"],
+            delay: stagger(45, { start: 120 }),
+            duration: 1150,
+            ease: "out(4)",
+        });
+        return () => {
+            animation.cancel();
+        };
+    }, [started]);
 
-    // Scroll indicator fades + lifts early
-    const indicatorOpacity = useTransform(scrollY, [0, 200], [1, 0]);
-    const indicatorY       = useTransform(scrollY, [0, 200], [0, -18]);
+    const reveal = (delay: number) => ({
+        initial: { opacity: 0, y: 18 },
+        animate: started ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 },
+        transition: { delay, duration: 0.9, ease: REVEAL_EASE },
+    });
 
     return (
-        <section ref={sectionRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-background">
-
-            {/* 3D Background — parallaxes at 60% scroll speed */}
-            <motion.div className="absolute inset-0 will-change-transform" style={{ y: bgY }}>
-                <HeroScene />
+        <section ref={sectionRef} className="relative flex min-h-svh flex-col overflow-hidden bg-ink">
+            {/* WebGL fluid-noise backdrop */}
+            <motion.div className="absolute inset-0 will-change-transform" style={{ y: shaderY }}>
+                <HeroShader />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/40 via-transparent to-ink" />
             </motion.div>
 
-            {/* Content block — scroll-driven exit */}
-            <motion.div
-                className="container relative z-10 px-6 flex flex-col items-center text-center will-change-transform"
-                style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
-            >
+            <motion.div className="relative z-10 flex flex-1 flex-col" style={{ opacity: fadeOpacity }}>
+                {/* Top meta row */}
                 <motion.div
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-                    className="max-w-4xl"
+                    {...reveal(0.9)}
+                    className="flex items-center justify-between px-6 pt-24 font-mono text-[10px] uppercase tracking-[0.28em] text-bone/60 md:px-10 md:pt-28 md:text-[11px]"
                 >
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.88 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.15, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                        className="mb-6 inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-primary backdrop-blur-md"
-                    >
+                    <span className="flex items-center gap-2.5">
+                        <span className="availability-dot inline-block h-1.5 w-1.5 rounded-full bg-acid" />
                         {t.hero.status}
-                    </motion.div>
+                    </span>
+                    <span className="hidden lg:block">{t.hero.role}</span>
+                    <span>{t.hero.location}</span>
+                </motion.div>
 
-                    <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-5xl md:text-7xl font-bold font-heading leading-tight tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/50"
-                    >
-                        Brayan Zuluaga
-                    </motion.h1>
-
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.22, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-2xl md:text-3xl font-light text-muted-foreground mb-8"
-                    >
-                        {t.hero.role}
-                    </motion.h2>
-
+                {/* Kinetic title */}
+                <motion.div
+                    className="mt-auto px-6 will-change-transform md:px-10"
+                    style={{ y: titleY }}
+                >
                     <motion.p
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.32, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        className="max-w-xl mx-auto text-lg text-muted-foreground/80 mb-10 leading-relaxed"
+                        {...reveal(1.05)}
+                        className="mb-4 font-mono text-[10px] uppercase tracking-[0.34em] text-acid md:text-xs"
                     >
-                        {t.hero.description}
+                        Portfolio — 2026
                     </motion.p>
+                    <h1 className="font-display font-extrabold uppercase leading-[0.86] tracking-[-0.02em]">
+                        <span className="block overflow-hidden pb-[0.05em] text-[clamp(3.4rem,15vw,13.5rem)]">
+                            <KineticChars text={FIRST} />
+                        </span>
+                        <span className="block overflow-hidden pb-[0.08em] text-[clamp(3.4rem,15vw,13.5rem)]">
+                            <KineticChars text={LAST} outline />
+                            <span
+                                className="js-hero-char inline-block text-acid will-change-transform"
+                                style={{ transform: "translateY(115%)" }}
+                            >
+                                .
+                            </span>
+                        </span>
+                    </h1>
+                </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.42, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-                    >
-                        <Button size="lg" className="group" asChild>
-                            <a href="#projects">
-                                {t.hero.cta}
-                                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                            </a>
-                        </Button>
-                        <Button size="lg" variant="outline" className="group" asChild>
-                            <a href="/cv">
-                                {t.hero.cv}
-                                <Download className="ml-2 h-4 w-4 transition-transform group-hover:-translate-y-1" />
-                            </a>
-                        </Button>
-                    </motion.div>
+                {/* Bottom row */}
+                <motion.div
+                    {...reveal(1.25)}
+                    className="mx-6 mt-10 flex items-end justify-between gap-6 border-t border-bone/10 pb-8 pt-5 md:mx-10"
+                >
+                    <div className="max-w-md">
+                        <p className="text-sm leading-relaxed text-bone/60 md:text-base">
+                            {t.hero.tagline}
+                        </p>
+                        <p className="mt-3 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-bone/40">
+                            <span className="inline-block h-px w-10 bg-acid" />
+                            {t.hero.scroll}
+                        </p>
+                    </div>
+                    <a href="#about" aria-label={t.hero.scroll} className="hidden shrink-0 sm:block">
+                        <RotatingBadge text={t.hero.badge} />
+                    </a>
                 </motion.div>
             </motion.div>
 
-            {/* Scroll indicator — fades and lifts as user begins scrolling */}
+            {/* Disciplines marquee */}
             <motion.div
-                className="absolute bottom-10 left-1/2 -translate-x-1/2"
-                animate={{ y: [0, 10, 0] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                style={{ opacity: indicatorOpacity, y: indicatorY }}
+                {...reveal(1.4)}
+                className="relative z-10 border-t border-bone/10 bg-ink/70 py-3.5 backdrop-blur-sm"
             >
-                <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center pt-2">
-                    <div className="w-1 h-1 bg-white/50 rounded-full" />
-                </div>
+                <Marquee duration={26}>
+                    {t.hero.marquee.map((item) => (
+                        <span
+                            key={item}
+                            className="mx-7 flex items-center gap-14 font-mono text-[11px] uppercase tracking-[0.32em] text-bone/70"
+                        >
+                            {item}
+                            <Asterisk className="h-4 w-4 text-acid" />
+                        </span>
+                    ))}
+                </Marquee>
             </motion.div>
         </section>
     );

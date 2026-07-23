@@ -4,12 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Lock } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Text, Float, MeshDistortMaterial } from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
 
 function SecurityLock() {
-    const groupRef = useRef<any>(null);
-    const padlockRef = useRef<any>(null);
+    const groupRef = useRef<THREE.Group>(null);
 
     useFrame((state) => {
         const time = state.clock.getElapsedTime();
