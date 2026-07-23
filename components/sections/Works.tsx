@@ -236,33 +236,7 @@ export function Works() {
     const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
     const [galleryProjectTitle, setGalleryProjectTitle] = useState("");
 
-    const projects: Project[] = [
-        {
-            title: t.projects.pyp.title,
-            description: t.projects.pyp.description,
-            role: t.projects.pyp.role,
-            year: t.projects.pyp.year,
-            stack: ["NestJS", "React", "Vite", "PostgreSQL", "Prisma", "Tailwind"],
-            links: [
-                { label: t.projects.live, href: "https://pypcamiones.cloud" },
-                { label: t.projects.app, locked: true },
-                { label: t.projects.code, locked: true },
-            ],
-            galleryImages: PYP_GALLERY_IMAGES,
-        },
-        {
-            title: t.projects.smartrack.title,
-            description: t.projects.smartrack.description,
-            role: t.projects.smartrack.role,
-            year: t.projects.smartrack.year,
-            stack: ["Angular", "Supabase", "Tailwind"],
-            links: [
-                { label: t.projects.app, href: "https://thezulux24.github.io/SmartTrack/" },
-                { label: t.projects.code, href: "https://github.com/thezulux24/SmartTrack" },
-            ],
-            galleryImages: SMARTRACK_GALLERY_IMAGES,
-        },
-    ];
+    const projects: Project[] = [];
 
     const openGallery = (project: Project, startIndex: number) => {
         setGalleryImages(project.galleryImages);

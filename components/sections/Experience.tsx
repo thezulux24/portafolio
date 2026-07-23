@@ -49,10 +49,13 @@ export function Experience() {
                                     {role.location}
                                 </p>
                                 {role.current && (
-                                    <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-acid/40 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-acid">
-                                        <span className="availability-dot inline-block h-1 w-1 rounded-full bg-acid" />
-                                        {content.present}
-                                    </p>
+                                    <div className="mt-3.5 inline-flex items-center gap-2 rounded-sm border-l-2 border-acid bg-acid/[0.08] px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.24em] font-semibold text-acid">
+                                        <span className="relative flex h-2 w-2 items-center justify-center">
+                                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-acid/60" />
+                                            <span className="relative inline-block h-1.5 w-1.5 rounded-full bg-acid" />
+                                        </span>
+                                        <span>{content.present}</span>
+                                    </div>
                                 )}
                             </div>
 

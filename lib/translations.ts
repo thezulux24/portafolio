@@ -57,15 +57,6 @@ export const translations = {
             volunteeringLabel: "Voluntariado",
             roles: [
                 {
-                    company: "Knowten",
-                    role: "Automation, Data Extraction & Applications Developer",
-                    period: "Mar 2026 — Presente",
-                    location: "Remoto · Bogotá",
-                    current: true,
-                    description: "Arquitectura de las aplicaciones core de la compañía y sistemas robustos de extracción de datos a gran escala — scraper funcional para X (Twitter) y otras fuentes — optimizando tiempos de ejecución y estabilidad operativa.",
-                    tech: ["Python", "Playwright", "Node.js", "Next.js"],
-                },
-                {
                     company: "PROESA — ICESI",
                     role: "Data Engineer · Market Intelligence",
                     period: "Jul 2026 — Presente",
@@ -73,6 +64,15 @@ export const translations = {
                     current: true,
                     description: "Construcción de la \"Suite Data Universal\": arquitectura de scraping HTTP-only con Scrapling y evasión de antibots para inteligencia de mercado en LATAM. Limpieza de datos con IA (Gemini API), alertas con Resend y documentación para la transferencia Banco Mundial → PROESA.",
                     tech: ["Python", "Scrapling", "SQLite", "Pandas", "Gemini API", "Resend"],
+                },
+                {
+                    company: "Knowten",
+                    role: "Automation, Data Extraction & Applications Developer",
+                    period: "Mar 2026 — Presente",
+                    location: "Remoto · Bogotá",
+                    current: true,
+                    description: "Arquitectura de las aplicaciones core de la compañía y sistemas robustos de extracción de datos a gran escala — scraper funcional para X (Twitter) y otras fuentes — optimizando tiempos de ejecución y estabilidad operativa.",
+                    tech: ["Python", "Playwright", "Node.js", "Next.js"],
                 },
                 {
                     company: "P&P Camiones",
@@ -100,6 +100,15 @@ export const translations = {
                     current: false,
                     description: "Prototipo de plataforma integral para una empresa del sector de implementación quirúrgica: módulos comerciales, administrativos, operativos y de ejecución.",
                     tech: ["Angular", "Supabase"],
+                },
+                {
+                    company: "Crecer Capital",
+                    role: "Frontend Software Developer Intern",
+                    period: "Jun 2025 — Jul 2025",
+                    location: "Presencial · Medellin",
+                    current: false,
+                    description: "Desarrollo frontend en Angular aplicando metodología Scrum para construir interfaces web dinámicas. Primeros pasos profesionales en ingeniería de software, colaborando en equipo para la entrega iterativa de componentes.",
+                    tech: ["Angular", "TypeScript", "Scrum", "HTML/CSS"],
                 },
             ],
             education: [
@@ -142,18 +151,6 @@ export const translations = {
                 next: "Siguiente imagen",
                 previous: "Imagen anterior",
                 counter: "{current} de {total}",
-            },
-            pyp: {
-                title: "PyP Camiones",
-                description: "Plataforma integral para gestion comercial y operativa de vehiculos de carga. Permite al cliente presentar servicios en linea y administrar la operacion diaria centralizada.",
-                role: "Full-Stack · Arquitectura",
-                year: "2026",
-            },
-            smartrack: {
-                title: "Smartrack — Implameq",
-                description: "Prototipo de aplicacion para la gestion operativa de una empresa de implementacion quirurgica. Esta aplicación fue desarrollada para ser Mobile first",
-                role: "Frontend · Mobile First",
-                year: "2025",
             },
         },
         contact: {
@@ -234,15 +231,6 @@ export const translations = {
             volunteeringLabel: "Volunteering",
             roles: [
                 {
-                    company: "Knowten",
-                    role: "Automation, Data Extraction & Applications Developer",
-                    period: "Mar 2026 — Present",
-                    location: "Remote · Bogotá",
-                    current: true,
-                    description: "Architecture of the company's core applications and robust large-scale data extraction systems — a functional scraper for X (Twitter) and other sources — optimizing execution times and operational stability.",
-                    tech: ["Python", "Playwright", "Node.js", "Next.js"],
-                },
-                {
                     company: "PROESA — ICESI",
                     role: "Data Engineer · Market Intelligence",
                     period: "Jul 2026 — Present",
@@ -250,6 +238,15 @@ export const translations = {
                     current: true,
                     description: "Building the \"Suite Data Universal\": an HTTP-only scraping architecture with Scrapling and anti-bot evasion for market intelligence across LATAM. AI-assisted data cleaning (Gemini API), Resend alerting and documentation for the World Bank → PROESA knowledge transfer.",
                     tech: ["Python", "Scrapling", "SQLite", "Pandas", "Gemini API", "Resend"],
+                },
+                {
+                    company: "Knowten",
+                    role: "Automation, Data Extraction & Applications Developer",
+                    period: "Mar 2026 — Present",
+                    location: "Remote · Bogotá",
+                    current: true,
+                    description: "Architecture of the company's core applications and robust large-scale data extraction systems — a functional scraper for X (Twitter) and other sources — optimizing execution times and operational stability.",
+                    tech: ["Python", "Playwright", "Node.js", "Next.js"],
                 },
                 {
                     company: "P&P Camiones",
@@ -277,6 +274,15 @@ export const translations = {
                     current: false,
                     description: "Functional prototype of an integrated management platform for a surgical implementation company: commercial, administrative, operational and execution modules.",
                     tech: ["Angular", "Supabase"],
+                },
+                {
+                    company: "Crecer Capital",
+                    role: "Frontend Software Developer Intern",
+                    period: "Jun 2025 — Jul 2025",
+                    location: "Medellin · On-site",
+                    current: false,
+                    description: "Frontend development with Angular using the Scrum framework to build dynamic web interfaces. First professional steps in software engineering, collaborating with team members for iterative component delivery.",
+                    tech: ["Angular", "TypeScript", "Scrum", "HTML/CSS"],
                 },
             ],
             education: [
@@ -319,18 +325,6 @@ export const translations = {
                 next: "Next image",
                 previous: "Previous image",
                 counter: "{current} of {total}",
-            },
-            pyp: {
-                title: "PyP Camiones",
-                description: "Integral platform for commercial and operational management of cargo vehicles. Allows the client to present services online and manage the centralized daily operation.",
-                role: "Full-Stack · Architecture",
-                year: "2026",
-            },
-            smartrack: {
-                title: "Smartrack — Implameq",
-                description: "Prototype application for operational management in a surgical implementation company. This application was developed to be Mobile first",
-                role: "Frontend · Mobile First",
-                year: "2025",
             },
         },
         contact: {
