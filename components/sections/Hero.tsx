@@ -46,7 +46,8 @@ export function Hero() {
         offset: ["start start", "end start"],
     });
 
-    const titleY = useTransform(scrollYProgress, [0, 1], [0, 160]);
+    // Title recedes upward while scrolling (never collides with content below)
+    const titleY = useTransform(scrollYProgress, [0, 1], [0, -140]);
     const shaderY = useTransform(scrollYProgress, [0, 1], [0, 110]);
     const fadeOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
 
@@ -97,7 +98,7 @@ export function Hero() {
                 {/* Top meta row */}
                 <motion.div
                     {...reveal(0.9)}
-                    className="flex items-center justify-between px-6 pt-24 font-mono text-[10px] uppercase tracking-[0.28em] text-bone/60 md:px-10 md:pt-28 md:text-[11px]"
+                    className="flex items-center justify-between px-6 pt-20 font-mono text-[10px] uppercase tracking-[0.28em] text-bone/60 md:px-10 md:pt-28 md:text-[11px]"
                 >
                     <span className="flex items-center gap-2.5">
                         <span className="availability-dot inline-block h-1.5 w-1.5 rounded-full bg-acid" />
@@ -110,18 +111,18 @@ export function Hero() {
                 {/* Mobile centerpiece — auto-animated, fills the empty space */}
                 <motion.div
                     {...reveal(1.15)}
-                    className="relative flex flex-1 items-center justify-center py-10 sm:hidden"
+                    className="relative flex flex-1 items-center justify-center py-4 sm:hidden"
                 >
                     <div className="relative flex items-center justify-center">
                         <span
-                            className="js-hero-pulse absolute h-40 w-40 rounded-full border border-acid/50"
+                            className="js-hero-pulse absolute h-28 w-28 rounded-full border border-acid/50"
                             style={{ opacity: 0 }}
                         />
                         <span
-                            className="js-hero-pulse absolute h-40 w-40 rounded-full border border-acid/30"
+                            className="js-hero-pulse absolute h-28 w-28 rounded-full border border-acid/30"
                             style={{ opacity: 0 }}
                         />
-                        <RotatingBadge text={t.hero.badge} className="h-40 w-40 text-bone/90" />
+                        <RotatingBadge text={t.hero.badge} className="h-28 w-28 text-bone/90" />
                     </div>
                 </motion.div>
 
@@ -137,10 +138,10 @@ export function Hero() {
                         Portfolio — 2026
                     </motion.p>
                     <h1 className="font-display font-extrabold uppercase leading-[0.86] tracking-[-0.02em]">
-                        <span className="block overflow-hidden pb-[0.05em] text-[clamp(3.4rem,15vw,13.5rem)]">
+                        <span className="block overflow-hidden pb-[0.05em] text-[clamp(2.9rem,13.5vw,13.5rem)]">
                             <KineticChars text={FIRST} />
                         </span>
-                        <span className="block overflow-hidden pb-[0.08em] text-[clamp(3.4rem,15vw,13.5rem)]">
+                        <span className="block overflow-hidden pb-[0.08em] text-[clamp(2.9rem,13.5vw,13.5rem)]">
                             <KineticChars text={LAST} outline />
                             <span
                                 className="js-hero-char inline-block text-acid will-change-transform"
@@ -155,10 +156,10 @@ export function Hero() {
                 {/* Bottom row */}
                 <motion.div
                     {...reveal(1.25)}
-                    className="mx-6 mt-10 flex items-end justify-between gap-6 border-t border-bone/10 pb-8 pt-5 md:mx-10"
+                    className="mx-6 mt-8 flex items-end justify-between gap-6 border-t border-bone/10 pb-6 pt-4 md:mx-10 md:pb-8 md:pt-5"
                 >
                     <div className="max-w-md">
-                        <p className="text-sm leading-relaxed text-bone/60 md:text-base">
+                        <p className="text-[13px] leading-relaxed text-bone/60 md:text-base">
                             {t.hero.tagline}
                         </p>
                         <p className="mt-3 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-bone/40">
