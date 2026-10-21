@@ -22,8 +22,9 @@ const jbMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Brayan Zuluaga | Systems Engineer & Architect",
-    description: "Portfolio of Brayan Zuluaga - Systems Engineer specialized in Backend, Frontend, and Data Architecture.",
+    title: "Brayan Zuluaga | Backend Developer, Software Architect & AI Engineer",
+    description:
+        "Portfolio of Brayan David Zuluaga Meléndez — Backend Developer & Software Architect at Axel Growth Partners (USA), Lead Full-Stack & AI Architect at Knowten Suite, and Data Engineer at PROESA (World Bank).",
 };
 
 export default function RootLayout({

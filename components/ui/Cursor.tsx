@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -20,15 +20,21 @@ export function Cursor() {
     );
     const [visible, setVisible] = useState(false);
     const [variant, setVariant] = useState<CursorVariant>("default");
+    const [pressed, setPressed] = useState(false);
     const [label, setLabel] = useState<string | null>(null);
+
+    const visibleRef = useRef(false);
+    const variantRef = useRef<CursorVariant>("default");
+    const labelRef = useRef<string | null>(null);
+    const lastTargetRef = useRef<EventTarget | null>(null);
 
     const mouseX = useMotionValue(-100);
     const mouseY = useMotionValue(-100);
 
-    const dotX = useSpring(mouseX, { stiffness: 1000, damping: 60, mass: 0.2 });
-    const dotY = useSpring(mouseY, { stiffness: 1000, damping: 60, mass: 0.2 });
-    const ringX = useSpring(mouseX, { stiffness: 160, damping: 20, mass: 0.6 });
-    const ringY = useSpring(mouseY, { stiffness: 160, damping: 20, mass: 0.6 });
+    const dotX = useSpring(mouseX, { stiffness: 1100, damping: 58, mass: 0.15 });
+    const dotY = useSpring(mouseY, { stiffness: 1100, damping: 58, mass: 0.15 });
+    const ringX = useSpring(mouseX, { stiffness: 210, damping: 22, mass: 0.45 });
+    const ringY = useSpring(mouseY, { stiffness: 210, damping: 22, mass: 0.45 });
 
     useEffect(() => {
         if (!enabled) return;
@@ -38,27 +44,53 @@ export function Cursor() {
         const onMove = (event: MouseEvent) => {
             mouseX.set(event.clientX);
             mouseY.set(event.clientY);
-            setVisible(true);
+            if (!visibleRef.current) {
+                visibleRef.current = true;
+                setVisible(true);
+            }
         };
 
         const onOver = (event: MouseEvent) => {
-            const target = event.target as HTMLElement;
-            const interactive = target.closest?.("a, button, [data-cursor]");
-            setVariant(interactive ? "hover" : "default");
-            const labelled = target.closest?.("[data-cursor-label]");
-            setLabel(labelled ? labelled.getAttribute("data-cursor-label") : null);
+            if (event.target === lastTargetRef.current) return;
+            lastTargetRef.current = event.target;
+
+            const target = event.target as HTMLElement | null;
+            if (!target?.closest) return;
+
+            const interactive = Boolean(target.closest("a, button, [data-cursor]"));
+            const nextVariant: CursorVariant = interactive ? "hover" : "default";
+            if (nextVariant !== variantRef.current) {
+                variantRef.current = nextVariant;
+                setVariant(nextVariant);
+            }
+
+            const labelled = target.closest("[data-cursor-label]");
+            const nextLabel = labelled ? labelled.getAttribute("data-cursor-label") : null;
+            if (nextLabel !== labelRef.current) {
+                labelRef.current = nextLabel;
+                setLabel(nextLabel);
+            }
         };
 
-        const onLeave = () => setVisible(false);
+        const onDown = () => setPressed(true);
+        const onUp = () => setPressed(false);
+        const onLeave = () => {
+            visibleRef.current = false;
+            setVisible(false);
+        };
 
         window.addEventListener("mousemove", onMove, { passive: true });
         window.addEventListener("mouseover", onOver, { passive: true });
+        window.addEventListener("mousedown", onDown, { passive: true });
+        window.addEventListener("mouseup", onUp, { passive: true });
         document.documentElement.addEventListener("mouseleave", onLeave);
 
         return () => {
             document.documentElement.classList.remove("has-custom-cursor");
             window.removeEventListener("mousemove", onMove);
             window.removeEventListener("mouseover", onOver);
+            window.removeEventListener("mousedown", onDown);
+            window.removeEventListener("mouseup", onUp);
             document.documentElement.removeEventListener("mouseleave", onLeave);
         };
     }, [enabled, mouseX, mouseY]);
@@ -70,46 +102,46 @@ export function Cursor() {
             {/* Trailing ring */}
             <motion.div
                 aria-hidden
-                className="pointer-events-none fixed left-0 top-0 z-[299]"
+                className="pointer-events-none fixed left-0 top-0 z-[299] will-change-transform"
                 style={{ x: ringX, y: ringY }}
             >
                 <motion.div
-                    className="-ml-5 -mt-5 h-10 w-10 rounded-full border border-white mix-blend-difference"
+                    className="-ml-5 -mt-5 h-10 w-10 rounded-full border border-acid/80 mix-blend-difference"
                     animate={{
-                        scale: label ? 0 : variant === "hover" ? 1.7 : 0.55,
-                        opacity: visible ? (variant === "hover" ? 1 : 0.7) : 0,
+                        scale: label ? 0 : pressed ? 0.42 : variant === "hover" ? 1.65 : 0.55,
+                        opacity: visible ? (variant === "hover" ? 1 : 0.65) : 0,
                     }}
-                    transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                    transition={{ type: "spring", stiffness: 280, damping: 22 }}
                 />
             </motion.div>
 
             {/* Core dot */}
             <motion.div
                 aria-hidden
-                className="pointer-events-none fixed left-0 top-0 z-[300]"
+                className="pointer-events-none fixed left-0 top-0 z-[300] will-change-transform"
                 style={{ x: dotX, y: dotY }}
             >
                 <motion.div
-                    className="-ml-[3px] -mt-[3px] h-1.5 w-1.5 rounded-full bg-white mix-blend-difference"
-                    animate={{ scale: label ? 0 : 1, opacity: visible ? 1 : 0 }}
-                    transition={{ duration: 0.2 }}
+                    className="-ml-[3px] -mt-[3px] h-1.5 w-1.5 rounded-full bg-acid"
+                    animate={{ scale: label ? 0 : pressed ? 1.6 : 1, opacity: visible ? 1 : 0 }}
+                    transition={{ duration: 0.15 }}
                 />
             </motion.div>
 
             {/* Label bubble */}
             <motion.div
                 aria-hidden
-                className="pointer-events-none fixed left-0 top-0 z-[301]"
+                className="pointer-events-none fixed left-0 top-0 z-[301] will-change-transform"
                 style={{ x: dotX, y: dotY }}
             >
                 <motion.div
                     className={cn(
-                        "-ml-9 -mt-9 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full bg-acid text-center"
+                        "-ml-10 -mt-10 flex h-20 w-20 items-center justify-center rounded-full bg-acid text-center shadow-[0_0_30px_rgba(200,243,29,0.4)]"
                     )}
                     animate={{ scale: label ? 1 : 0, opacity: label ? 1 : 0 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    transition={{ type: "spring", stiffness: 320, damping: 22 }}
                 >
-                    <span className="px-2 font-mono text-[9px] font-medium uppercase leading-tight tracking-[0.18em] text-ink">
+                    <span className="px-2 font-mono text-[9px] font-semibold uppercase leading-tight tracking-[0.18em] text-ink">
                         {label}
                     </span>
                 </motion.div>
