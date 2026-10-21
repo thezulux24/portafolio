@@ -2,6 +2,7 @@
 
 import { useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useInView } from "framer-motion";
 import * as THREE from "three";
 
 function seededNoise(seed: number) {
@@ -14,7 +15,7 @@ function RetroGrid() {
     const backRef = useRef<THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>>(null);
 
     useFrame((state) => {
-        const travel = (state.clock.getElapsedTime() * 2.2) % 14;
+        const travel = (state.clock.getElapsedTime() * 1.8) % 14;
 
         if (frontRef.current) {
             frontRef.current.position.z = travel - 7;
@@ -28,12 +29,12 @@ function RetroGrid() {
     return (
         <group rotation={[-Math.PI / 2.45, 0, 0]} position={[0, -2.3, -8]}>
             <mesh ref={frontRef}>
-                <planeGeometry args={[28, 28, 40, 40]} />
-                <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.18} />
+                <planeGeometry args={[28, 28, 32, 32]} />
+                <meshBasicMaterial color="#c8f31d" wireframe transparent opacity={0.12} />
             </mesh>
             <mesh ref={backRef}>
-                <planeGeometry args={[28, 28, 40, 40]} />
-                <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.12} />
+                <planeGeometry args={[28, 28, 32, 32]} />
+                <meshBasicMaterial color="#ece9e1" wireframe transparent opacity={0.07} />
             </mesh>
         </group>
     );
@@ -41,8 +42,7 @@ function RetroGrid() {
 
 function RetroParticles() {
     const particlesRef = useRef<THREE.Points>(null);
-    const materialRef = useRef<THREE.PointsMaterial>(null);
-    const count = 1600;
+    const count = 900;
 
     const positions = useMemo(() => {
         const values = new Float32Array(count * 3);
@@ -61,13 +61,9 @@ function RetroParticles() {
         return values;
     }, [count]);
 
-    useFrame((state, delta) => {
+    useFrame((_, delta) => {
         if (particlesRef.current) {
-            particlesRef.current.rotation.y += delta * 0.035;
-        }
-
-        if (materialRef.current) {
-            materialRef.current.opacity = 0.33 + Math.sin(state.clock.getElapsedTime() * 1.8) * 0.09;
+            particlesRef.current.rotation.y += delta * 0.03;
         }
     });
 
@@ -77,38 +73,14 @@ function RetroParticles() {
                 <bufferAttribute attach="attributes-position" args={[positions, 3]} />
             </bufferGeometry>
             <pointsMaterial
-                ref={materialRef}
                 transparent
-                color="#f5f5f5"
-                size={0.03}
+                color="#c8f31d"
+                size={0.032}
                 sizeAttenuation
                 depthWrite={false}
-                opacity={0.36}
+                opacity={0.32}
             />
         </points>
-    );
-}
-
-function PulseCore() {
-    const coreRef = useRef<THREE.Mesh<THREE.IcosahedronGeometry, THREE.MeshBasicMaterial>>(null);
-
-    useFrame((state) => {
-        if (!coreRef.current) {
-            return;
-        }
-
-        const time = state.clock.getElapsedTime();
-        const scale = 0.95 + Math.sin(time * 2.6) * 0.12;
-        coreRef.current.scale.setScalar(scale);
-        coreRef.current.rotation.y += 0.004;
-        coreRef.current.rotation.x += 0.002;
-    });
-
-    return (
-        <mesh ref={coreRef} position={[0, 1.2, -3]}>
-            <icosahedronGeometry args={[0.72, 1]} />
-            <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.22} />
-        </mesh>
     );
 }
 
@@ -120,24 +92,24 @@ function SceneContent() {
         <group scale={scale}>
             <RetroGrid />
             <RetroParticles />
-            <PulseCore />
         </group>
     );
 }
 
 export function CvLoadingScene() {
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const inView = useInView(wrapperRef, { margin: "100px" });
+
     return (
-        <div className="pointer-events-none absolute inset-0 z-0">
+        <div ref={wrapperRef} className="pointer-events-none fixed inset-0 z-0">
             <Canvas
                 camera={{ position: [0, 1.4, 7], fov: 58 }}
-                gl={{ antialias: true, alpha: true }}
-                dpr={[1, 1.5]}
+                gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
+                dpr={[1, 1.25]}
+                frameloop={inView ? "always" : "never"}
             >
-                <color attach="background" args={["#030303"]} />
-                <fog attach="fog" args={["#030303", 6, 18]} />
-                <ambientLight intensity={0.45} />
-                <pointLight position={[0, 2, 2]} intensity={1.1} color="#ffffff" />
-                <pointLight position={[0, -3, -4]} intensity={0.55} color="#8a8a8a" />
+                <color attach="background" args={["#0a0a09"]} />
+                <fog attach="fog" args={["#0a0a09", 6, 18]} />
                 <SceneContent />
             </Canvas>
         </div>
