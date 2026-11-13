@@ -136,34 +136,6 @@ void main() {
 
 const HOLO = new THREE.Color(...HUES.holo);
 
-// The projector's light: a cone of light rising from the plate, brighter at its edges, with
-// bands of light travelling up it the way a projected hologram is fed.
-const BEAM_VERT = /* glsl */ `
-varying vec2 vUv;
-varying float vEdge;
-void main() {
-    vUv = uv;
-    vec4 mv = modelViewMatrix * vec4(position, 1.0);
-    vec3 n = normalize(normalMatrix * normal);
-    vEdge = 1.0 - abs(dot(n, normalize(-mv.xyz)));
-    gl_Position = projectionMatrix * mv;
-}`;
-
-const BEAM_FRAG = /* glsl */ `
-uniform vec3 uHolo;
-uniform float uTime;
-uniform float uStrength;
-varying vec2 vUv;
-varying float vEdge;
-void main() {
-    float rise = 1.0 - vUv.y;
-    float fade = pow(1.0 - vUv.y, 1.6) * smoothstep(0.0, 0.06, vUv.y);
-    float bands = smoothstep(0.75, 1.0, sin((vUv.y * 9.0 - uTime * 0.9) * 6.28318) * 0.5 + 0.5);
-    float rays = smoothstep(0.6, 1.0, sin(vUv.x * 6.28318 * 18.0 + uTime * 0.4) * 0.5 + 0.5);
-    float edge = pow(vEdge, 3.0);
-    float glow = fade * (0.18 + edge * 0.9 + bands * 0.35 + rays * 0.25 * rise);
-    gl_FragColor = vec4(uHolo * glow, glow * uStrength);
-}`;
 const STILL_TIME = 2.4;
 
 /** Loads both textures without suspending, so the canvas root is never torn down mid-mount. */
@@ -193,7 +165,6 @@ function usePortraitTextures() {
 function Figure({ map, depth }: { map: THREE.Texture; depth: THREE.Texture }) {
     const group = useRef<THREE.Group>(null);
     const rings = useRef<THREE.Group>(null);
-    const beam = useRef<THREE.ShaderMaterial>(null);
     const planeMaterial = useRef<THREE.ShaderMaterial>(null);
     const pointMaterial = useRef<THREE.ShaderMaterial>(null);
     const { viewport, size } = useThree();
@@ -225,8 +196,6 @@ function Figure({ map, depth }: { map: THREE.Texture; depth: THREE.Texture }) {
         }),
         [map, depth]
     );
-
-    const beamUniforms = useMemo(() => ({ uHolo: { value: HOLO }, uTime: { value: 0 }, uStrength: { value: 0 } }), []);
 
     const pointUniforms = useMemo(
         () => ({
@@ -286,12 +255,6 @@ function Figure({ map, depth }: { map: THREE.Texture; depth: THREE.Texture }) {
             group.current.rotation.y += (pointer.current.x * 0.26 - group.current.rotation.y) * ease;
             group.current.rotation.x += (pointer.current.y * 0.1 - group.current.rotation.x) * ease;
         }
-        const light = beam.current?.uniforms;
-        if (light) {
-            light.uTime.value = t;
-            // The beam is part of the projection: it builds with the figure and goes out with it.
-            light.uStrength.value = 0.95 * portrait.formed * (1 - portrait.dissolve);
-        }
         if (rings.current) {
             rings.current.children.forEach((ring, index) => {
                 ring.rotation.z = t * (0.12 + index * 0.07) * (index % 2 ? -1 : 1);
@@ -325,21 +288,6 @@ function Figure({ map, depth }: { map: THREE.Texture; depth: THREE.Texture }) {
                     />
                 </points>
             </group>
-
-            {/* Projector light */}
-            <mesh position={[0, -HEIGHT / 2 + (HEIGHT * 0.92) / 2, -0.05]} renderOrder={-1}>
-                <cylinderGeometry args={[1.18, 0.5, HEIGHT * 0.92, 64, 1, true]} />
-                <shaderMaterial
-                    ref={beam}
-                    vertexShader={BEAM_VERT}
-                    fragmentShader={BEAM_FRAG}
-                    uniforms={beamUniforms}
-                    transparent
-                    depthWrite={false}
-                    blending={THREE.AdditiveBlending}
-                    side={THREE.DoubleSide}
-                />
-            </mesh>
 
             {/* Projector plate */}
             <group ref={rings} position={[0, -HEIGHT / 2 - 0.02, 0.1]} rotation={[-Math.PI / 2 + 0.09, 0, 0]}>
