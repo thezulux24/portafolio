@@ -7,12 +7,27 @@ import { HUES } from "@/lib/scene";
 
 const HOLO = new THREE.Color(...HUES.holo);
 const SODIUM = new THREE.Color(...HUES.sodium);
+const NEON = new THREE.Color(1.0, 0.3, 0.62);
 
-// Where the work happens: based in Cali, working remotely for Naples, Florida.
+// Home base: Cali. The main route goes to Naples, Florida (remote work today); the rest is the
+// network a remote engineer reaches from there.
 const CALI = { lat: 3.45, lon: -76.53 };
-const NAPLES = { lat: 26.14, lon: -81.79 };
-// The globe faces the Americas.
-const CENTER = { lat: 14, lon: -79 };
+const ROUTES = [
+    { lat: 26.14, lon: -81.79, main: true }, // Naples, FL
+    { lat: 40.71, lon: -74.0 }, // New York
+    { lat: 37.77, lon: -122.42 }, // San Francisco
+    { lat: 19.43, lon: -99.13 }, // Mexico City
+    { lat: 4.71, lon: -74.07 }, // Bogotá
+    { lat: -23.55, lon: -46.63 }, // São Paulo
+    { lat: -34.6, lon: -58.38 }, // Buenos Aires
+    { lat: 40.42, lon: -3.7 }, // Madrid
+    { lat: 51.51, lon: -0.13 }, // London
+];
+// The globe faces the Americas, turned a little toward the Atlantic so Europe shows on the swing.
+const CENTER = { lat: 16, lon: -66 };
+
+// Time and build progress shared by every arc: one uniform object, many materials.
+const ARC_CLOCK = { uTime: { value: 0 }, uFormed: { value: 0 } };
 
 const toRad = (deg: number) => (deg * Math.PI) / 180;
 
@@ -93,17 +108,19 @@ void main() {
 
 const ARC_FRAG = /* glsl */ `
 uniform vec3 uHolo;
-uniform vec3 uSodium;
+uniform vec3 uPulse;
 uniform float uTime;
 uniform float uFormed;
+uniform float uPhase;
+uniform float uBase;
 varying vec2 vUv;
 void main() {
-    float head = fract(uTime * 0.32);
+    float head = fract(uTime * 0.28 + uPhase);
     float d = vUv.x - head;
-    float pulse = exp(-d * d * 260.0);
-    float drawn = step(vUv.x, uFormed * 1.2 - 0.2);
-    vec3 col = mix(uHolo * 0.7, uSodium * 1.4, pulse);
-    gl_FragColor = vec4(col, (0.5 + 0.5 * pulse) * drawn);
+    float pulse = exp(-d * d * 320.0);
+    float drawn = step(vUv.x, uFormed * 1.25 - 0.25 - uPhase * 0.2);
+    vec3 col = mix(uHolo * 0.7, uPulse * 1.5, pulse);
+    gl_FragColor = vec4(col, (uBase + (1.0 - uBase) * pulse) * drawn);
 }`;
 
 const ARC_VERT = /* glsl */ `
@@ -145,7 +162,7 @@ function useLand() {
     return positions;
 }
 
-function Marker({ lat, lon, delay }: { lat: number; lon: number; delay: number }) {
+function Marker({ lat, lon, delay, color = SODIUM, size = 1 }: { lat: number; lon: number; delay: number; color?: THREE.Color; size?: number }) {
     const ring = useRef<THREE.Mesh>(null);
     const placement = useMemo(() => {
         const at = onSphere(lat, lon, 1.004);
@@ -162,13 +179,13 @@ function Marker({ lat, lon, delay }: { lat: number; lon: number; delay: number }
 
     return (
         <group position={placement.at} quaternion={placement.quaternion}>
-            <mesh>
+            <mesh scale={size}>
                 <circleGeometry args={[0.014, 24]} />
-                <meshBasicMaterial color={SODIUM} transparent depthWrite={false} />
+                <meshBasicMaterial color={color} transparent depthWrite={false} />
             </mesh>
-            <mesh ref={ring}>
+            <mesh ref={ring} scale={size}>
                 <ringGeometry args={[0.018, 0.024, 40]} />
-                <meshBasicMaterial color={SODIUM} transparent depthWrite={false} side={THREE.DoubleSide} />
+                <meshBasicMaterial color={color} transparent depthWrite={false} side={THREE.DoubleSide} />
             </mesh>
         </group>
     );
@@ -179,7 +196,6 @@ function Globe({ visible }: { visible: boolean }) {
     const lean = useRef<THREE.Group>(null);
     const dots = useRef<THREE.ShaderMaterial>(null);
     const rim = useRef<THREE.ShaderMaterial>(null);
-    const arc = useRef<THREE.ShaderMaterial>(null);
     const pointer = useRef({ x: 0, y: 0 });
     const still = useRef(false);
     const formed = useRef(0);
@@ -197,15 +213,33 @@ function Globe({ visible }: { visible: boolean }) {
         return () => window.removeEventListener("pointermove", onMove);
     }, []);
 
-    const route = useMemo(() => {
+    const routes = useMemo(() => {
         const from = onSphere(CALI.lat, CALI.lon);
-        const to = onSphere(NAPLES.lat, NAPLES.lon);
-        const points = Array.from({ length: 48 }, (_, index) => {
-            const t = index / 47;
-            const lift = 1 + Math.sin(Math.PI * t) * 0.1;
-            return from.clone().lerp(to, t).normalize().multiplyScalar(lift);
+        return ROUTES.map((route, index) => {
+            const to = onSphere(route.lat, route.lon);
+            const span = from.angleTo(to);
+            const points = Array.from({ length: 64 }, (_, step) => {
+                const t = step / 63;
+                // Longer routes fly higher, so they read as arcs and not as scratches on the surface.
+                const lift = 1 + Math.sin(Math.PI * t) * (0.05 + span * 0.22);
+                return from.clone().lerp(to, t).normalize().multiplyScalar(lift);
+            });
+            const main = "main" in route && route.main;
+            return {
+                key: `${route.lat},${route.lon}`,
+                route,
+                main,
+                geometry: new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 96, main ? 0.0048 : 0.0028, 6, false),
+                uniforms: {
+                    uTime: ARC_CLOCK.uTime,
+                    uFormed: ARC_CLOCK.uFormed,
+                    uHolo: { value: HOLO },
+                    uPulse: { value: main ? SODIUM : index % 2 ? NEON : HOLO },
+                    uPhase: { value: main ? 0 : (index * 0.137) % 1 },
+                    uBase: { value: main ? 0.5 : 0.22 },
+                },
+            };
         });
-        return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 64, 0.0045, 6, false);
     }, []);
 
     const dotUniforms = useMemo(
@@ -213,10 +247,6 @@ function Globe({ visible }: { visible: boolean }) {
         []
     );
     const rimUniforms = useMemo(() => ({ uHolo: { value: HOLO }, uFormed: { value: 0 } }), []);
-    const arcUniforms = useMemo(
-        () => ({ uHolo: { value: HOLO }, uSodium: { value: SODIUM }, uTime: { value: 0 }, uFormed: { value: 0 } }),
-        []
-    );
 
     const radius = Math.min(viewport.width, viewport.height) * 0.42;
 
@@ -234,15 +264,12 @@ function Globe({ visible }: { visible: boolean }) {
             d.uSize.value = sizePx;
         }
         if (rim.current) rim.current.uniforms.uFormed.value = f;
-        const a = arc.current?.uniforms;
-        if (a) {
-            a.uTime.value = t;
-            a.uFormed.value = THREE.MathUtils.clamp((f - 0.55) / 0.45, 0, 1);
-        }
+        ARC_CLOCK.uTime.value = t;
+        ARC_CLOCK.uFormed.value = THREE.MathUtils.clamp((f - 0.5) / 0.5, 0, 1);
 
         if (lean.current) {
             const ease = 1 - Math.exp(-delta * 3);
-            const swing = still.current ? 0 : Math.sin(t * 0.22) * 0.3;
+            const swing = still.current ? 0 : Math.sin(t * 0.18) * 0.5;
             lean.current.rotation.y += (pointer.current.x * 0.35 + swing - lean.current.rotation.y) * ease;
             lean.current.rotation.x += (pointer.current.y * 0.2 - lean.current.rotation.x) * ease;
         }
@@ -273,19 +300,29 @@ function Globe({ visible }: { visible: boolean }) {
                         />
                     </points>
                 )}
-                <mesh geometry={route} renderOrder={2}>
-                    <shaderMaterial
-                        ref={arc}
-                        vertexShader={ARC_VERT}
-                        fragmentShader={ARC_FRAG}
-                        uniforms={arcUniforms}
-                        transparent
-                        depthWrite={false}
-                        blending={THREE.AdditiveBlending}
+                {routes.map((route) => (
+                    <mesh key={route.key} geometry={route.geometry} renderOrder={2}>
+                        <shaderMaterial
+                            vertexShader={ARC_VERT}
+                            fragmentShader={ARC_FRAG}
+                            uniforms={route.uniforms}
+                            transparent
+                            depthWrite={false}
+                            blending={THREE.AdditiveBlending}
+                        />
+                    </mesh>
+                ))}
+                <Marker lat={CALI.lat} lon={CALI.lon} delay={0} size={1.25} />
+                {routes.map((route, index) => (
+                    <Marker
+                        key={route.key}
+                        lat={route.route.lat}
+                        lon={route.route.lon}
+                        delay={(index * 0.29) % 1}
+                        color={route.main ? SODIUM : HOLO}
+                        size={route.main ? 1 : 0.7}
                     />
-                </mesh>
-                <Marker lat={CALI.lat} lon={CALI.lon} delay={0} />
-                <Marker lat={NAPLES.lat} lon={NAPLES.lon} delay={0.5} />
+                ))}
             </group>
             <mesh renderOrder={3}>
                 <sphereGeometry args={[1.035, 64, 48]} />
@@ -303,7 +340,7 @@ function Globe({ visible }: { visible: boolean }) {
     );
 }
 
-/** A holographic globe: land as light, and the route the work travels, Cali to Naples. */
+/** A holographic globe: land as light, and routes of light from Cali to the places the work reaches. */
 export default function HoloGlobe({ className }: { className?: string }) {
     const wrapper = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
@@ -319,7 +356,7 @@ export default function HoloGlobe({ className }: { className?: string }) {
     return (
         <div ref={wrapper} className={className} aria-hidden="true">
             <Canvas
-                dpr={[1, 1.75]}
+                dpr={[1, 1.5]}
                 frameloop={visible ? "always" : "never"}
                 camera={{ fov: 30, position: [0, 0, 5] }}
                 gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}

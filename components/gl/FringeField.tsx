@@ -46,7 +46,7 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
     float v = 0.0;
     float a = 0.5;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 3; i++) {
         v += a * noise(p);
         p = p * 2.03 + 17.1;
         a *= 0.5;
@@ -91,6 +91,18 @@ void main() {
     ground += uAccent * halo * halo * 0.085;
 
     vec3 col = ground + light * intensity * 0.42 * uGain;
+
+    // Projector shafts: two slow beams of light falling across the plate.
+    vec2 dirA = normalize(vec2(0.42, 1.0));
+    vec2 dirB = normalize(vec2(-0.3, 1.0));
+    float sa = dot(uv, vec2(dirA.y, -dirA.x)) - 0.55 * sin(t * 0.045) - 0.25;
+    float sb = dot(uv, vec2(dirB.y, -dirB.x)) + 0.5 * cos(t * 0.037) + 0.35;
+    float flick = 0.85 + 0.15 * sin(t * 7.0 + m * 9.0);
+    float shaft = exp(-sa * sa * 90.0) * 0.6 + exp(-sa * sa * 900.0) * 0.5;
+    shaft += (exp(-sb * sb * 120.0) * 0.45 + exp(-sb * sb * 1200.0) * 0.4) * 0.8;
+    shaft *= smoothstep(-0.6, 0.6, uv.y) * (0.55 + 0.45 * m) * flick;
+    vec3 neon = mix(uAccent, vec3(1.0, 0.22, 0.55), 0.35);
+    col += neon * shaft * 0.13 * uGain;
     col *= 1.0 - 0.32 * dot(uv, uv);
     col += (hash(gl_FragCoord.xy + fract(t) * 91.7) - 0.5) / 255.0 * 2.0;
 
@@ -155,15 +167,51 @@ export function FringeField() {
         const pointer = { x: -0.45, y: 0.12, tx: -0.45, ty: 0.12 };
         let width = 0;
         let height = 0;
+        let scrollMax = 1;
+        // Quality steps the field can drop to when frames run long. The fringes stay
+        // legible down to half resolution because the canvas is upscaled smoothly.
+        const QUALITY = [1, 0.8, 0.65, 0.5];
+        let quality = 0;
 
         const resize = () => {
-            // The field is soft by nature: render below device resolution.
-            const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-            width = Math.round(window.innerWidth * dpr);
-            height = Math.round(window.innerHeight * dpr);
+            const css = window.innerWidth * window.innerHeight;
+            // Never shade more than about two million pixels, whatever the screen.
+            const scale = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(2.0e6 / Math.max(1, css))) * QUALITY[quality];
+            width = Math.max(1, Math.round(window.innerWidth * scale));
+            height = Math.max(1, Math.round(window.innerHeight * scale));
             canvas.width = width;
             canvas.height = height;
             gl.viewport(0, 0, width, height);
+            scrollMax = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        };
+
+        // Track the page length without reading layout every frame.
+        const sizeWatch = new ResizeObserver(() => {
+            scrollMax = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        });
+        sizeWatch.observe(document.body);
+
+        let frames = 0;
+        let spent = 0;
+        let last = 0;
+        const watchFrame = (time: number) => {
+            if (last) {
+                const delta = time - last;
+                // Ignore stalls (tab switches, long tasks) and only judge steady frames.
+                if (delta < 100) {
+                    spent += delta;
+                    frames++;
+                }
+            }
+            last = time;
+            if (frames >= 90) {
+                if (spent / frames > 21 && quality < QUALITY.length - 1) {
+                    quality++;
+                    resize();
+                }
+                frames = 0;
+                spent = 0;
+            }
         };
 
         const onPointer = (event: PointerEvent) => {
@@ -175,7 +223,6 @@ export function FringeField() {
         const draw = (time: number) => {
             pointer.x += (pointer.tx - pointer.x) * 0.045;
             pointer.y += (pointer.ty - pointer.y) * 0.045;
-            const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
 
             gl.uniform2f(loc.res, width, height);
             gl.uniform1f(loc.time, reduce ? 12 : time / 1000);
@@ -184,7 +231,7 @@ export function FringeField() {
             gl.uniform3f(loc.accent, field.accent[0], field.accent[1], field.accent[2]);
             gl.uniform1f(loc.gain, field.gain);
             gl.uniform1f(loc.density, field.density);
-            gl.uniform1f(loc.scroll, window.scrollY / max);
+            gl.uniform1f(loc.scroll, window.scrollY / scrollMax);
             gl.drawArrays(gl.TRIANGLES, 0, 3);
         };
 
@@ -192,6 +239,7 @@ export function FringeField() {
         let running = false;
         const loop = (time: number) => {
             draw(time);
+            watchFrame(time);
             raf = requestAnimationFrame(loop);
         };
         const start = () => {
@@ -201,6 +249,7 @@ export function FringeField() {
         };
         const stop = () => {
             running = false;
+            last = 0;
             cancelAnimationFrame(raf);
         };
         const onVisibility = () => (document.hidden ? stop() : start());
@@ -214,6 +263,7 @@ export function FringeField() {
 
         return () => {
             stop();
+            sizeWatch.disconnect();
             window.removeEventListener("resize", resize);
             window.removeEventListener("pointermove", onPointer);
             document.removeEventListener("visibilitychange", onVisibility);

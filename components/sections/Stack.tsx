@@ -7,6 +7,7 @@ import { HUES } from "@/lib/scene";
 import { useLang } from "@/lib/store";
 import { stack, ui } from "@/lib/content";
 import { BrandIcon, brandColor } from "@/components/ui/BrandIcon";
+import { TechHologram } from "@/components/ui/TechHologram";
 
 export function Stack() {
     const root = useRef<HTMLElement>(null);
@@ -35,11 +36,14 @@ export function Stack() {
     return (
         <section ref={root} id="stack" aria-labelledby="stack-title" className="relative scroll-mt-(--nav-h) pt-24 pb-16 stage:pt-32 stage:pb-20">
             <div className="wrap">
-                <h2 id="stack-title" className="heading text-[clamp(2.5rem,4.6vw,4.25rem)]">
-                    {ui.stack.title[lang]}
-                </h2>
+                <div className="grid items-end gap-6 stage:grid-cols-12 stage:gap-10">
+                    <h2 id="stack-title" className="heading text-[clamp(2.5rem,4.6vw,4.25rem)] stage:col-span-5 stage:pb-6">
+                        {ui.stack.title[lang]}
+                    </h2>
+                    <TechHologram className="h-64 stage:col-span-7 stage:h-80" />
+                </div>
 
-                <div className="mt-12 border-b border-line">
+                <div className="mt-8 border-b border-line">
                     {stack.map((group) => (
                         <div key={group.title.en} className="js-group grid gap-4 border-t border-line py-6 stage:grid-cols-12 stage:gap-10 stage:py-7">
                             <div className="grid content-start gap-2 stage:col-span-5">

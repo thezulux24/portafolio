@@ -19,25 +19,6 @@ Nada de esta carpeta se despliega. El sitio usa las copias optimizadas en `publi
 
 `captures/` está en `.gitignore` por su tamaño (42 MB de PNG).
 
-## De dónde sale cada cifra
+## Cifras
 
-Las cifras de los proyectos se contaron leyendo cada repositorio el 2026-11-12. Si el código cambia, hay que volver a contarlas.
-
-| Proyecto | Cifra | Fuente |
-|---|---|---|
-| Knowten Suite | 49 scrapers, 6 radares, router de 10 ms | Texto del portafolio anterior (`lib/translations.ts` en el historial de git), escrito por el dueño. |
-| Enerplus | 19 fabricantes en catálogo, 3 activos | Catálogo de conectores del repositorio; la pantalla de proveedores muestra "3 / 19". |
-| Enerplus | 24 tipos de job Celery | Tareas registradas en `apps/api`. |
-| Enerplus | 54 pantallas | Páginas de `apps/web`. |
-| CMS Studio | 41 tipos de bloque | Registro de bloques del repositorio (14 categorías). |
-| CMS Studio | 263 operaciones para agentes | Operaciones compartidas por el servidor MCP, la CLI `ltn` y el SDK. |
-| CMS Studio | 42 modelos por tenant | Modelos de Prisma con `tenantId`. |
-| MiPlante | 99 % de tope de reparto | Validación del backend: las reglas no pueden tomar más del 99 % de una venta. |
-| MiPlante | 188 pruebas de backend | Suite de Vitest del backend. |
-| MiPlante | 19 decisiones de arquitectura | ADR en `docs/`. |
-| Afil | 337k lotes con volumetría | 337.979 lotes en la base calculada, según la documentación del repositorio. |
-| Afil | 13 tablas de reglas citadas | CSV en `reglas/cali/`. |
-| Afil | Hexágonos de 150 m | Vista de ciudad del mapa de oportunidad. |
-| Café Pa'l Monte | Ciclo de 8 s | Intervalo de sincronización automática con WhatsApp Web. |
-| Café Pa'l Monte | 11k líneas | Unas 11.100 líneas entre `src` y `scripts`. |
-| Café Pa'l Monte | v2.0 | Instalador `CafePalMonte_Setup_v2.0.0.exe`. |
+Desde el 2026-11-13 las tarjetas de proyecto muestran tres rasgos en palabras (por ejemplo "Editor visual en vivo") en lugar de cifras, a pedido del dueño. Las únicas cifras que quedan en el sitio están en la trayectoria (los 8 scrapers de PROESA, confirmados por el dueño) y en el texto de Knowten, que viene del sitio anterior.

@@ -230,7 +230,7 @@ export function Projects() {
                                     aria-labelledby={`project-${project.slug}`}
                                 >
                                     <div className="flex flex-col gap-4 stage:col-span-4 stage:row-start-1">
-                                        <h3 id={`project-${project.slug}`} className="js-t heading text-[clamp(2rem,3.3vw,3.25rem)]">
+                                        <h3 id={`project-${project.slug}`} className="js-t heading text-[clamp(2rem,3.3vw,3rem)]">
                                             {project.name}
                                         </h3>
                                         <p className="js-t text-sm font-semibold text-sodium [font-variation-settings:'wdth'_112]">
@@ -240,17 +240,20 @@ export function Projects() {
                                     </div>
 
                                     <div className="flex flex-col gap-5 max-stage:order-3 stage:col-span-4 stage:row-start-2">
-                                        <dl className="js-t grid grid-cols-3 border-y border-line">
-                                            {project.facts.map((fact, factIndex) => (
-                                                <div
-                                                    key={fact.value}
-                                                    className={"flex flex-col gap-2 py-4 " + (factIndex > 0 ? "border-l border-line pl-4" : "pr-2")}
+                                        <ul className="js-t grid border-y border-line">
+                                            {project.features.map((feature, featureIndex) => (
+                                                <li
+                                                    key={feature.en}
+                                                    className={
+                                                        "flex items-center gap-3 py-2.5 text-[0.9375rem] text-text " +
+                                                        (featureIndex > 0 ? "border-t border-line/60" : "")
+                                                    }
                                                 >
-                                                    <dd className="readout text-[2rem] text-text">{fact.value}</dd>
-                                                    <dt className="text-[0.8125rem] leading-snug text-text-3">{fact.label[lang]}</dt>
-                                                </div>
+                                                    <span aria-hidden="true" className="neon-dot" />
+                                                    {feature[lang]}
+                                                </li>
                                             ))}
-                                        </dl>
+                                        </ul>
 
                                         <dl className="js-t grid gap-2 text-sm text-text-2">
                                             {project.role && (
@@ -345,6 +348,7 @@ export function Projects() {
                                                     </button>
                                                 )}
                                             </div>
+                                            <span className="neon-edge" aria-hidden="true" />
                                             <span className="js-beam beam" aria-hidden="true" />
                                         </div>
 

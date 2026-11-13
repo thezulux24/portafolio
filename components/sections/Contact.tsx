@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowUpRight, Check, Copy } from "lucide-react";
-import { gsap, MOTION_OK, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { tuneField } from "@/lib/field";
 import { HUES } from "@/lib/scene";
 import { useLang } from "@/lib/store";
@@ -23,21 +23,18 @@ export function Contact() {
             const tune = () => tuneField({ hue: HUES.flare, x: 0.35, y: 0.0, gain: 1.1, density: 0.8 });
             ScrollTrigger.create({ trigger: root.current, start: "top 55%", onEnter: tune, onEnterBack: tune });
 
-            const mm = gsap.matchMedia();
-            mm.add(MOTION_OK, () => {
-                // The headline is read out left to right, then the clip is released.
-                gsap.fromTo(
-                    ".js-title",
-                    { clipPath: "inset(0% 100% 0% 0%)" },
-                    {
-                        clipPath: "inset(0% 0% 0% 0%)",
-                        duration: 1.1,
-                        ease: "travel",
-                        clearProps: "clipPath",
-                        scrollTrigger: { trigger: root.current, start: "top 62%", once: true },
-                    }
-                );
-            });
+            // The sign lights when it comes into view; with reduced motion it is simply on.
+            const title = root.current?.querySelector(".js-title");
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                title?.classList.add("is-lit");
+            } else {
+                ScrollTrigger.create({
+                    trigger: root.current,
+                    start: "top 62%",
+                    once: true,
+                    onEnter: () => title?.classList.add("is-lit"),
+                });
+            }
         },
         { scope: root }
     );
@@ -65,7 +62,7 @@ export function Contact() {
 
                 <h2
                     id="contact-title"
-                    className={"js-title display " + (lang === "es" ? "text-[11.2vw] stage:text-[min(11.3vw,25svh,10.75rem)]" : "text-[19vw] stage:text-[min(13.2vw,25svh,12.5rem)]")}
+                    className={"js-title neon-sign display " + (lang === "es" ? "text-[11.2vw] stage:text-[min(11.3vw,25svh,10.75rem)]" : "text-[19vw] stage:text-[min(13.2vw,25svh,12.5rem)]")}
                     aria-label={ui.contact.title[lang].join(" ")}>
                     {ui.contact.title[lang].map((line) => (
                         <span key={line} className="block pb-[0.04em] not-first:-mt-[0.04em]" aria-hidden="true">

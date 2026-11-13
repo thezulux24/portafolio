@@ -84,10 +84,10 @@ export const projects: Project[] = [
             es: "Plataforma B2B multi-tenant que convierte scraping en la nube en radares competitivos y briefs ejecutivos con cada dato verificado.",
             en: "Multi-tenant B2B platform that turns cloud scraping into competitive radars and executive briefs with every fact verified.",
         },
-        facts: [
-            { value: "49", label: { es: "scrapers en la nube", en: "cloud scrapers" } },
-            { value: "6", label: { es: "radares con IA", en: "AI radars" } },
-            { value: "10ms", label: { es: "router sin tokens", en: "zero-token router" } },
+        features: [
+            { es: "Scraping en la nube", en: "Cloud scraping" },
+            { es: "Radares competitivos con IA", en: "AI competitive radars" },
+            { es: "Agente conversacional Synora", en: "Synora conversational agent" },
         ],
         stack: ["Next.js 16", "NestJS 11", "PostgreSQL 16", "Prisma 7", "Claude", "Apify"],
         role: { es: "Lead Full-Stack & AI Architect", en: "Lead Full-Stack & AI Architect" },
@@ -116,10 +116,10 @@ export const projects: Project[] = [
             es: "SaaS multiempresa que une la telemetría de Huawei, Solis y Growatt en una sola sala de control, con alarmas, mantenimiento predictivo y simulación.",
             en: "Multi-company SaaS that brings Huawei, Solis and Growatt telemetry into one control room, with alarms, predictive maintenance and simulation.",
         },
-        facts: [
-            { value: "19", label: { es: "fabricantes en catálogo, 3 activos", en: "vendors in the catalog, 3 live" } },
-            { value: "24", label: { es: "tipos de job Celery", en: "Celery job types" } },
-            { value: "54", label: { es: "pantallas", en: "screens" } },
+        features: [
+            { es: "Monitoreo solar en tiempo real", en: "Real-time solar monitoring" },
+            { es: "Varios fabricantes, una sola sala", en: "Many vendors, one control room" },
+            { es: "Mantenimiento predictivo", en: "Predictive maintenance" },
         ],
         stack: ["FastAPI", "Celery", "Redis", "PostgreSQL + TimescaleDB", "Next.js 16", "ECharts"],
         role: {
@@ -149,10 +149,10 @@ export const projects: Project[] = [
             es: "La agencia construye el sitio o la tienda de cada cliente y el dueño del negocio lo edita en un estudio visual, con el sitio real en vivo dentro del lienzo.",
             en: "The agency builds each client’s site or store and the business owner edits it in a visual studio, with the real site live inside the canvas.",
         },
-        facts: [
-            { value: "41", label: { es: "tipos de bloque", en: "block types" } },
-            { value: "263", label: { es: "operaciones para agentes", en: "agent operations" } },
-            { value: "42", label: { es: "modelos por tenant", en: "tenant-scoped models" } },
+        features: [
+            { es: "Editor visual en vivo", en: "Live visual editor" },
+            { es: "Multi-tenant y marca blanca", en: "Multi-tenant and white-label" },
+            { es: "Herramientas para agentes de IA", en: "Tools for AI agents" },
         ],
         stack: ["NestJS 10", "Prisma 5", "PostgreSQL 16", "Redis 7", "Next.js 15", "MCP"],
         role: { es: "Arquitecto y desarrollador principal", en: "Architect and lead developer" },
@@ -179,10 +179,10 @@ export const projects: Project[] = [
             es: "Cada venta por QR se reparte sola entre el comerciante, sus proveedores y su microcrédito con Open Payments. Si hoy no hay ventas, hoy no se cobra.",
             en: "Every QR sale splits itself between the merchant, their suppliers and their microcredit over Open Payments. No sales today, nothing collected today.",
         },
-        facts: [
-            { value: "99%", label: { es: "tope de reparto por venta", en: "cap on what a sale can split" } },
-            { value: "188", label: { es: "pruebas de backend", en: "backend tests" } },
-            { value: "19", label: { es: "decisiones de arquitectura", en: "architecture decisions" } },
+        features: [
+            { es: "Pagos QR con Open Payments", en: "QR payments over Open Payments" },
+            { es: "Cada venta se reparte sola", en: "Every sale splits itself" },
+            { es: "Asistente de voz GlorIA", en: "GlorIA voice assistant" },
         ],
         stack: ["Angular 22", "Express 5", "Prisma 7", "PostgreSQL 16", "Open Payments", "DeepSeek"],
         role: {
@@ -213,10 +213,10 @@ export const projects: Project[] = [
             es: "Para cualquier lote de Cali muestra la norma urbana, la cabida máxima, el valor del suelo y una factibilidad financiera, sobre un mapa 3D de oportunidad.",
             en: "For any lot in Cali it shows the zoning norm, the maximum buildable area, the land value and a financial feasibility, over a 3D opportunity map.",
         },
-        facts: [
-            { value: "337k", label: { es: "lotes con volumetría", en: "lots with volumetry" } },
-            { value: "13", label: { es: "tablas de reglas citadas", en: "cited rule tables" } },
-            { value: "150m", label: { es: "hexágonos de ciudad", en: "city hexagons" } },
+        features: [
+            { es: "Norma urbana por lote", en: "Zoning rules per lot" },
+            { es: "Mapa 3D de oportunidad", en: "3D opportunity map" },
+            { es: "Factibilidad financiera", en: "Financial feasibility" },
         ],
         stack: ["Next.js 16", "deck.gl 9", "Google Maps 3D", "DuckDB", "Python", "AI SDK"],
         // Confirmed with the owner: shown as team work, with no individual technical role claimed.
@@ -244,10 +244,10 @@ export const projects: Project[] = [
             es: "App de Windows que lee los pedidos de WhatsApp Business, los guarda en SQLite local y entrega cartera, analítica y reportes en PDF y Excel.",
             en: "Windows app that reads WhatsApp Business orders, stores them in local SQLite and delivers receivables, analytics and PDF and Excel reports.",
         },
-        facts: [
-            { value: "8s", label: { es: "ciclo de sincronización", en: "sync cycle" } },
-            { value: "11k", label: { es: "líneas de código", en: "lines of code" } },
-            { value: "v2.0", label: { es: "instalador para Windows", en: "Windows installer" } },
+        features: [
+            { es: "Pedidos desde WhatsApp", en: "Orders straight from WhatsApp" },
+            { es: "Cartera y analítica", en: "Receivables and analytics" },
+            { es: "Reportes en PDF y Excel", en: "PDF and Excel reports" },
         ],
         stack: ["Electron 35", "SQLite WAL", "puppeteer-core", "PDFKit", "ExcelJS"],
         role: { es: "Desarrollador principal", en: "Lead developer" },

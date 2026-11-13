@@ -25,8 +25,8 @@ export interface Project {
     kind: L;
     /** The one sentence. */
     line: L;
-    /** Three facts, each verifiable in the repo. */
-    facts: { value: string; label: L }[];
+    /** Three things the product does, in plain words. */
+    features: L[];
     stack: string[];
     role?: L;
     year: string;

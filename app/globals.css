@@ -186,21 +186,31 @@
   line-height: 1;
 }
 
-/* Foil-stamped type: solid light crossed by diffraction orders (a bright first order between two
-   faint ones), ruled like a grating. The band follows the pointer. */
+/* Foil-stamped type. The word is set twice: a solid base that is always visible, and an
+   overlay that carries the diffraction band (a bright first order between two faint ones,
+   ruled like a grating). If the overlay ever fails to paint, the name still reads. */
+.foil-line {
+  position: relative;
+  color: var(--text);
+}
+
 .foil-text {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
   --o-blue: oklch(0.7 0.17 255);
   --o-cyan: oklch(0.88 0.15 185);
   --o-lime: oklch(0.9 0.19 128);
   --o-amber: oklch(0.83 0.155 78);
   --o-red: oklch(0.67 0.24 14);
-  color: var(--text);
+  color: transparent;
   background-image:
     repeating-linear-gradient(100deg, transparent 0 0.034em, var(--text) 0.034em 0.048em),
     linear-gradient(
       100deg,
-      var(--text) 0%,
-      var(--text) 46.53%,
+      transparent 0%,
+      transparent 46.53%,
       color-mix(in oklch, var(--o-blue) 30%, var(--text)) 46.90%,
       color-mix(in oklch, var(--o-lime) 30%, var(--text)) 47.27%,
       color-mix(in oklch, var(--o-red) 30%, var(--text)) 47.64%,
@@ -216,8 +226,8 @@
       color-mix(in oklch, var(--o-blue) 30%, var(--text)) 52.29%,
       color-mix(in oklch, var(--o-lime) 30%, var(--text)) 52.67%,
       color-mix(in oklch, var(--o-red) 30%, var(--text)) 53.04%,
-      var(--text) 53.47%,
-      var(--text) 100%
+      transparent 53.47%,
+      transparent 100%
     );
   background-size:
     auto,
@@ -533,6 +543,233 @@ dialog.lightbox::backdrop {
   .role-row:hover {
     background: oklch(0.88 0.15 185 / 0.05);
   }
+}
+
+/* ───────── Neon and projection details ───────── */
+
+/* A lit diode: list markers in the project features. */
+.neon-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  flex: none;
+  background: var(--holo);
+  box-shadow:
+    0 0 0.35rem oklch(0.88 0.15 185 / 0.9),
+    0 0 0.9rem oklch(0.88 0.15 185 / 0.45);
+}
+
+/* A spark of light running around the edge of a project plate. Only the inner
+   element rotates, so the browser moves it on the compositor. */
+.neon-edge {
+  position: absolute;
+  inset: -1px;
+  padding: 1.5px;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+.neon-edge::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 130%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: conic-gradient(
+    transparent 0 78%,
+    oklch(0.67 0.24 14 / 0.9) 86%,
+    oklch(0.95 0.12 185) 91%,
+    oklch(0.88 0.15 185 / 0.8) 94%,
+    transparent 98%
+  );
+  animation: neon-spin 7s linear infinite;
+  will-change: transform;
+}
+
+.projects.is-stage .project:not(.is-active) .neon-edge::before {
+  animation-play-state: paused;
+}
+
+@keyframes neon-spin {
+  to {
+    rotate: 1turn;
+  }
+}
+
+/* The contact headline is a neon sign: it lights with a stutter, then hums. */
+.neon-sign {
+  color: oklch(0.24 0.07 355);
+  -webkit-text-stroke: 0.022em oklch(0.86 0.13 355);
+  text-shadow:
+    0 0 0.03em oklch(0.75 0.22 355),
+    0 0 0.14em oklch(0.67 0.24 14 / 0.75),
+    0 0 0.45em oklch(0.67 0.24 14 / 0.35);
+  opacity: 0.2;
+  will-change: opacity;
+}
+
+.neon-sign.is-lit {
+  opacity: 1;
+  animation:
+    neon-ignite 1.1s steps(1, end) both,
+    neon-hum 9s 1.4s linear infinite;
+}
+
+@keyframes neon-ignite {
+  0% {
+    opacity: 0.2;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  18% {
+    opacity: 0.25;
+  }
+  30% {
+    opacity: 1;
+  }
+  38% {
+    opacity: 0.4;
+  }
+  46% {
+    opacity: 1;
+  }
+  52% {
+    opacity: 0.7;
+  }
+  60%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes neon-hum {
+  0%,
+  91%,
+  93.5%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.55;
+  }
+  93% {
+    opacity: 0.85;
+  }
+}
+
+/* The tools of the stack, projected. */
+.tech-holo {
+  position: relative;
+  isolation: isolate;
+}
+
+.tech-holo-base {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 72%;
+  aspect-ratio: 5 / 1;
+  translate: -50% 0;
+}
+
+.tech-holo-base span {
+  position: absolute;
+  inset: 0;
+  border: 1px solid oklch(0.88 0.15 185 / 0.8);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0.6rem oklch(0.88 0.15 185 / 0.45),
+    inset 0 0 0.6rem oklch(0.88 0.15 185 / 0.3);
+}
+
+.tech-holo-base span:nth-child(2) {
+  inset: 18% 20%;
+  opacity: 0.7;
+}
+
+.tech-holo-base span:nth-child(3) {
+  inset: 36% 38%;
+  background: oklch(0.88 0.15 185 / 0.5);
+  filter: blur(6px);
+}
+
+.tech-holo-beam {
+  position: absolute;
+  left: 50%;
+  bottom: 9%;
+  width: 90%;
+  height: 92%;
+  translate: -50% 0;
+  overflow: hidden;
+  clip-path: polygon(30% 100%, 70% 100%, 100% 0, 0 0);
+  background: linear-gradient(to top, oklch(0.88 0.15 185 / 0.24), oklch(0.88 0.15 185 / 0.02) 85%, transparent);
+  mix-blend-mode: screen;
+}
+
+.tech-holo-beam span {
+  position: absolute;
+  inset: 0 0 -100%;
+  background: repeating-linear-gradient(
+    to top,
+    transparent 0 18px,
+    oklch(0.88 0.15 185 / 0.16) 18px 20px,
+    transparent 20px 46px
+  );
+  animation: beam-feed 3.2s linear infinite;
+  will-change: transform;
+}
+
+@keyframes beam-feed {
+  to {
+    translate: 0 -46px;
+  }
+}
+
+.tech-holo-item {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-left: -1.375rem;
+  margin-top: -1.375rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid oklch(0.88 0.15 185 / 0.45);
+  background:
+    repeating-linear-gradient(to bottom, oklch(0.88 0.15 185 / 0.1) 0 1px, transparent 1px 3px),
+    oklch(0.145 0.028 262 / 0.55);
+  box-shadow: 0 0 0.9rem oklch(0.88 0.15 185 / 0.28);
+  will-change: transform, opacity;
+}
+
+.tech-holo-item svg {
+  width: 1.45rem;
+  height: 1.45rem;
+  fill: oklch(0.92 0.12 185);
+  filter: drop-shadow(0 0 0.3rem oklch(0.88 0.15 185 / 0.9));
+}
+
+.tech-holo-item.is-flare {
+  border-color: oklch(0.72 0.2 355 / 0.55);
+  background:
+    repeating-linear-gradient(to bottom, oklch(0.72 0.2 355 / 0.1) 0 1px, transparent 1px 3px),
+    oklch(0.145 0.028 262 / 0.55);
+  box-shadow: 0 0 0.9rem oklch(0.67 0.24 14 / 0.3);
+}
+
+.tech-holo-item.is-flare svg {
+  fill: oklch(0.86 0.12 355);
+  filter: drop-shadow(0 0 0.3rem oklch(0.67 0.24 14 / 0.9));
 }
 
 @media (prefers-reduced-motion: reduce) {

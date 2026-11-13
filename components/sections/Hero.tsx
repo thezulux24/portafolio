@@ -24,6 +24,12 @@ export function Hero() {
             mm.add(MOTION_OK, () => {
                 gsap.set(".js-name", { clipPath: "inset(100% 0% 0% 0%)" });
                 gsap.set(".js-resolve", { autoAlpha: 0 });
+                // Failsafe: whatever happens to the intro, the name and its copy are on screen by 6 s.
+                const failsafe = window.setTimeout(() => {
+                    gsap.set(".js-name", { clearProps: "clipPath" });
+                    gsap.set(".js-resolve", { autoAlpha: 1 });
+                }, 6000);
+                return () => window.clearTimeout(failsafe);
             });
         },
         { scope: root }
@@ -100,12 +106,12 @@ export function Hero() {
             <div className="wrap relative flex min-h-svh flex-col pt-(--nav-h) pb-8 stage:pb-14">
                 <div className="relative z-10 mt-[clamp(1rem,5svh,4rem)]">
                     <h1 aria-label="Brayan Zuluaga" className="js-name display text-[14.1vw] stage:text-[calc(var(--u)*12.6)]">
-                        <span className="foil-text block pb-[0.04em]" aria-hidden="true">
-                            Brayan
-                        </span>
-                        <span className="foil-text -mt-[0.04em] block pb-[0.04em]" aria-hidden="true">
-                            Zuluaga
-                        </span>
+                        {["Brayan", "Zuluaga"].map((word, index) => (
+                            <span key={word} className={"foil-line block pb-[0.04em] " + (index ? "-mt-[0.04em]" : "")} aria-hidden="true">
+                                {word}
+                                <span className="foil-text">{word}</span>
+                            </span>
+                        ))}
                     </h1>
                     <span className="js-name-beam beam" aria-hidden="true" />
                 </div>
