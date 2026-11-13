@@ -1,62 +1,49 @@
-<!-- # Portfolio -->
+# Portafolio · Brayan Zuluaga
 
-> An immersive, high-performance developer portfolio built with the latest web technologies.
+Sitio personal de una página, bilingüe (ES/EN), con estética holográfica: el fondo es un campo de franjas de interferencia en WebGL y el retrato se reconstruye como holograma 3D.
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
-![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)
-![Three.js](https://img.shields.io/badge/Three.js-black?style=for-the-badge&logo=three.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
+## Qué hay
 
-## Overview
+- **Hero**: el nombre en grande y el retrato recortado, desplazado por un mapa de profundidad, con líneas de barrido y ensamblado desde puntos al cargar.
+- **Proyectos**: escenario fijado al hacer scroll, un producto por paso (Knowten Suite, Enerplus, CMS Studio, MiPlante, Afil, Café Pa'l Monte), con capturas reales, galería y vista ampliada. Por debajo de 1200 px, o con movimiento reducido, es una lista normal.
+- **Trayectoria**, **Qué hago** (cinco disciplinas, del backend al frontend) y **Contacto**, con un globo holográfico que marca la ruta Cali → Naples.
+- **`/cv`**: resumen y PDF oficial.
 
-This repository houses the source code for a cutting-edge personal portfolio website. It leverages the power of **Next.js 15** and **React Server Components** for optimal performance and SEO. The visual experience is enhanced with **3D interactive elements** using **React Three Fiber** and smooth animations powered by **Framer Motion**.
+## Stack
 
-The design philosophy focuses on minimalism, interactivity, and a premium user experience, making it a perfect showcase for modern web development skills.
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · GSAP (ScrollTrigger, ScrambleText, CustomEase) · Lenis · three.js / React Three Fiber · Zustand.
 
-## Key Features
+## Estructura
 
-- **Cinematic Preloader**: Animated counter and curtain reveal powered by Anime.js.
-- **WebGL Hero**: Custom GLSL fluid-noise shader (domain-warped fbm), mouse-reactive, with kinetic typography.
-- **Custom Cursor**: Physics-based trailing cursor with contextual labels (fine pointers only).
-- **Smooth Scrolling**: Buttery scroll experience via Lenis, synced with scroll-driven animations.
-- **Editorial Layout**: Kinetic type, outlined display fonts, acid-on-noir palette, film grain overlay.
-- **Responsive Design**: Flawless experience across desktop, tablet, and mobile devices.
-- **Optimized Performance**: leveraging Next.js App Router and server-side rendering.
-- **Dark Mode Architecture**: Built with a dark-themed aesthetic in mind.
-
-## Tech Stack
-
-This project is built with a robust selection of modern tools:
-
-- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **3D Graphics**: [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) & [Drei](https://github.com/pmndrs/drei)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [Anime.js](https://animejs.com/)
-- **Scrolling**: [Lenis](https://lenis.darkroom.engineering/)
-- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Linting**: ESLint
-
-## Project Structure
-
-```bash
-├── app/                  # Next.js App Router pages and layouts
-├── components/           # Reusable UI components
-│   ├── layout/           # Header, Footer, etc.
-│   ├── sections/         # Page sections (Hero, About, Projects)
-│   └── ui/               # Atomic UI elements (Buttons, Cards)
-├── public/               # Static assets (images, fonts, 3D models)
-└── lib/                  # Utility functions and shared logic
+```text
+app/                  layout, página, /cv, estilos y tokens (globals.css), icono y tarjeta social
+components/gl/        FringeField (shader de fondo), HoloPortrait (holograma), HoloGlobe (globo de contacto)
+components/sections/  Hero, Projects, Experience, Stack, Contact
+components/layout/    Nav
+components/ui/        Preloader, Lightbox, BrandIcon
+lib/content.ts        todo el texto y los datos de proyectos, en ES y EN
+lib/scene.ts          estado compartido que GSAP anima y WebGL lee cada cuadro
+lib/gsap.ts           registro de plugins, curvas y media queries
+public/shots/         capturas en WebP que usa el sitio
+public/holo/          retrato recortado y mapa de profundidad
+assets-src/           originales (foto, capturas PNG); no se despliegan
 ```
 
-## License
+## Desarrollo
 
-This project is open source and available under the [MIT License](LICENSE).
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run lint
+npm run build
+```
 
----
+## Editar contenido
 
-<p align="center">
-  Built with <3 by Brayan Zuluaga
-</p>
+Todo el texto vive en `lib/content.ts`. Cada proyecto tiene una frase, tres datos, stack, rol, capturas y enlaces. Para agregar capturas, guarda el WebP en `public/shots/<proyecto>/` y añádelo a la lista `shots` con su ancho y alto.
+
+## Documentos de diseño
+
+- `PRODUCT.md`: para quién es el sitio y qué debe lograr.
+- `DESIGN.md`: sistema visual (color, tipografía, componentes, movimiento).
+- `docs/interference-plate.md`: filosofía visual de las piezas estáticas (tarjeta social e icono).

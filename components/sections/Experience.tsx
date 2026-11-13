@@ -1,269 +1,106 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
-import { animate, stagger } from "animejs";
-import { ChevronDown, Globe } from "lucide-react";
-import { useLanguageStore } from "@/lib/store";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { cn } from "@/lib/utils";
-
-const ROW_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+import { useRef } from "react";
+import { gsap, MOTION_OK, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { tuneField } from "@/lib/field";
+import { HUES } from "@/lib/scene";
+import { useLang } from "@/lib/store";
+import { experience, ui } from "@/lib/content";
 
 export function Experience() {
-    const { t } = useLanguageStore();
-    const content = t.experience;
-    const timelineRef = useRef<HTMLDivElement>(null);
-    // Only the #1 US role starts expanded so the section stays ultra-compact
-    const [openIndex, setOpenIndex] = useState<number | null>(0);
+    const root = useRef<HTMLElement>(null);
+    const lang = useLang((state) => state.lang);
 
-    const { scrollYProgress } = useScroll({
-        target: timelineRef,
-        offset: ["start 75%", "end 35%"],
-    });
-    const spineScaleY = useSpring(scrollYProgress, {
-        stiffness: 140,
-        damping: 26,
-        mass: 0.35,
-    });
+    useGSAP(
+        () => {
+            const tune = () => tuneField({ hue: HUES.sodium, x: -0.62, y: -0.1, gain: 0.7, density: 0.9 });
+            ScrollTrigger.create({ trigger: root.current, start: "top 55%", end: "bottom 45%", onEnter: tune, onEnterBack: tune });
 
-    const toggleRole = (index: number) => {
-        setOpenIndex((prev) => {
-            const next = prev === index ? null : index;
-            if (next !== null) {
-                requestAnimationFrame(() => {
-                    animate(`.js-exp-pillar-${index}`, {
-                        opacity: [0, 1],
-                        translateY: [10, 0],
-                        delay: stagger(55),
-                        duration: 420,
-                        ease: "out(3)",
-                    });
+            const mm = gsap.matchMedia();
+            mm.add(MOTION_OK, () => {
+                // One beam reads down the list; each row resolves as it passes.
+                const list = root.current?.querySelector<HTMLElement>(".js-roles");
+                const rows = gsap.utils.toArray<HTMLElement>(".js-row", root.current);
+                if (!list) return;
+                const scan = gsap.timeline({ scrollTrigger: { trigger: list, start: "top 78%", once: true } });
+                scan.fromTo(
+                    ".js-beam",
+                    { y: 0, autoAlpha: 1 },
+                    { y: () => list.offsetHeight, duration: 1.1, ease: "power1.inOut" },
+                    0
+                );
+                scan.to(".js-beam", { autoAlpha: 0, duration: 0.2 }, 1);
+                rows.forEach((row) => {
+                    const at = (row.offsetTop / Math.max(1, list.offsetHeight)) * 1.1;
+                    scan.from(row, { autoAlpha: 0, duration: 0.35, ease: "power1.out" }, at);
                 });
-            }
-            return next;
-        });
-    };
+            });
+        },
+        { scope: root }
+    );
 
     return (
-        <section id="experience" className="relative bg-ink px-5 py-20 md:px-10 md:py-32">
-            <SectionHeading index={content.index} label={content.label} />
-
-            <div className="mt-10 mb-12 flex flex-wrap items-end justify-between gap-4 md:mt-14 md:mb-14">
-                <h2 className="font-display text-[clamp(2.4rem,8vw,6.5rem)] font-extrabold uppercase leading-[0.9] tracking-tight">
-                    <span className="text-outline">{content.title}</span>
-                    <span className="text-acid">.</span>
-                </h2>
-                <div className="flex items-center gap-2.5 pb-2 font-mono text-[11px] uppercase tracking-[0.24em] text-bone/50">
-                    <Globe className="h-3.5 w-3.5 text-acid" />
-                    <span>USA & LATAM · 2025 — 2026</span>
-                </div>
-            </div>
-
-            {/* Roles timeline (compact interactive accordion) */}
-            <div ref={timelineRef} className="relative border-b border-bone/10">
-                <div
-                    aria-hidden
-                    className="pointer-events-none absolute bottom-0 left-0 top-0 w-[2px] bg-bone/10"
-                >
-                    <motion.div
-                        className="h-full w-full origin-top bg-acid shadow-[0_0_12px_#c8f31d]"
-                        style={{ scaleY: spineScaleY }}
-                    />
-                </div>
-
-                {content.roles.map((role, index) => {
-                    const isOpen = openIndex === index;
-                    const hasHighlights = role.highlights && role.highlights.length > 0;
-
-                    return (
-                        <motion.article
-                            key={role.company}
-                            initial={{ opacity: 0, y: 24 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-50px" }}
-                            transition={{ delay: index * 0.04, duration: 0.5, ease: ROW_EASE }}
-                            className="group relative border-t border-bone/10"
-                        >
-                            {/* Timeline node dot */}
-                            <span
-                                aria-hidden
-                                className={cn(
-                                    "pointer-events-none absolute -left-[4px] top-8 z-10 h-2.5 w-2.5 rounded-full border transition-all duration-300",
-                                    role.current
-                                        ? "border-acid bg-acid shadow-[0_0_10px_#c8f31d]"
-                                        : "border-bone/30 bg-ink group-hover:border-acid group-hover:bg-acid"
-                                )}
-                            />
-
-                            <div
-                                role="button"
-                                tabIndex={0}
-                                onClick={() => toggleRole(index)}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter" || e.key === " ") {
-                                        e.preventDefault();
-                                        toggleRole(index);
-                                    }
-                                }}
-                                data-cursor
-                                className="cursor-pointer py-6 pl-5 transition-colors duration-300 hover:bg-bone/[0.025] md:py-8 md:pl-8"
-                            >
-                                {/* Compact summary row */}
-                                <div className="grid items-start gap-3 md:grid-cols-12 md:gap-6">
-                                    {/* Col 1: Period & Badges */}
-                                    <div className="flex flex-wrap items-center gap-2 md:col-span-3 md:block">
-                                        <div className="flex items-center gap-2">
-                                            {role.current && (
-                                                <span className="inline-flex items-center gap-1.5 rounded-sm border-l-2 border-acid bg-acid/10 px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-acid">
-                                                    <span className="h-1.5 w-1.5 rounded-full bg-acid" />
-                                                    {content.present}
-                                                </span>
-                                            )}
-                                            {role.badge && (
-                                                <span className="rounded-sm border border-bone/15 bg-bone/[0.04] px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] text-bone/70">
-                                                    {role.badge}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-bone/55 md:mt-2">
-                                            {role.period} · <span className="text-bone/40">{role.location}</span>
-                                        </p>
-                                    </div>
-
-                                    {/* Col 2: Company + Role */}
-                                    <div className="md:col-span-4">
-                                        <div className="flex items-center justify-between gap-2">
-                                            <h3 className="font-display text-xl font-bold tracking-tight transition-colors duration-300 group-hover:text-acid md:text-2xl">
-                                                {role.company}
-                                            </h3>
-                                            <span className="inline-flex items-center gap-1 rounded-full border border-bone/15 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.16em] text-acid md:hidden">
-                                                {isOpen ? content.hideHint : content.tapHint}
-                                                <ChevronDown
-                                                    className={cn(
-                                                        "h-3 w-3 transition-transform duration-300",
-                                                        isOpen && "rotate-180"
-                                                    )}
-                                                />
-                                            </span>
-                                        </div>
-                                        <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-bone/70">
-                                            {role.role}
-                                        </p>
-                                    </div>
-
-                                    {/* Col 3: Concise description + tech chips */}
-                                    <div className="md:col-span-5">
-                                        <div className="flex items-start justify-between gap-4">
-                                            <p className="text-xs leading-relaxed text-bone/65 md:text-sm">
-                                                {role.description}
-                                            </p>
-                                            <ChevronDown
-                                                className={cn(
-                                                    "mt-1 hidden h-4 w-4 shrink-0 text-acid transition-transform duration-300 md:block",
-                                                    isOpen && "rotate-180"
-                                                )}
-                                            />
-                                        </div>
-
-                                        <div className="mt-3 flex flex-wrap gap-1.5">
-                                            {role.tech.map((tech) => (
-                                                <span
-                                                    key={tech}
-                                                    className="rounded-full border border-bone/15 bg-ink/50 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-bone/65 transition-colors group-hover:border-acid/30"
-                                                >
-                                                    {tech}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Expandable Architectural Highlights */}
-                                <AnimatePresence initial={false}>
-                                    {hasHighlights && isOpen && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: "auto", opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.35, ease: ROW_EASE }}
-                                            className="overflow-hidden"
-                                        >
-                                            <div
-                                                className={cn(
-                                                    "mt-5 grid gap-2.5 border-t border-bone/10 pt-4",
-                                                    role.highlights.length >= 3
-                                                        ? "sm:grid-cols-3"
-                                                        : role.highlights.length === 2
-                                                        ? "sm:grid-cols-2"
-                                                        : "grid-cols-1"
-                                                )}
-                                            >
-                                                {role.highlights.map((item) => (
-                                                    <div
-                                                        key={item.title}
-                                                        className={cn(
-                                                            `js-exp-pillar-${index}`,
-                                                            "rounded-xl border border-acid/25 bg-secondary/60 p-3.5"
-                                                        )}
-                                                    >
-                                                        <h4 className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-acid">
-                                                            {item.title}
-                                                        </h4>
-                                                        <p className="mt-1 text-xs leading-relaxed text-bone/70">
-                                                            {item.text}
-                                                        </p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </div>
-                        </motion.article>
-                    );
-                })}
-            </div>
-
-            {/* Compact 3-Column Meta Strip */}
-            <div className="mt-10 grid gap-6 pt-4 sm:grid-cols-3 md:mt-12">
-                <div className="rounded-xl border border-bone/10 bg-secondary/30 p-4">
-                    <h3 className="font-mono text-[10px] uppercase tracking-[0.26em] text-acid">
-                        {content.educationLabel}
-                    </h3>
-                    {content.education.map((entry) => (
-                        <div key={entry.degree} className="mt-2">
-                            <p className="font-display text-xs font-bold leading-snug text-bone md:text-sm">
-                                {entry.degree}
-                            </p>
-                            <p className="mt-1 font-mono text-[10px] text-bone/45">
-                                {entry.school} · {entry.period}
-                            </p>
+        <section
+            ref={root}
+            id="experience"
+            aria-labelledby="experience-title"
+            className="relative scroll-mt-(--nav-h) py-24 stage:py-32"
+        >
+            <div className="wrap grid gap-12 stage:grid-cols-12 stage:gap-10">
+                <div className="flex flex-col gap-8 stage:col-span-5">
+                    <h2 id="experience-title" className="heading text-[clamp(2.5rem,4.6vw,4.25rem)]">
+                        {ui.experience.title[lang]}
+                    </h2>
+                    <p className="max-w-[30ch] text-2xl leading-snug text-text stage:text-[1.75rem]">
+                        {experience.statement[lang]}
+                    </p>
+                    <dl className="mt-auto grid gap-4 text-[0.9375rem] text-text-2">
+                        <div className="grid gap-1">
+                            <dt className="text-[0.8125rem] text-text-3">{ui.experience.education[lang]}</dt>
+                            <dd className="max-w-[44ch]">{experience.education[lang]}</dd>
                         </div>
-                    ))}
+                        <div className="grid gap-1">
+                            <dt className="text-[0.8125rem] text-text-3">{ui.experience.languages[lang]}</dt>
+                            <dd>{experience.languages[lang]}</dd>
+                        </div>
+                    </dl>
                 </div>
 
-                <div className="rounded-xl border border-bone/10 bg-secondary/30 p-4">
-                    <h3 className="font-mono text-[10px] uppercase tracking-[0.26em] text-acid">
-                        {content.languagesLabel}
-                    </h3>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                        {content.languages.map((lang) => (
-                            <span
-                                key={lang}
-                                className="rounded-full border border-bone/15 bg-ink/50 px-3 py-1 font-mono text-[10px] text-bone/80"
+                <div className="js-roles relative stage:col-span-7">
+                    <span className="js-beam beam" aria-hidden="true" />
+                    <ol className="border-b border-line">
+                        {experience.roles.map((role) => (
+                            <li
+                                key={role.company}
+                                className="js-row role-row grid gap-x-6 gap-y-1 border-t border-line py-5 sm:grid-cols-[9.5rem_1fr]"
                             >
-                                {lang}
-                            </span>
+                                <p className="data flex items-start gap-2 pt-1 text-text-3">
+                                    <span
+                                        aria-hidden="true"
+                                        className={"mt-[0.4em] size-1.5 flex-none " + (role.current ? "bg-holo" : "bg-void-3")}
+                                    />
+                                    {role.period[lang]}
+                                </p>
+                                <div className="grid gap-1">
+                                    <h3 className="text-lg font-semibold leading-tight text-text [font-variation-settings:'wdth'_112]">
+                                        {role.company}
+                                    </h3>
+                                    <p className="text-sm text-holo">{role.title[lang]}</p>
+                                    <p className="max-w-[58ch] text-[0.9375rem] text-text-2">{role.line[lang]}</p>
+                                    {role.points && (
+                                        <ul className="mt-1 grid gap-1">
+                                            {role.points.map((point) => (
+                                                <li key={point.en} className="flex gap-2.5 text-sm text-text-3">
+                                                    <span aria-hidden="true" className="mt-[0.6em] h-px w-2.5 flex-none bg-holo" />
+                                                    {point[lang]}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            </li>
                         ))}
-                    </div>
-                </div>
-
-                <div className="rounded-xl border border-bone/10 bg-secondary/30 p-4">
-                    <h3 className="font-mono text-[10px] uppercase tracking-[0.26em] text-acid">
-                        {content.awardLabel}
-                    </h3>
-                    <p className="mt-2 text-xs leading-relaxed text-bone/65">{content.award}</p>
+                    </ol>
                 </div>
             </div>
         </section>

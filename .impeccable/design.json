@@ -1,0 +1,545 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-12T00:00:00Z",
+  "title": "Design System: Brayan Zuluaga · Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "void": {
+        "role": "neutral",
+        "displayName": "Void",
+        "canonical": "oklch(0.145 0.028 262)",
+        "tonalRamp": [
+          "oklch(0.1 0.025 262)",
+          "oklch(0.145 0.028 262)",
+          "oklch(0.185 0.032 262)",
+          "oklch(0.26 0.036 262)",
+          "oklch(0.42 0.04 262)",
+          "oklch(0.6 0.036 262)",
+          "oklch(0.8 0.026 262)",
+          "oklch(0.95 0.012 262)"
+        ]
+      },
+      "void-2": {
+        "role": "neutral",
+        "displayName": "Void 2 (slate plate)",
+        "canonical": "oklch(0.185 0.032 262)",
+        "tonalRamp": [
+          "oklch(0.1 0.025 262)",
+          "oklch(0.145 0.028 262)",
+          "oklch(0.185 0.032 262)",
+          "oklch(0.26 0.036 262)",
+          "oklch(0.42 0.04 262)",
+          "oklch(0.6 0.036 262)",
+          "oklch(0.8 0.026 262)",
+          "oklch(0.95 0.012 262)"
+        ]
+      },
+      "void-3": {
+        "role": "neutral",
+        "displayName": "Void 3 (idle tracks)",
+        "canonical": "oklch(0.26 0.036 262)",
+        "tonalRamp": [
+          "oklch(0.1 0.025 262)",
+          "oklch(0.145 0.028 262)",
+          "oklch(0.185 0.032 262)",
+          "oklch(0.26 0.036 262)",
+          "oklch(0.42 0.04 262)",
+          "oklch(0.6 0.036 262)",
+          "oklch(0.8 0.026 262)",
+          "oklch(0.95 0.012 262)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line (hairlines, 42% alpha)",
+        "canonical": "oklch(0.42 0.04 255 / 0.42)",
+        "tonalRamp": [
+          "oklch(0.15 0.025 255)",
+          "oklch(0.27 0.035 255)",
+          "oklch(0.35 0.04 255)",
+          "oklch(0.42 0.04 255)",
+          "oklch(0.55 0.04 255)",
+          "oklch(0.7 0.035 255)",
+          "oklch(0.85 0.022 255)",
+          "oklch(0.95 0.01 255)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Text",
+        "canonical": "oklch(0.955 0.012 220)",
+        "tonalRamp": [
+          "oklch(0.15 0.02 245)",
+          "oklch(0.3 0.03 245)",
+          "oklch(0.45 0.035 245)",
+          "oklch(0.66 0.035 245)",
+          "oklch(0.8 0.028 235)",
+          "oklch(0.88 0.02 228)",
+          "oklch(0.955 0.012 220)",
+          "oklch(0.98 0.006 220)"
+        ]
+      },
+      "text-2": {
+        "role": "neutral",
+        "displayName": "Text 2 (running copy)",
+        "canonical": "oklch(0.8 0.028 235)",
+        "tonalRamp": [
+          "oklch(0.15 0.02 245)",
+          "oklch(0.3 0.03 245)",
+          "oklch(0.45 0.035 245)",
+          "oklch(0.66 0.035 245)",
+          "oklch(0.8 0.028 235)",
+          "oklch(0.88 0.02 228)",
+          "oklch(0.955 0.012 220)",
+          "oklch(0.98 0.006 220)"
+        ]
+      },
+      "text-3": {
+        "role": "neutral",
+        "displayName": "Text 3 (labels, the contrast floor)",
+        "canonical": "oklch(0.66 0.035 245)",
+        "tonalRamp": [
+          "oklch(0.15 0.02 245)",
+          "oklch(0.3 0.03 245)",
+          "oklch(0.45 0.035 245)",
+          "oklch(0.66 0.035 245)",
+          "oklch(0.8 0.028 235)",
+          "oklch(0.88 0.02 228)",
+          "oklch(0.955 0.012 220)",
+          "oklch(0.98 0.006 220)"
+        ]
+      },
+      "holo": {
+        "role": "primary",
+        "displayName": "Holo (reconstruction beam)",
+        "canonical": "oklch(0.88 0.15 185)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 185)",
+          "oklch(0.28 0.055 185)",
+          "oklch(0.4 0.08 185)",
+          "oklch(0.52 0.1 185)",
+          "oklch(0.64 0.125 185)",
+          "oklch(0.76 0.145 185)",
+          "oklch(0.88 0.15 185)",
+          "oklch(0.95 0.07 185)"
+        ]
+      },
+      "flare": {
+        "role": "secondary",
+        "displayName": "Flare (primary action)",
+        "canonical": "oklch(0.67 0.24 14)",
+        "tonalRamp": [
+          "oklch(0.15 0.05 14)",
+          "oklch(0.28 0.1 14)",
+          "oklch(0.41 0.155 14)",
+          "oklch(0.54 0.21 14)",
+          "oklch(0.67 0.24 14)",
+          "oklch(0.74 0.2 18)",
+          "oklch(0.86 0.1 16)",
+          "oklch(0.95 0.035 14)"
+        ]
+      },
+      "flare-hover": {
+        "role": "secondary",
+        "displayName": "Flare, hover",
+        "canonical": "oklch(0.74 0.2 18)",
+        "tonalRamp": [
+          "oklch(0.15 0.05 14)",
+          "oklch(0.28 0.1 14)",
+          "oklch(0.41 0.155 14)",
+          "oklch(0.54 0.21 14)",
+          "oklch(0.67 0.24 14)",
+          "oklch(0.74 0.2 18)",
+          "oklch(0.86 0.1 16)",
+          "oklch(0.95 0.035 14)"
+        ]
+      },
+      "sodium": {
+        "role": "tertiary",
+        "displayName": "Sodium (secondary data)",
+        "canonical": "oklch(0.83 0.155 78)",
+        "tonalRamp": [
+          "oklch(0.15 0.03 78)",
+          "oklch(0.28 0.06 78)",
+          "oklch(0.41 0.09 78)",
+          "oklch(0.54 0.115 78)",
+          "oklch(0.67 0.14 78)",
+          "oklch(0.75 0.15 78)",
+          "oklch(0.83 0.155 78)",
+          "oklch(0.95 0.06 78)"
+        ]
+      },
+      "foil-lime": {
+        "role": "tertiary",
+        "displayName": "Foil lime (spectrum stop only)",
+        "canonical": "oklch(0.9 0.19 128)",
+        "tonalRamp": [
+          "oklch(0.15 0.035 128)",
+          "oklch(0.28 0.07 128)",
+          "oklch(0.41 0.1 128)",
+          "oklch(0.54 0.13 128)",
+          "oklch(0.67 0.16 128)",
+          "oklch(0.79 0.18 128)",
+          "oklch(0.9 0.19 128)",
+          "oklch(0.96 0.09 128)"
+        ]
+      },
+      "foil-blue": {
+        "role": "tertiary",
+        "displayName": "Foil blue (spectrum stop only)",
+        "canonical": "oklch(0.7 0.17 255)",
+        "tonalRamp": [
+          "oklch(0.15 0.04 255)",
+          "oklch(0.28 0.08 255)",
+          "oklch(0.41 0.12 255)",
+          "oklch(0.55 0.155 255)",
+          "oklch(0.7 0.17 255)",
+          "oklch(0.8 0.12 255)",
+          "oklch(0.89 0.065 255)",
+          "oklch(0.95 0.03 255)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The name and the contact headline; Archivo wdth 125, 900, uppercase, sized in viewport units. Also the BZ mark."
+      },
+      "headline": {
+        "displayName": "Heading",
+        "purpose": "Section titles, product names, résumé headings, mobile menu items; Archivo wdth 122, 800, sentence case."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Company names in role rows; the same wdth 112 semibold setting in Sodium carries product kind and stack group titles."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "The one-line statement under a display heading; 1.125rem rising to 1.375rem."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy at normal width; steps 0.8125, 0.875, 0.9375, 1, 1.0625rem; measures capped in ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Button text only; Archivo wdth 112, 700, uppercase, 0.06em."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Martian Mono for locations, periods, stack lists, index numbers, counters and the language toggle."
+      },
+      "readout": {
+        "displayName": "Readout",
+        "purpose": "Doto 900 for counted numbers: product facts at 2rem, preloader counter at 3.75rem."
+      }
+    },
+    "shadows": [
+      {
+        "name": "beam-glow",
+        "value": "0 0 0 1px oklch(0.88 0.15 185 / 0.25), 0 6px 28px 6px oklch(0.88 0.15 185 / 0.35)",
+        "purpose": "The only glow in the system: on the 2px reconstruction beam while it scans. Never on panels, controls or text."
+      }
+    ],
+    "gradients": [
+      {
+        "name": "foil",
+        "value": "linear-gradient(100deg, oklch(0.88 0.15 185), oklch(0.9 0.19 128), oklch(0.83 0.155 78), oklch(0.67 0.24 14), oklch(0.7 0.17 255), oklch(0.88 0.15 185))",
+        "purpose": "The diffraction spectrum (--foil). Slate edge, name band and globe rim only."
+      },
+      {
+        "name": "field-fallback",
+        "value": "radial-gradient(120% 90% at 70% 30%, oklch(0.2 0.05 250), oklch(0.145 0.028 262) 70%)",
+        "purpose": "CSS background of the field canvas, visible when WebGL2 is unavailable."
+      }
+    ],
+    "motion": [
+      {
+        "name": "resolve / --ease-out-strong",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Strong ease-out. GSAP default ease (default duration 0.6s); CSS press, underline, icon nudge, image hover."
+      },
+      {
+        "name": "travel / --ease-in-out-strong",
+        "value": "cubic-bezier(0.77, 0, 0.175, 1)",
+        "purpose": "In-out for things crossing the screen: beam scans, clip-path wipes, the touch foil pass."
+      },
+      {
+        "name": "duration-feedback",
+        "value": "150ms to 200ms",
+        "purpose": "Control feedback: 160ms button colour and press, 150ms toggles and icon buttons, 200ms nav state, lightbox fade and icon nudge."
+      },
+      {
+        "name": "duration-draw",
+        "value": "260ms",
+        "purpose": "Link underline draw and screenshot swap (fade from blur(3px))."
+      },
+      {
+        "name": "duration-image-hover",
+        "value": "500ms",
+        "purpose": "Plate and document image scale on hover (1.5% and 1%)."
+      },
+      {
+        "name": "beam-name",
+        "value": "1.1s travel",
+        "purpose": "Name wipe, bottom to top, with the beam; beam fades in 0.2s."
+      },
+      {
+        "name": "beam-plate",
+        "value": "0.75s travel",
+        "purpose": "Project plate scan in the scroll direction; text out 0.15s, in 0.4s with 0.05s stagger."
+      },
+      {
+        "name": "beam-list",
+        "value": "1.1s power1.inOut",
+        "purpose": "Role list scan; each row fades in 0.35s as the beam passes; once."
+      },
+      {
+        "name": "resolve-fade",
+        "value": "0.45s to 0.5s power1.out, stagger 0.08s to 0.09s",
+        "purpose": "Hero text and stack groups fading in place."
+      },
+      {
+        "name": "decode",
+        "value": "0.9s linear, chars 01/<>_",
+        "purpose": "Scramble-decode of the mono location line in the hero."
+      },
+      {
+        "name": "portrait-form",
+        "value": "1.7s power2.out, then reveal 1.35s power1.inOut from 0.75s",
+        "purpose": "Points converge on the figure, then a bottom-up scan resolves it."
+      },
+      {
+        "name": "field-retune",
+        "value": "1.4s power2.out",
+        "purpose": "Fringe field hue, source, gain and density per section or product; instant under reduced motion."
+      },
+      {
+        "name": "foil-follow",
+        "value": "0.7s power2.out",
+        "purpose": "The foil band on the name following the pointer (--foil-x between 25% and 75%)."
+      },
+      {
+        "name": "foil-pass",
+        "value": "2.8s travel, 2.6s delay, once",
+        "purpose": "Touch devices: the band crosses the name once and rests at 41%."
+      },
+      {
+        "name": "plate-tilt",
+        "value": "0.8s power3.out, max 2.5deg Y / 1.75deg X, perspective 1400",
+        "purpose": "Active project plate turning toward a fine pointer."
+      },
+      {
+        "name": "stage-snap",
+        "value": "0.2s to 0.55s power2.out",
+        "purpose": "Pinned project stage snapping one product per step."
+      },
+      {
+        "name": "preloader",
+        "value": "0.8s to 82, 0.3s to 100, 0.45s fade; 2.2s network cap; 5s CSS failsafe",
+        "purpose": "Short exposure on first load; skipped under reduced motion."
+      },
+      {
+        "name": "smooth-scroll",
+        "value": "Lenis lerp 0.1; scrollTo 1.2s",
+        "purpose": "Page scroll smoothing; not started under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "40rem"
+      },
+      {
+        "name": "stage (layout)",
+        "value": "64rem"
+      },
+      {
+        "name": "STAGE (pinned project stage)",
+        "value": "(min-width: 75rem) and (min-height: 44rem)"
+      }
+    ],
+    "webgl": [
+      {
+        "name": "Fringe field",
+        "source": "components/gl/FringeField.tsx",
+        "dprCap": 1.5,
+        "pause": "document hidden",
+        "reducedMotion": "clock frozen; still follows scroll, pointer and section hue",
+        "fallback": "CSS radial gradient on the canvas"
+      },
+      {
+        "name": "Hologram portrait",
+        "source": "components/gl/HoloPortrait.tsx",
+        "dprCap": 1.75,
+        "pause": "off screen (IntersectionObserver, 80px margin)",
+        "fallback": "hero reads without the figure"
+      },
+      {
+        "name": "Holographic globe",
+        "source": "components/gl/HoloGlobe.tsx",
+        "dprCap": 1.75,
+        "pause": "off screen (IntersectionObserver, 120px margin)",
+        "fallback": "decorative only"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one Flare action per view: filled, Void text, chamfered bottom-right corner.",
+      "html": "<a class=\"ds-btn ds-btn-primary\" href=\"#\">Ver proyectos<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14\"/><path d=\"m19 12-7 7-7-7\"/></svg></a>",
+      "css": ".ds-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.625rem; min-height: 3rem; padding: 0 1.375rem; font-family: var(--font-sans); font-variation-settings: 'wdth' 112; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; white-space: nowrap; user-select: none; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms ease, color 160ms ease, border-color 160ms ease; } .ds-btn:active { transform: scale(0.97); } .ds-btn svg { width: 1rem; height: 1rem; flex: none; transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-btn-primary { background: var(--flare); color: var(--void); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.625rem), calc(100% - 0.625rem) 100%, 0 100%); } .ds-btn-primary:hover { background: oklch(0.74 0.2 18); } .ds-btn-primary:hover svg { transform: translateY(2px); } .ds-btn:focus-visible { outline: 2px solid var(--holo); outline-offset: 3px; }"
+    },
+    {
+      "name": "Quiet Button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Every secondary action: hairline frame over ink, turns Holo on hover.",
+      "html": "<a class=\"ds-btnq\" href=\"#\">Ver CV<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/></svg></a>",
+      "css": ".ds-btnq { display: inline-flex; align-items: center; justify-content: center; gap: 0.625rem; min-height: 3rem; padding: 0 1.375rem; border: 1px solid var(--line); color: var(--text); background: oklch(0.145 0.028 262 / 0.55); font-family: var(--font-sans); font-variation-settings: 'wdth' 112; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; white-space: nowrap; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), color 160ms ease, border-color 160ms ease; } .ds-btnq svg { width: 1rem; height: 1rem; flex: none; transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-btnq:hover { border-color: var(--holo); color: var(--holo); } .ds-btnq:hover svg { transform: translate(2px, -2px); } .ds-btnq:active { transform: scale(0.97); } .ds-btnq:focus-visible { outline: 2px solid var(--holo); outline-offset: 3px; }"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "button-icon",
+      "description": "44px square control for menu, close, previous and next.",
+      "html": "<button class=\"ds-iconbtn\" type=\"button\" aria-label=\"Cerrar\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/></svg></button>",
+      "css": ".ds-iconbtn { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid var(--line); background: transparent; color: var(--text); cursor: pointer; transition: transform 150ms ease, color 150ms ease, border-color 150ms ease; } .ds-iconbtn svg { width: 1.25rem; height: 1.25rem; } .ds-iconbtn:hover { border-color: var(--holo); color: var(--holo); } .ds-iconbtn:active { transform: scale(0.95); } .ds-iconbtn:focus-visible { outline: 2px solid var(--holo); outline-offset: 3px; }"
+    },
+    {
+      "name": "Text Link",
+      "kind": "custom",
+      "refersTo": "link",
+      "description": "Inline action; the underline draws from the left on hover and the icon nudges out.",
+      "html": "<a class=\"ds-link\" href=\"#\">Ver en producción<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/></svg></a>",
+      "css": ".ds-link { position: relative; display: inline-flex; align-items: center; gap: 0.375rem; color: var(--text); font-family: var(--font-sans); font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: color 160ms ease; } .ds-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 260ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-link svg { width: 0.875rem; height: 0.875rem; transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-link:hover { color: var(--holo); } .ds-link:hover::after { transform: scaleX(1); } .ds-link:hover svg { transform: translate(2px, -2px); } .ds-link:focus-visible { outline: 2px solid var(--holo); outline-offset: 3px; }"
+    },
+    {
+      "name": "Language Toggle",
+      "kind": "nav",
+      "refersTo": "toggle-segment",
+      "description": "Two mono segments in a hairline frame; the active one inverts to Text on Void.",
+      "html": "<div class=\"ds-toggle\" role=\"group\" aria-label=\"Idioma\"><button type=\"button\" aria-pressed=\"true\">es</button><button type=\"button\" aria-pressed=\"false\">en</button></div>",
+      "css": ".ds-toggle { display: inline-flex; align-items: center; border: 1px solid var(--line); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.01em; } .ds-toggle button { min-height: 2.75rem; padding: 0 0.75rem; border: 0; background: transparent; color: var(--text-2); font: inherit; text-transform: uppercase; cursor: pointer; transition: color 150ms ease, background-color 150ms ease; } .ds-toggle button:hover { color: var(--holo); } .ds-toggle button[aria-pressed='true'] { background: var(--text); color: var(--void); } .ds-toggle button:focus-visible { outline: 2px solid var(--holo); outline-offset: 3px; }"
+    },
+    {
+      "name": "Stack Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Static label for a technology, with an optional brand mark lifted toward white.",
+      "html": "<span class=\"ds-chip\" style=\"--brand:#3178C6\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\"/></svg>TypeScript</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.25rem; padding: 0 0.75rem; border: 1px solid var(--line); color: var(--text); font-family: var(--font-sans); font-size: 0.875rem; } .ds-chip svg { width: 1.125rem; height: 1.125rem; flex: none; fill: color-mix(in oklch, var(--brand, var(--text)) 38%, white); }"
+    },
+    {
+      "name": "Slate",
+      "kind": "card",
+      "refersTo": "slate",
+      "description": "The one container: an ink plate with a 1px foil edge and Holo registration ticks. Frames screenshots and documents only.",
+      "html": "<div class=\"ds-slate\"><div class=\"ds-slate-media\"></div><span class=\"ds-beam\"></span></div>",
+      "css": ".ds-slate { position: relative; margin: 7px; border: 1px solid transparent; background: linear-gradient(var(--void-2), var(--void-2)) padding-box, var(--foil) border-box; } .ds-slate::before, .ds-slate::after { content: ''; position: absolute; inset: -7px; pointer-events: none; opacity: 0.9; background: linear-gradient(var(--holo), var(--holo)) top left / 14px 1px no-repeat, linear-gradient(var(--holo), var(--holo)) top left / 1px 14px no-repeat, linear-gradient(var(--holo), var(--holo)) bottom right / 14px 1px no-repeat, linear-gradient(var(--holo), var(--holo)) bottom right / 1px 14px no-repeat; } .ds-slate::after { background: linear-gradient(var(--holo), var(--holo)) top right / 14px 1px no-repeat, linear-gradient(var(--holo), var(--holo)) top right / 1px 14px no-repeat, linear-gradient(var(--holo), var(--holo)) bottom left / 14px 1px no-repeat, linear-gradient(var(--holo), var(--holo)) bottom left / 1px 14px no-repeat; } .ds-slate-media { aspect-ratio: 16 / 10; width: 20rem; max-width: 100%; } .ds-beam { position: absolute; left: 0; right: 0; top: 38%; height: 2px; background: var(--holo); box-shadow: 0 0 0 1px oklch(0.88 0.15 185 / 0.25), 0 6px 28px 6px oklch(0.88 0.15 185 / 0.35); pointer-events: none; }"
+    },
+    {
+      "name": "Facts Readout",
+      "kind": "custom",
+      "refersTo": "readout",
+      "description": "Three counted facts per product: Doto value over a small label, ruled by hairlines.",
+      "html": "<dl class=\"ds-facts\"><div><dd>19</dd><dt>fabricantes en catálogo</dt></div><div><dd>24</dd><dt>tipos de job Celery</dt></div><div><dd>54</dd><dt>pantallas</dt></div></dl>",
+      "css": ".ds-facts { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; border-block: 1px solid var(--line); max-width: 27rem; } .ds-facts div { display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem 0.5rem 1rem 0; } .ds-facts div + div { border-left: 1px solid var(--line); padding-left: 1rem; padding-right: 0; } .ds-facts dd { margin: 0; font-family: var(--font-dot); font-weight: 900; font-size: 2rem; line-height: 1; letter-spacing: 0.01em; font-variant-numeric: tabular-nums; color: var(--text); } .ds-facts dt { font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.375; color: var(--text-3); }"
+    },
+    {
+      "name": "Role Row",
+      "kind": "custom",
+      "description": "Ruled list row: mono period with a square state marker, company, role title in Holo, one line.",
+      "html": "<ol class=\"ds-roles\"><li class=\"ds-role\"><p class=\"ds-role-period\"><span class=\"ds-role-dot ds-role-dot-live\"></span>Sep 2026 — hoy</p><div><h3>Axel Growth Partners</h3><p class=\"ds-role-title\">Backend Developer &amp; Software Architect</p><p class=\"ds-role-line\">Backends, infraestructura y agentes de IA para clientes en EE. UU. Naples, Florida, en remoto.</p></div></li><li class=\"ds-role\"><p class=\"ds-role-period\"><span class=\"ds-role-dot ds-role-dot-live\"></span>May 2026 — hoy</p><div><h3>PROESA · Universidad Icesi</h3><p class=\"ds-role-title\">Data Engineer, inteligencia de mercado</p></div></li></ol>",
+      "css": ".ds-roles { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--line); font-family: var(--font-sans); } .ds-role { display: grid; grid-template-columns: 9.5rem 1fr; column-gap: 1.5rem; padding: 1.25rem 0; border-top: 1px solid var(--line); transition: background-color 160ms ease; } .ds-role:hover { background: oklch(0.88 0.15 185 / 0.05); } .ds-role-period { display: flex; align-items: flex-start; gap: 0.5rem; margin: 0; padding-top: 0.25rem; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.5; letter-spacing: 0.01em; font-variant-numeric: tabular-nums; color: var(--text-3); } .ds-role-dot { flex: none; width: 0.375rem; height: 0.375rem; margin-top: 0.4em; background: var(--void-3); } .ds-role-dot-live { background: var(--holo); } .ds-role h3 { margin: 0; font-size: 1.125rem; font-weight: 600; line-height: 1.25; font-variation-settings: 'wdth' 112; color: var(--text); } .ds-role-title { margin: 0.25rem 0 0; font-size: 0.875rem; color: var(--holo); } .ds-role-line { margin: 0.25rem 0 0; font-size: 0.9375rem; color: var(--text-2); max-width: 58ch; }"
+    },
+    {
+      "name": "Foil Text",
+      "kind": "custom",
+      "description": "The name only: solid Text crossed by a narrow diffraction band (bright first order between two faint orders, ruled like a grating). Band position is --foil-x.",
+      "html": "<p class=\"ds-foil\">Zuluaga</p>",
+      "css": ".ds-foil { --o-blue: oklch(0.7 0.17 255); --o-cyan: oklch(0.88 0.15 185); --o-lime: oklch(0.9 0.19 128); --o-amber: oklch(0.83 0.155 78); --o-red: oklch(0.67 0.24 14); margin: 0; font-family: var(--font-sans); font-variation-settings: 'wdth' 125; font-weight: 900; font-size: 4.5rem; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.86; padding-bottom: 0.04em; color: var(--text); background-image: repeating-linear-gradient(100deg, transparent 0 0.034em, var(--text) 0.034em 0.048em), linear-gradient(100deg, var(--text) 0%, var(--text) 46.53%, color-mix(in oklch, var(--o-blue) 30%, var(--text)) 46.90%, color-mix(in oklch, var(--o-lime) 30%, var(--text)) 47.27%, color-mix(in oklch, var(--o-red) 30%, var(--text)) 47.64%, var(--text) 48.08%, var(--text) 48.64%, var(--o-blue) 49.07%, var(--o-cyan) 49.44%, var(--o-lime) 49.88%, var(--o-amber) 50.31%, var(--o-red) 50.74%, var(--text) 51.30%, var(--text) 51.86%, color-mix(in oklch, var(--o-blue) 30%, var(--text)) 52.29%, color-mix(in oklch, var(--o-lime) 30%, var(--text)) 52.67%, color-mix(in oklch, var(--o-red) 30%, var(--text)) 53.04%, var(--text) 53.47%, var(--text) 100%); background-size: auto, 300% 100%; background-position: 0 0, var(--foil-x, 41%) 0; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Hologram Plate",
+    "overview": "A holographic plate stores an object as interference fringes and gives it back when light hits it. The whole site behaves like one: the ground behind every section is a live fringe field, and each subject (the engineer in the hero, then one product at a time) is reconstructed out of it by a scanning beam. The page is dark, sparse and typographically loud; the spectacle sits in the background and in two 3D objects, while text, controls and screenshots stay flat, sharp and readable on ink.\n\nThe system is small on purpose. One ground (blue-black ink, never pure black), three named lights with fixed jobs (Holo, Flare, Sodium), one material (Foil, the diffraction spectrum) and one container (the slate). Type is one family pushed across its width axis, plus two faces reserved for measurements and numbers. Corners are square everywhere. Nothing floats: there are no cards with shadows, no rounded panels, no gradient fills on surfaces.\n\nThe world was refused as: a neon-on-black terminal portfolio with a typing headline, a card grid of projects, a skills progress-bar wall.",
+    "keyCharacteristics": [
+      "Blue-black ink ground with a fixed, pointer-reactive interference-fringe shader behind all content.",
+      "Three lights with one job each: Holo (beam, focus, live state), Flare (the primary action), Sodium (secondary data).",
+      "Foil is a material, not a colour: it appears on the name, on slate edges and on the globe's rim, nowhere else.",
+      "Archivo across its width axis (125 display, 122 heading, 112 titles and labels, 100 text); Martian Mono for data; Doto for numeric readouts.",
+      "Square corners (0 radius) and 1px hairlines; the slate is the only framed container.",
+      "Things resolve (scan, wipe, decode, converge, fade in place). They do not bounce."
+    ],
+    "rules": [
+      {
+        "name": "The One Job Rule",
+        "body": "Each light has one job. Holo is state and beam, Flare is the primary action, Sodium is secondary data. A second Flare button in the same view, or Sodium on a control, breaks the code.",
+        "section": "colors"
+      },
+      {
+        "name": "The Foil Is A Material Rule",
+        "body": "The spectrum never fills a surface, a button or body text. It is an edge, a band crossing solid type, or a 3D film.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink Rule",
+        "body": "No pure black and no pure white. The ground is Void; the lightest text is Text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Width Is The Voice Rule",
+        "body": "Hierarchy is set with Archivo's `wdth` axis: 125 display, 122 heading, 112 titles and labels, 100 text. Do not add a display family; do not set running text wider than 100.",
+        "section": "typography"
+      },
+      {
+        "name": "The Instruments Rule",
+        "body": "Martian Mono is for data and Doto is for numbers. Neither sets a sentence, a heading or a button label.",
+        "section": "typography"
+      },
+      {
+        "name": "The Solid Letter Rule",
+        "body": "Foil-stamped type is solid Text crossed by a narrow band. The band is a bright first order (blue, cyan, lime, amber, red) between two faint orders mixed 30% into Text, ruled by a fine grating (`0.034em` gap, `0.014em` line, 100deg). The band never covers the word; most of the name stays plain Text at every pointer position.",
+        "section": "typography"
+      },
+      {
+        "name": "The Only The Beam Glows Rule",
+        "body": "Glow is reserved for the moving beam. Panels, buttons, text and icons never carry a halo or a shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Plate Stays Ink Rule",
+        "body": "Surfaces above the field are opaque or near-opaque Void. No frosted cards.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do build on Void (`oklch(0.145 0.028 262)`) and let the fringe field show through; keep text blocks unboxed and ruled with 1px Line.",
+      "Do give each view exactly one Flare button, with Void text and the `0.625rem` chamfer; make every other action quiet or a text link.",
+      "Do use Holo for focus (`2px solid`, `3px` offset), hover on quiet controls and links, and anything current or live.",
+      "Do set hierarchy with Archivo's width axis: 125 / 900 uppercase for display, 122 / 800 for headings, 112 / 600 to 700 for titles and labels, 100 for text.",
+      "Do put measurements in Martian Mono at 0.75rem and counted numbers in Doto 900, with tabular figures.",
+      "Do frame screenshots and documents, and only those, in a slate: Void 2 plate, 1px Foil edge, Holo registration ticks.",
+      "Do bring content in by resolving it: a beam with a `clip-path` wipe, a fade in place, a decode. Use `resolve` (`0.23, 1, 0.32, 1`) for exits to rest and `travel` (`0.77, 0, 0.175, 1`) for crossings; keep control feedback at 150 to 200ms.",
+      "Do gate hover behind `(hover: hover) and (pointer: fine)`, wrap GSAP work in `gsap.matchMedia()` with the reduced-motion query, and give every enhanced layout a plain default that works without script.",
+      "Do cap canvas DPR (1.5 field, 1.75 objects), stop frame loops off screen, and keep every canvas `aria-hidden` with content that reads without it.",
+      "Do keep text at Text 3 or lighter on Void (6.4:1 is the floor) and interactive targets at 2.75rem or more."
+    ],
+    "donts": [
+      "Don't use pure black or pure white, or introduce a hue outside Holo, Flare, Sodium and the neutrals for UI. The seven field hues tint the background only.",
+      "Don't use Foil as a fill, a button colour or a text gradient that covers the word. It is an edge, a narrow band, or the globe's rim.",
+      "Don't round a corner. The system has no radius; the only shaped corner is the primary button's chamfer.",
+      "Don't add shadows, halos or glow to panels, buttons, text or icons. Only the moving beam glows.",
+      "Don't build glass or frosted cards. The one backdrop blur is the scrolled nav bar.",
+      "Don't lay products out as a card grid, show skills as progress bars, or type a headline out letter by letter. These are the refused forms of this world.",
+      "Don't set sentences, headings or button labels in Martian Mono or Doto.",
+      "Don't bounce, spring or overshoot. No elastic eases.",
+      "Don't wrap text, lists or rows in a slate, or nest slates.",
+      "Don't let the pointer drive anything on touch, and don't make any content depend on WebGL having loaded."
+    ]
+  }
+}

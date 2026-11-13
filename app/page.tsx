@@ -1,21 +1,19 @@
 import { Preloader } from "@/components/ui/Preloader";
 import { Hero } from "@/components/sections/Hero";
-import { Manifesto } from "@/components/sections/Manifesto";
+import { Projects } from "@/components/sections/Projects";
 import { Experience } from "@/components/sections/Experience";
-import { Arsenal } from "@/components/sections/Arsenal";
-import { Works } from "@/components/sections/Works";
-import { Footer } from "@/components/layout/Footer";
+import { Stack } from "@/components/sections/Stack";
+import { Contact } from "@/components/sections/Contact";
 
 export default function Home() {
     return (
-        <main className="relative min-h-screen w-full">
+        <main>
             <Preloader />
             <Hero />
-            <Manifesto />
+            <Projects />
             <Experience />
-            <Arsenal />
-            <Works />
-            <Footer />
+            <Stack />
+            <Contact />
         </main>
     );
 }

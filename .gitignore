@@ -40,3 +40,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# source captures (large PNGs); the site ships the WebP copies in public/shots
+/assets-src/captures/
+
+# impeccable working files
+/.impeccable/review/
+/.impeccable/mocks/
